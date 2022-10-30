@@ -54,6 +54,25 @@ router.post("/login", async (req, res) => {
   }
 });
 
+//create refresh token route
+router.post("/refresh_token", (req, res) => {
+  try {
+    const rf_token = req.cookies.refreshtoken;
+    if (!rf_token) {
+      return res.status(400).json({ msg: "Please Login or Register" });
+    }
+    jwt.verify(rf_token, process.env.REFRESH_TOKEN_SECRET, (err, user) => {
+      if (err) {
+        return res.status(400).json({ msg: "Please Login or Register" });
+      }
+      const access_token = createAccessToken({ id: user.id });
+      res.json({ access_token });
+    });
+  } catch (err) {
+    return res.status(500).json({ msg: err.message });
+  }
+});
+
 //create refresh token
 const createRefreshToken = (user) => {
   return jwt.sign(user, process.env.REFRESH_TOKEN_SECRET, { expiresIn: "7d" });
@@ -75,3 +94,15 @@ const createAccessToken = (user) => {
     return res.status(500).json({ msg: err.message });
   }
 };
+
+//logout route
+router.get("/logout", async (req, res) => {
+  try {
+    res.clearCookie("refreshtoken", { path: "/user/refresh_token" });
+    return res.json({ msg: "Logged out" });
+  } catch (err) {
+    return res.status(500).json({ msg: err.message });
+  }
+});
+
+export default router;
