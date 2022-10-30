@@ -1,6 +1,6 @@
-const express = require("express");
-const Card = require("../models/Cards.js");
-const md5 = require("md5");
+import express from "express";
+import Card  from "../models/CardsModel.js";
+import md5 from "md5";
 
 const cardRouter = express.Router();
 
@@ -66,4 +66,4 @@ cardRouter.route("/delete/:id").delete(async (req, res) => {
     });
 });
 
-module.exports = cardRouter;
+export default cardRouter;
