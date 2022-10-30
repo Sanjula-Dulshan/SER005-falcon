@@ -4,6 +4,7 @@ import mongoose from "mongoose";
 import cors from "cors";
 import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
+import cardRouter from "./routes/cardRouter.js";
 
 dotenv.config();
 const PORT = process.env.PORT;
@@ -14,6 +15,9 @@ app.use(cors());
 app.use(cookieParser());
 app.use(express.json());
 app.use(bodyParser.json());
+
+//Routes
+app.use("/card", cardRouter);
 
 // Connect to MongoDB
 mongoose
