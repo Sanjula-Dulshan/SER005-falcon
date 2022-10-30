@@ -15,6 +15,9 @@ app.use(cookieParser());
 app.use(express.json());
 app.use(bodyParser.json());
 
+//Routes
+app.use("/card", require("./routes/cardRouter"));
+
 // Connect to MongoDB
 mongoose
   .connect(MONGODB_URL, {
