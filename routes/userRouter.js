@@ -1,5 +1,7 @@
 import User from "../models/userModel.js";
 import bcrypt from "bcrypt";
+import express from "express";
+const router = express.Router();
 
 //register user route
 router.post("/register", async (req, res) => {
