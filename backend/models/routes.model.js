@@ -37,7 +37,7 @@ const RouteSchema = new Schema({
         type: [
             {
               time: { type: String, required: true },
-              stop: { type: Number, required: true },
+              stop: { type: String, required: true },
             },
           ],
     },
@@ -79,6 +79,37 @@ export default Route;
 {
     "routeID": "R002",
     "startPoint": "Galle",
+    "startTime": "8.00",
+    "duration": "2",
+    "endPoint": "Colombo",
+    "endTime": "10.00",
+    "busStops": [
+        {
+            "time": "8.30",
+            "stop": "1"
+        },
+        {
+            "time": "9.00",
+            "stop": "2"
+        },
+        {
+            "time": "9.30",
+            "stop": "3"
+        },
+        {
+            "time": "10.00",
+            "stop": "4"
+        }
+    ]
+}
+
+*/
+
+/* sample json data
+
+{
+    "routeID": "R003",
+    "startPoint": "Jaffna",
     "startTime": "8.00",
     "duration": "2",
     "endPoint": "Colombo",
