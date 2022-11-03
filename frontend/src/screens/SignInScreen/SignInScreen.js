@@ -14,7 +14,6 @@ import CustomInput from "../../components/CustomInput/CustomInput";
 import CustomButton from "../../components/CustomButton/CustomButton";
 import { useNavigation } from "@react-navigation/native";
 import { useForm, Controller } from "react-hook-form";
-import { Auth } from "aws-amplify";
 
 const SignInScreen = () => {
   const { height } = useWindowDimensions();
@@ -27,28 +26,28 @@ const SignInScreen = () => {
     formState: { errors },
   } = useForm();
 
-  // const onSignInPressed = async (data) => {
-  //   if (loading) {
-  //     return;
-  //   }
+  const onSignInPressed = async (data) => {
+    if (loading) {
+      return;
+    }
 
-  //   setLoading(true);
-  //   try {
-  //     const response = await Auth.signIn(data.username, data.password);
-  //     console.log(response);
-  //   } catch (e) {
-  //     Alert.alert("Oops", e.message);
-  //   }
-  //   setLoading(false);
-  // };
+    setLoading(true);
+    try {
+      const response = await Auth.signIn(data.username, data.password);
+      console.log(response);
+    } catch (e) {
+      Alert.alert("Oops", e.message);
+    }
+    setLoading(false);
+  };
 
-  // const onForgotPasswordPressed = () => {
-  //   navigation.navigate("ForgotPassword");
-  // };
+  const onForgotPasswordPressed = () => {
+    navigation.navigate("ForgotPassword");
+  };
 
-  // const onSignUpPress = () => {
-  //   navigation.navigate("SignUp");
-  // };
+  const onSignUpPress = () => {
+    navigation.navigate("SignUp");
+  };
 
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
@@ -79,23 +78,25 @@ const SignInScreen = () => {
             },
           }}
         />
-
+        <CustomButton
+          text="Forgot password?"
+          onPress={onForgotPasswordPressed}
+          type="FORGOT"
+        />
         <CustomButton
           text={loading ? "Loading..." : "Sign In"}
           onPress={handleSubmit(onSignInPressed)}
         />
-
-        <CustomButton
-          text="Forgot password?"
-          onPress={onForgotPasswordPressed}
-          type="TERTIARY"
-        />
-
-        <CustomButton
-          text="Don't have an account? Create one"
-          onPress={onSignUpPress}
-          type="TERTIARY"
-        />
+        <View style={{ marginLeft: "10%" }}>
+          <View style={styles.section}>
+            <Text style={styles.text}>Don't have an account?</Text>
+            <CustomButton
+              text="Create one"
+              onPress={onSignUpPress}
+              type="TERTIARY"
+            />
+          </View>
+        </View>
       </View>
     </ScrollView>
   );
@@ -108,8 +109,21 @@ const styles = StyleSheet.create({
   },
   logo: {
     width: "70%",
+    marginBottom: "20%",
+    marginTop: "20%",
     maxWidth: 300,
     maxHeight: 200,
+  },
+  section: {
+    flexDirection: "row",
+    alignItems: "center",
+    spaceBetween: 10,
+  },
+  text: {
+    fontWeight: "bold",
+    fontSize: 16,
+    marginVertical: 5,
+    marginRight: "auto",
   },
 });
 
