@@ -6,6 +6,8 @@ import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
 import cardRouter from "./routes/cardRouter.js";
 import userRouter from "./routes/userRouter.js";
+import busRouter from "./routes/bus.router.js";
+import routeRouter from "./routes/routes.route.js";
 
 dotenv.config();
 const PORT = process.env.PORT;
@@ -20,6 +22,8 @@ app.use(bodyParser.json());
 //Routes
 app.use("/card", cardRouter);
 app.use("/user", userRouter);
+app.use("/bus", busRouter);
+app.use("/route", routeRouter);
 
 // Connect to MongoDB
 mongoose
