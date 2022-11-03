@@ -1,11 +1,7 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
 
 const BusSchema = new Schema({
-    busID: {
-        type: String,
-        required : true
-    },
 
     busName: {
         type: String,
@@ -13,7 +9,7 @@ const BusSchema = new Schema({
     },
 
 
-    conductorID: {
+    mobile: {
         type: String,
         required : true
     },
@@ -22,10 +18,21 @@ const BusSchema = new Schema({
         type: String,
         required : true
     },
+
+
+    availableSeats: {
+        type: Number,
+        required : true
+    },
+
+    passengerCount: {
+        type: Number,
+    },
+
 }, {timestamps: true});
 
 const Bus = mongoose.model("bus",BusSchema);
-module.exports = Bus;
+export default Bus;
 
 /*
 //sample json data

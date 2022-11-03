@@ -1,13 +1,14 @@
-const router = require("express").Router();
-const Bus = require("../models/bus.model.js");
+import express from "express";
+const router = express.Router();
+import Bus from "../models/bus.model.js";
 
-router.route("/").get((req,res)=>{
+router.get("/",(req,res)=>{
     Bus.find()
     .then(buses => res.json(buses))
     .catch(err => res.status(400).json('Error: ' + err));
 });
 
-router.route("/").post((req,res)=>{
+router.post("/",(req,res)=>{
     const busID = req.body.busID;
     const busNumber = req.body.busNumber;
     const busName = req.body.busName;
@@ -32,20 +33,20 @@ router.route("/").post((req,res)=>{
 
 });
 
-router.route("/:id").get((req,res)=>{
+router.get("/:id",(req,res)=>{
 
     Bus.findById(req.params.id)
     .then(buses => res.json(buses))
     .catch(err => res.status(400).json('Error: ' + err));
 });
 
-router.route("/:id").delete((req,res)=>{
+router.delete("/:id",(req,res)=>{
     Bus.findByIdAndDelete(req.params.id)
     .then(buses => res.json(buses))
     .catch(err => res.status(400).json('Error: ' + err));
 });
 
-router.route("/:id").post((req,res)=>{
+router.post("/:id",(req,res)=>{
     Bus.findById(req.params.id)
     .then(buses => {
         buses.busId = req.body.busId;
@@ -62,5 +63,5 @@ router.route("/:id").post((req,res)=>{
     .catch(err => res.status(400).json('Error: ' + err));
 });
 
-module.exports = router;
+export default router;
 
