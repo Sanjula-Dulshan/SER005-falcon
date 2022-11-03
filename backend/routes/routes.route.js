@@ -1,6 +1,17 @@
 import express from "express";
 const router = express.Router();
 import Route from "../models/routes.model.js";
+import Bus from "../models/bus.model.js";
+
+let Routes = [];
+
+function setRoutes(value) {
+    Routes = value;
+}
+
+function getRoutes() {
+    return Routes;
+}
 
 router.route("/").get((req,res)=>{
     Route.find()
@@ -66,6 +77,58 @@ router.put("/:id",(req,res)=>{
             console.log(err);
         })
     })
+});
+
+
+//function to get all routes contains busStops given in order
+async function getRoutesByBusStops(busStopsArray,res){
+
+      await Route.find({"busStops.stop": {$all: busStopsArray}})
+        .then(routes => setRoutes(routes))
+        .catch(err => console.log(err)); 
+    return Routes;    
+    
+}
+
+
+//function to get all busses matches any routeID in array
+function getBussesByRouteID(routeIDArray){
+    return new Promise((resolve,reject)=>{
+        Bus.find({routeID:{$in:routeIDArray}}).then((busses)=>{
+            resolve(busses);
+        }).catch((err)=>{
+            reject(err);
+        })
+    })
+}
+
+
+//function to get all routes contains busStops in order and get busses matches any routeID in array
+router.post("/getBussesByBusStops",async (req,res)=>{
+    let busStopsArray = req.body.busStops;
+    let routesArray = await getRoutesByBusStops(busStopsArray,res);
+
+
+    let routeIDArray = [];
+
+    setTimeout(()=>{
+
+
+    //while loop to get all routeID in array
+    let i = 0;
+    while(i<routesArray?.length){
+        routeIDArray.push(routesArray[i].routeID);
+        i++;
+    }
+
+    getBussesByRouteID(routeIDArray).then((busses)=>{
+        console.log(busses);
+        res.json(busses);
+    }).catch((err)=>{
+        res.status(400).json('Error: ' + err);
+    })
+
+    },1000);
 });
 
 export default router;
