@@ -1,5 +1,6 @@
-const router = require("express").Router();
-const Route = require("../models/routes.model.js");
+import express from "express";
+const router = express.Router();
+import Route from "../models/routes.model.js";
 
 router.route("/").get((req,res)=>{
     Route.find()
@@ -7,21 +8,24 @@ router.route("/").get((req,res)=>{
     .catch(err => res.status(400).json('Error: ' + err));
 });
 
-router.route("/").post((req,res)=>{
+router.post("/",(req,res)=>{
+    
     const routeID = req.body.routeID;
-    const routeName = req.body.routeName;
     const startPoint = req.body.startPoint;
     const endPoint = req.body.endPoint;
-    const distance = req.body.distance;
+    const startTime = req.body.startTime;
+    const endTime = req.body.endTime;
+    const duration = req.body.duration;
     const busStops = req.body.busStops;
 
 
     const newRoute = new Route({
         routeID,
-        routeName,
         startPoint,
         endPoint,
-        distance,
+        startTime,
+        endTime,
+        duration,
         busStops
 
     })
@@ -34,19 +38,19 @@ router.route("/").post((req,res)=>{
 
 });
 
-router.route("/:id").get((req,res)=>{
+router.get("/",(req,res)=>{
     Route.findById(req.params.id)
     .then(routes => res.json(routes))
     .catch(err => res.status(400).json('Error: ' + err));
 });
 
-router.route("/:id").delete((req,res)=>{
+router.delete("/:id",(req,res)=>{
     Route.findByIdAndDelete(req.params.id)
     .then(routes => res.json(routes))
     .catch(err => res.status(400).json('Error: ' + err));
 });
 
-router.route("/:id").put((req,res)=>{
+router.put("/:id",(req,res)=>{
     Route.findById(req.params.id)
     .then(routes => {
         routes.routeID = req.body.routeID;
@@ -64,4 +68,4 @@ router.route("/:id").put((req,res)=>{
     })
 });
 
-module.exports = router;
+export default router;
