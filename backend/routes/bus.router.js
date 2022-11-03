@@ -9,20 +9,21 @@ router.get("/",(req,res)=>{
 });
 
 router.post("/",(req,res)=>{
-    const busID = req.body.busID;
-    const busNumber = req.body.busNumber;
     const busName = req.body.busName;
-    const busType = req.body.busType;
-    const busCapacity = req.body.busCapacity;
-    const conductorID   = req.body.conductorID;
+    const busNumber = req.body.busNumber;
+    const mobile = req.body.mobile;
+    const availableSeats = req.body.availableSeats;
+    const passengerCount = req.body.passengerCount;
+    const routeID = req.body.routeID;
 
     const newBus = new Bus({
-        busID,
-        busNumber,
-        busType,
         busName,
-        conductorID,
-        busCapacity
+        busNumber,
+        mobile,
+        availableSeats,
+        passengerCount,
+        routeID
+        
     })
 
     newBus.save().then(()=>{
@@ -53,6 +54,8 @@ router.post("/:id",(req,res)=>{
         buses.busNumber = req.body.busNumber;
         buses.busType = req.body.busType;
         buses.busCapacity = req.body.busCapacity;
+        buses.conductorID = req.body.conductorID;
+        buses.routeID = req.body.routeID;
 
         buses.save().then(()=>{
             res.json("Bus Updated")
@@ -62,5 +65,8 @@ router.post("/:id",(req,res)=>{
     })
     .catch(err => res.status(400).json('Error: ' + err));
 });
+
+
+
 
 export default router;
