@@ -61,6 +61,7 @@ const CardDetailsScreen = () => {
       <View style={{backgroundColor:"white",width:"120%",marginTop:"-6%"}}>
         <Text style={styles.title}>Card Details</Text>
         </View>
+
         <View style={styles.root}>
         
         <DropDownPicker
