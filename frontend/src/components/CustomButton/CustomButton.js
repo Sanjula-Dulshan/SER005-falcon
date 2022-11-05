@@ -54,6 +54,11 @@ const styles = StyleSheet.create({
 
   container_TERTIARY: {},
 
+  container_DATE: {
+    backgroundColor: "#3B71F3",
+    elevation: 7,
+  },
+
   text: {
     fontWeight: "bold",
     fontSize: 16,
