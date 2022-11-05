@@ -4,11 +4,13 @@ import CustomInput from "../../components/CustomInput";
 import CustomButton from "../../components/CustomButton";
 import { useNavigation } from "@react-navigation/core";
 import { useForm } from "react-hook-form";
+import CustomDropDown from "../../components/CustomDropDown";
 
 const EMAIL_REGEX =
   /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 
 const CONTACT_NUMBER_REGEX = /^[0-9]{10}$/;
+
 const SignUpScreen = () => {
   const { control, handleSubmit, watch } = useForm();
   const pwd = watch("password");
@@ -17,11 +19,11 @@ const SignUpScreen = () => {
   const onRegisterPressed = async (data) => {
     const { username, password, email, name } = data;
     try {
-      await Auth.signUp({
-        username,
-        password,
-        attributes: { email, name, preferred_username: username },
-      });
+      // await Auth.signUp({
+      //   username,
+      //   password,
+      //   attributes: { email, name, preferred_username: username },
+      // });
 
       navigation.navigate("ConfirmEmail", { username });
     } catch (e) {
@@ -31,14 +33,6 @@ const SignUpScreen = () => {
 
   const onSignInPress = () => {
     navigation.navigate("SignIn");
-  };
-
-  const onTermsOfUsePressed = () => {
-    console.warn("onTermsOfUsePressed");
-  };
-
-  const onPrivacyPressed = () => {
-    console.warn("onPrivacyPressed");
   };
 
   return (
@@ -125,6 +119,7 @@ const SignUpScreen = () => {
             validate: (value) => value === pwd || "Password do not match",
           }}
         />
+        <CustomDropDown />
 
         <CustomButton
           text="Register"
