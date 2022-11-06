@@ -77,6 +77,12 @@ const styles = StyleSheet.create({
     alignSelf: "flex-end",
     color: "#000000",
   },
+  text_FINE: {
+    alignSelf: "flex-start",
+    color: "#000000",
+    fontSize: 22,
+    fontWeight: "bold",
+  },
 });
 
 export default CustomButton;

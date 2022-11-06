@@ -5,6 +5,8 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 import SignInScreen from "../screens/SignInScreen";
 import RouteSearch from "../screens/RouteSearch/RouteSearch";
+import PassengerList from "../screens/PassengerList";
+import ReportUser from "../screens/ReportUser";
 
 const Stack = createNativeStackNavigator();
 
@@ -13,7 +15,10 @@ const Navigation = () => {
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         {/* <Stack.Screen name="SignIn" component={SignInScreen} /> */}
-        <Stack.Screen name="RouteSearch" component={RouteSearch} />
+        {/* <Stack.Screen name="RouteSearch" component={RouteSearch} /> */}
+        {/* <Stack.Screen name="PassengersList" component={PassengerList} /> */}
+
+        <Stack.Screen name="ReportUser" component={ReportUser} />
       </Stack.Navigator>
     </NavigationContainer>
   );
