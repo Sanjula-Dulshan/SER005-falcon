@@ -6,6 +6,10 @@ import CardDetailsScreen from "../screens/CardDetailsScreen";
 import SignInScreen from "../screens/SignInScreen";
 import TopupScreen from "../screens/TopupScreen";
 import NewCardScreen from "../screens/NewCardScreen";
+import SignUpScreen from "../screens/SignUpScreen";
+import ConfirmEmailScreen from "../screens/ConfirmEmailScreen/ConfirmEmailScreen";
+import ForgotPasswordScreen from "../screens/ForgotPasswordScreen/ForgotPasswordScreen";
+import NewPasswordScreen from "../screens/NewPasswordScreen/NewPasswordScreen";
 
 
 const Stack = createNativeStackNavigator();
@@ -15,9 +19,15 @@ const Navigation = () => {
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         <Stack.Screen name="SignIn" component={SignInScreen} />
+
+        <Stack.Screen name="SignUp" component={SignUpScreen} />
+        <Stack.Screen name="ConfirmEmail" component={ConfirmEmailScreen} />
+        <Stack.Screen name="ForgotPassword" component={ForgotPasswordScreen} />
+        <Stack.Screen name="NewPassword" component={NewPasswordScreen} />
         <Stack.Screen name="Topup"  component={TopupScreen} />
         <Stack.Screen name="NewCardScreen"  component={NewCardScreen} />
         <Stack.Screen name="CardDetails"  component={CardDetailsScreen} />
+
       </Stack.Navigator>
     </NavigationContainer>
   );

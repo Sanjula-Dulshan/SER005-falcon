@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
   },
 
   container_SECONDARY: {
-    borderColor: "#3B71F3",
+    borderColor: "#FBBC05",
     borderWidth: 2,
   },
 
@@ -61,12 +61,15 @@ const styles = StyleSheet.create({
   },
 
   text_SECONDARY: {
-    color: "#3B71F3",
+    color: "#FBBC05",
   },
 
   text_TERTIARY: {
     color: "#FBBC05",
     marginLeft: "35%",
+  },
+  text_FOURTH: {
+    color: "#FBBC05",
   },
   text_FORGOT: {
     alignSelf: "flex-end",
