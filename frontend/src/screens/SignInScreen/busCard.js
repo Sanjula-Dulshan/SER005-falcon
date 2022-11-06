@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, TouchableOpacity, Image } from "react-native";
 import CustomButton from "../../components/CustomButton/CustomButton";
 import StepIndicator from 'react-native-step-indicator';
 
-export default function HomeScreen({ navigation }) {
+export default function BusCard({ navigation }) {
   return (
     <View style={styles.container}>
       
@@ -17,6 +17,8 @@ export default function HomeScreen({ navigation }) {
        <Text style={styles.textTime}>6.30</Text>
       </View> 
 
+      
+
 
       <View style={styles.stepIndicator}>
         <StepIndicator
@@ -27,6 +29,14 @@ export default function HomeScreen({ navigation }) {
           labels={['Akuressa', 'Kataragama']}
         />
       </View>
+
+      <View style={{marginLeft:120,marginTop:20, zIndex:4, paddingBottom:35}}>
+       <Text style={styles.textStation}>Bus Station</Text>
+      </View> 
+
+      <View style={{marginLeft:120,marginTop:40, zIndex:4, paddingBottom:35}}>
+       <Text style={styles.textStation}>Bus Station</Text>
+      </View> 
       
 
        <View style={{marginLeft:270,marginTop:10,position:'absolute'}}>
@@ -39,7 +49,7 @@ export default function HomeScreen({ navigation }) {
         />
 
 
-      <View style={{marginLeft:270,marginTop:20, zIndex:3, paddingBottom:35}}>
+      <View style={{marginLeft:270,marginTop:140, zIndex:3, paddingBottom:35}}>
        <Text style={styles.textDuration}>6.30</Text>
       </View> 
 
@@ -52,6 +62,10 @@ export default function HomeScreen({ navigation }) {
           fgColor={"white"}
           type={"takeIt"}
         />
+
+      <View style={{marginLeft:20,marginTop:-32, zIndex:3, paddingBottom:35}}>
+       <Text style={styles.textPrice}>45💰</Text>
+      </View> 
 
       </View>
     </View>
@@ -96,12 +110,15 @@ const styles = StyleSheet.create({
     height: 150,
   
   },
+
+  
   card: {
     width: "92%",
-    marginBottom: 10,
+    marginVertical: 50,
+    marginBottom: 1,
     marginLeft: "4%",
     marginRight: "4%",
-    height: "30%",
+    height: "auto",
     paddingBottom: 15,
 
     backgroundColor: "#fff",
@@ -122,7 +139,7 @@ const styles = StyleSheet.create({
     resizeMode: "cover",
     zIndex: 1,
     marginHorizontal: "75%",
-    marginVertical: 0,
+    marginVertical: -120,
     
   },
   text: {
@@ -142,12 +159,36 @@ const styles = StyleSheet.create({
 
   },
 
+  textStation: {
+    position: "absolute",
+    fontSize: 16,
+    fontWeight: "normal",
+    color: "#4F4F4F",
+    marginTop: 10,
+
+  },
+
   textDuration: {
     position: "absolute",
     fontSize: 19,
     fontWeight: "bold",
     color: "black",
   },
+
+  textPrice: {
+    position: "absolute",
+    fontSize: 25,
+    fontWeight: "bold",
+    backgroundColor: "black",
+    color: "white",
+    borderRadius: 10,
+    padding: 3,
+    paddingLeft: 10,
+    paddingRight: 10,
+    // borderColor: "#EEB815",
+    // borderWidth: 1,
+  },
+
 
   textTime: {
     position: "absolute",
