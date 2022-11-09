@@ -8,15 +8,15 @@ import {
   WarningOutlineIcon,
 } from "native-base";
 
-const CustomDropDown = () => {
+const CustomDropDown = ({ aLabel, placeholder, options }) => {
   const [service, setService] = useState("");
   return (
     <View>
       <FormControl isRequired isInvalid>
         <View style={styles.container}>
           <Select
-            accessibilityLabel="Select Account Type"
-            placeholder="Select Account Type"
+            accessibilityLabel={aLabel}
+            placeholder={placeholder}
             _selectedItem={{
               bg: "teal.600",
               endIcon: <CheckIcon size={5} />,
@@ -25,8 +25,15 @@ const CustomDropDown = () => {
             mt="2"
             style={styles.input}
           >
-            <Select.Item label="Passenger" value="Passenger" />
-            <Select.Item label="Ticket Examiner" value="Ticket Examiner" />
+            {options.map((option, index) => {
+              return (
+                <Select.Item
+                  key={index}
+                  label={option.label}
+                  value={option.value}
+                />
+              );
+            })}
           </Select>
         </View>
         {/* {FormControl.ErrorMessage && (
