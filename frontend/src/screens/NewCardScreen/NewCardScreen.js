@@ -22,10 +22,7 @@ const NewCardScreen = () => {
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState(null);
-  const [items, setItems] = useState([
-    {label: 'New Card', value: 'new'}
-    
-  ]);
+
   const {
     control,
     handleSubmit,
