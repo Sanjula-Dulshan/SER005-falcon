@@ -6,9 +6,19 @@ export default function CustomCard() {
   return (
     <View style={styles.container}>
       <View style={styles.card}>
-        <View style={styles.textContainer}>
-          <Text style={styles.textTime}>6.30</Text>
-          <Text style={styles.textTime}>AM</Text>
+        <View style={styles.textWrap}>
+          <View style={styles.textContainer}>
+            <Text style={styles.textTitle}>Name:</Text>
+            <Text style={styles.text}>Sanjula Dulshan</Text>
+          </View>
+          <View style={styles.textContainer}>
+            <Text style={styles.textTitle}>Email:</Text>
+            <Text style={styles.text}>sdulshan10@gmail.com</Text>
+          </View>
+          <View style={styles.textContainer}>
+            <Text style={styles.textTitle}>Contact:</Text>
+            <Text style={styles.text}>0719647830</Text>
+          </View>
         </View>
         <View style={styles.buttonContainer}>
           <CustomButton
@@ -44,12 +54,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-  textContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    padding: "5%",
-  },
+
   buttonContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
@@ -87,10 +92,22 @@ const styles = StyleSheet.create({
     marginHorizontal: "75%",
     marginVertical: -120,
   },
-  text: {
-    position: "relative",
-    fontSize: 20,
+  textWrap: {
+    marginHorizontal: 10,
+    marginVertical: 15,
+  },
+  textContainer: {
+    flexDirection: "row",
+
+    marginHorizontal: "2%",
+  },
+  textTitle: {
+    fontSize: 15,
     fontWeight: "bold",
+    marginTop: 10,
+  },
+  text: {
+    fontSize: 15,
     marginTop: 10,
     marginLeft: 10,
   },
