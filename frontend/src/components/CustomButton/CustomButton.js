@@ -93,8 +93,8 @@ const styles = StyleSheet.create({
     fontSize: 21,
     marginTop: "-5%",
     marginLeft: "-10%",
-    fontStyle:"underline",
-    textDecorationLine: "underline"  
+    fontStyle: "underline",
+    textDecorationLine: "underline",
   },
   text_HISTORY: {
     alignSelf: "flex-end",
@@ -142,6 +142,44 @@ const styles = StyleSheet.create({
     borderStyle: "solid",
     paddingTop: "2%",
   },
+
+  container_takeIt: {
+    backgroundColor: "#EEB815",
+    elevation: 7,
+    width: 100,
+    height: 40,
+    marginHorizontal: "65%",
+    paddingTop: 8,
+    paddingBottom: 3,
+  },
+  container_approve: {
+    elevation: 7,
+    width: 100,
+    height: 40,
+    marginHorizontal: "7%",
+    paddingTop: 8,
+    paddingBottom: 3,
+  },
+  container_decline: {
+    elevation: 7,
+    width: 100,
+    height: 40,
+    marginHorizontal: "7%",
+    paddingTop: 8,
+    paddingBottom: 3,
+    borderColor: "#F40000",
+    borderWidth: 2,
+  },
+  container_view: {
+    elevation: 7,
+    width: 100,
+    height: 40,
+    marginHorizontal: "7%",
+    paddingTop: 8,
+    paddingBottom: 3,
+    borderColor: "#EEB815",
+    borderWidth: 2,
+},
   text_REMOVECARD: {
     alignSelf: "flex-end",
     backgroundColor: "white",
@@ -157,6 +195,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     marginRight: "65%",
     marginTop: "-4%",
+
   },
 });
 
