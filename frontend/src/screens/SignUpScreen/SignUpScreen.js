@@ -9,6 +9,11 @@ import CustomDropDown from "../../components/CustomDropDown";
 const EMAIL_REGEX =
   /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 
+const options = [
+  { label: "Passenger", value: "Passenger" },
+  { label: "Ticket Examiner", value: "Ticket Examiner" },
+];
+
 const CONTACT_NUMBER_REGEX = /^[0-9]{10}$/;
 
 const SignUpScreen = () => {
@@ -119,7 +124,11 @@ const SignUpScreen = () => {
             validate: (value) => value === pwd || "Password do not match",
           }}
         />
-        <CustomDropDown />
+        <CustomDropDown
+          aLabel="Select Account Type"
+          placeholder="Select Account Type"
+          options={options}
+        />
 
         <CustomButton
           text="Register"
