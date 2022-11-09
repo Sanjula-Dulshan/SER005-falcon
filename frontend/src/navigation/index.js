@@ -10,6 +10,7 @@ import SignUpScreen from "../screens/SignUpScreen";
 import ConfirmEmailScreen from "../screens/ConfirmEmailScreen/ConfirmEmailScreen";
 import ForgotPasswordScreen from "../screens/ForgotPasswordScreen/ForgotPasswordScreen";
 import NewPasswordScreen from "../screens/NewPasswordScreen/NewPasswordScreen";
+import ReportDownloadScreen from "../screens/ReportDownloadScreen";
 
 
 const Stack = createNativeStackNavigator();
@@ -18,8 +19,8 @@ const Navigation = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="ReportDownloadScreen" component={ReportDownloadScreen} />
         <Stack.Screen name="SignIn" component={SignInScreen} />
-
         <Stack.Screen name="SignUp" component={SignUpScreen} />
         <Stack.Screen name="ConfirmEmail" component={ConfirmEmailScreen} />
         <Stack.Screen name="ForgotPassword" component={ForgotPasswordScreen} />
