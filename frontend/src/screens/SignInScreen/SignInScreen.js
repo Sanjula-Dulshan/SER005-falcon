@@ -26,19 +26,9 @@ const SignInScreen = () => {
     formState: { errors },
   } = useForm();
 
-  const onSignInPressed = async (data) => {
-    if (loading) {
-      return;
-    }
-
-    setLoading(true);
-    try {
-      const response = await Auth.signIn(data.username, data.password);
-      console.log(response);
-    } catch (e) {
-      Alert.alert("Oops", e.message);
-    }
-    setLoading(false);
+  const onSignInPressed = () => {
+    // validate user
+    navigation.navigate("Home");
   };
 
   const onForgotPasswordPressed = () => {
