@@ -142,6 +142,22 @@ const styles = StyleSheet.create({
     borderStyle: "solid",
     paddingTop: "2%",
   },
+  text_REMOVECARD: {
+    alignSelf: "flex-end",
+    backgroundColor: "white",
+    color: "red",
+    borderColor: "red",
+    borderWidth:1.3,
+    fontFamily: "Roboto",
+    fontSize: 18,
+    textAlign: "center",
+    width: "38%",
+    height: 38,
+    paddingTop: "2%",
+    borderRadius: 8,
+    marginRight: "65%",
+    marginTop: "-4%",
+  },
 });
 
 export default CustomButton;
