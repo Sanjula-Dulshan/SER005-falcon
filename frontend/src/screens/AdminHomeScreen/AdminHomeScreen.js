@@ -5,6 +5,7 @@ import {
   Image,
   StyleSheet,
   useWindowDimensions,
+  Pressable,
   ScrollView,
   TextInput,
   Alert,
@@ -16,6 +17,7 @@ import CustomInput from "../../components/CustomInput/CustomInput";
 import CustomButton from "../../components/CustomButton/CustomButton";
 import { useNavigation } from "@react-navigation/native";
 import { useForm, Controller } from "react-hook-form";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 const AdminHomeScreen = () => {
   const { height } = useWindowDimensions();
@@ -28,9 +30,8 @@ const AdminHomeScreen = () => {
     formState: { errors },
   } = useForm();
 
-  const onSignInPressed = () => {
-    // validate user
-    navigation.navigate("Home");
+  const onUserPressed = () => {
+    navigation.navigate("New Users");
   };
 
   const onForgotPasswordPressed = () => {
@@ -57,26 +58,30 @@ const AdminHomeScreen = () => {
           {" "}
           City Creator{" "}
         </Text> */}
-        <View style={styles.card}>
-          <View style={styles.cardContainer}>
-            <Image
-              source={bonusManage}
-              style={[styles.img, { height: height * 0.1 }]}
-              resizeMode="contain"
-            />
-            <Text style={styles.cardText}>Manage Bonus</Text>
+        <Pressable style={styles.card} onPress={onUserPressed}>
+          <View>
+            <View style={styles.cardContainer}>
+              <Image
+                source={bonusManage}
+                style={[styles.img, { height: height * 0.1 }]}
+                resizeMode="contain"
+              />
+              <Text style={styles.cardText}>Manage Bonus</Text>
+            </View>
           </View>
-        </View>
-        <View style={styles.card}>
-          <View style={styles.cardContainer}>
-            <Image
-              source={userManage}
-              style={[styles.img, { height: height * 0.1 }]}
-              resizeMode="contain"
-            />
-            <Text style={styles.cardText}>Manage Bonus</Text>
+        </Pressable>
+        <Pressable style={styles.card} onPress={onUserPressed}>
+          <View>
+            <View style={styles.cardContainer}>
+              <Image
+                source={userManage}
+                style={[styles.img, { height: height * 0.1 }]}
+                resizeMode="contain"
+              />
+              <Text style={styles.cardText}>Manage User</Text>
+            </View>
           </View>
-        </View>
+        </Pressable>
       </View>
     </View>
   );
