@@ -4,7 +4,9 @@ import CustomInput from "../../components/CustomInput";
 import CustomButton from "../../components/CustomButton";
 import { useNavigation } from "@react-navigation/core";
 import { useForm } from "react-hook-form";
+import axios from "axios";
 import CustomDropDown from "../../components/CustomDropDown";
+import constants from "../../constants/constants";
 
 const EMAIL_REGEX =
   /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
@@ -22,17 +24,30 @@ const SignUpScreen = () => {
   const navigation = useNavigation();
 
   const onRegisterPressed = async (data) => {
-    const { username, password, email, name } = data;
-    try {
-      // await Auth.signUp({
-      //   username,
-      //   password,
-      //   attributes: { email, name, preferred_username: username },
-      // });
+    console.log("Data: ", data);
+    const { username, password, email, name, mobile, role } = data;
 
-      navigation.navigate("ConfirmEmail", { username });
-    } catch (e) {
-      Alert.alert("Oops", e.message);
+    try {
+      axios
+        .post(constants.backend_url + "/user/register", data)
+        .then((res) => {
+          console.log("Response: ", res);
+          if (res.data.success) {
+            Alert.alert("Success", "User registered successfully", [
+              {
+                text: "OK",
+                onPress: () => navigation.navigate("ConfirmEmail"),
+              },
+            ]);
+          } else {
+            Alert.alert("Error", res.data.message);
+          }
+        })
+        .catch((err) => {
+          console.log("Error: ");
+        });
+    } catch (err) {
+      console.log("Error: ", err);
     }
   };
 
@@ -89,7 +104,7 @@ const SignUpScreen = () => {
           }}
         />
         <CustomInput
-          name="contactNumber"
+          name="mobile"
           control={control}
           placeholder="Contact Number"
           rules={{
