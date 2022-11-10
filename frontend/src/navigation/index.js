@@ -17,11 +17,11 @@ const Navigation = () => {
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         {/* <Stack.Screen name="SignIn" component={SignInScreen} /> */}
         {/* <Stack.Screen name="RouteSearch" component={RouteSearch} /> */}
-        <Stack.Screen name="PassengersList" component={PassengerList} />
+        {/* <Stack.Screen name="PassengersList" component={PassengerList} /> */}
 
         {/* <Stack.Screen name="ReportUser" component={ReportUser} /> */}
 
-        {/* <Stack.Screen name="Sheet" component={BottomSheet} /> */}
+        <Stack.Screen name="Sheet" component={BottomSheet} />
       </Stack.Navigator>
     </NavigationContainer>
   );
