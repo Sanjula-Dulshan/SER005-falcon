@@ -25,6 +25,7 @@ const userSchema = new Schema(
     },
     role: {
       type: String,
+      required: [true, "Please enter your role"],
     },
     username: {
       type: String,
@@ -38,6 +39,10 @@ const userSchema = new Schema(
     otpHash: {
       type: String,
       required: true,
+    },
+    isVerify: {
+      type: Boolean,
+      default: false,
     },
   },
   {

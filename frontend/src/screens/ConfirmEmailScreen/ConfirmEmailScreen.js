@@ -5,6 +5,8 @@ import CustomButton from "../../components/CustomButton";
 import { useNavigation } from "@react-navigation/core";
 import { useForm } from "react-hook-form";
 import { useRoute } from "@react-navigation/native";
+import axios from "axios";
+import constants from "../../constants/constants";
 
 const ConfirmEmailScreen = () => {
   const route = useRoute();
@@ -19,7 +21,18 @@ const ConfirmEmailScreen = () => {
   const onConfirmPressed = async (data) => {
     try {
       //await Auth.confirmSignUp(data.username, data.code);
-      navigation.navigate("SignIn");
+      axios.put(constants.backend_url + "/user/verify", data).then((res) => {
+        if (res.data.msg === "Incorrect OTP") {
+          Alert.alert("Error", "Incorrect OTP");
+        } else {
+          Alert.alert("Success", "Email verified successfully", [
+            {
+              text: "OK",
+              onPress: () => navigation.navigate("SignIn"),
+            },
+          ]);
+        }
+      });
     } catch (e) {
       Alert.alert("Oops", e.message);
     }
@@ -53,11 +66,11 @@ const ConfirmEmailScreen = () => {
         />
 
         <CustomInput
-          name="code"
+          name="otp"
           control={control}
-          placeholder="Enter your confirmation code"
+          placeholder="OTP Code"
           rules={{
-            required: "Confirmation code is required",
+            required: "OTP code is required",
           }}
         />
         <View style={{ marginTop: "10%", width: "100%" }}>

@@ -9,7 +9,7 @@ const userCtrl = {
   registerUser: async (req, res) => {
     console.log(req.body);
     try {
-      const { email, name, username, password, mobile } = req.body;
+      const { email, name, username, password, mobile, role } = req.body;
 
       //Generate random OTP with 8 characters
       const otp = nanoid();
@@ -17,9 +17,8 @@ const userCtrl = {
 
       //Check if email already exists
       const user = await User.findOne({ email });
-      console.log("20: ", user);
       if (user) {
-        return res.status(400).json({
+        return res.json({
           msg: "User already exists",
         });
       }
@@ -36,6 +35,7 @@ const userCtrl = {
         password: passwordHash,
         mobile,
         otpHash,
+        role,
       };
 
       try {
@@ -50,6 +50,81 @@ const userCtrl = {
       } catch (err) {
         res.status(400).json(err);
       }
+    } catch (err) {
+      console.log("Error: ", err);
+    }
+  },
+  //verify the OTP and activate the user
+  verifyUser: async (req, res) => {
+    try {
+      const { otp, username } = req.body;
+      console.log("body: ", req.body);
+      const user = await User.findOne({ username });
+      let isMatch;
+
+      if (!user) {
+        return res.json({
+          msg: "User does not exist",
+        });
+      }
+
+      console.log("OTP: ", otp);
+      console.log("OTP Hash: ", user.otpHash);
+      isMatch = await bcrypt.compare(otp, user.otpHash);
+
+      if (!isMatch) {
+        return res.json({
+          msg: "Incorrect OTP",
+        });
+      }
+
+      await User.findOneAndUpdate(
+        { username },
+        {
+          isVerify: true,
+        }
+      );
+
+      res.json({
+        msg: "Account has been activated!",
+      });
+    } catch (err) {
+      console.log("Error: ", err);
+    }
+  },
+  //login the verified user
+  loginUser: async (req, res) => {
+    try {
+      const { username, password } = req.body;
+      console.log("body: ", req.body);
+      const user = await User.findOne({ username });
+      let isMatch;
+
+      if (!user) {
+        return res.json({
+          msg: "User does not exist",
+        });
+      }
+
+      isMatch = await bcrypt.compare(password, user.password);
+
+      if (!isMatch) {
+        return res.json({
+          msg: "Incorrect password",
+        });
+      }
+
+      console.log("User: ", user);
+      if (!user.isVerify) {
+        return res.json({
+          msg: "Email not verified",
+        });
+      }
+
+      res.json({
+        msg: "Login Success!",
+        user,
+      });
     } catch (err) {
       console.log("Error: ", err);
     }
