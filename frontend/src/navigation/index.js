@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { View, ActivityIndicator } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+
 import CardDetailsScreen from "../screens/CardDetailsScreen";
 import SignInScreen from "../screens/SignInScreen";
 import TopupScreen from "../screens/TopupScreen";
@@ -17,13 +18,11 @@ import UsersDashboardScreen from "../screens/UsersDashboard/UsersDashboardScreen
 
 import ViewCardSceen from "../screens/ViewCardScreen/ViewCardSceen";
 
-
 const Stack = createNativeStackNavigator();
 
 const Navigation = () => {
   return (
     <NavigationContainer>
-
       <Stack.Navigator>
         <Stack.Screen
           name="SignIn"
@@ -75,12 +74,12 @@ const Navigation = () => {
           component={CardDetailsScreen}
           options={{ headerShown: false }}
         />
-         <Stack.Screen
-         name="ViewCardSceen" 
-         component={ViewCardSceen}
-          options={{ headerShown: false }}/>
+        <Stack.Screen
+          name="ViewCardSceen"
+          component={ViewCardSceen}
+          options={{ headerShown: false }}
+        />
         <Stack.Screen name="New Users" component={UsersDashboardScreen} />
-
       </Stack.Navigator>
     </NavigationContainer>
   );

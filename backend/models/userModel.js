@@ -25,7 +25,6 @@ const userSchema = new Schema(
     },
     role: {
       type: String,
-      required: [true, "Please select user role"],
     },
     username: {
       type: String,
@@ -35,6 +34,10 @@ const userSchema = new Schema(
     status: {
       type: String,
       default: "active",
+    },
+    otpHash: {
+      type: String,
+      required: true,
     },
   },
   {

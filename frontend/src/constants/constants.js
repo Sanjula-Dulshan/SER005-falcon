@@ -1,5 +1,5 @@
 const constants = {
-  backend_url: "http://10.73.46.159:8070",
+  backend_url: "http://10.72.182.249:8070",
 };
 
 export default constants;
