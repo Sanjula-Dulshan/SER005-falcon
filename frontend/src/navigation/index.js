@@ -19,9 +19,9 @@ const Navigation = () => {
         {/* <Stack.Screen name="RouteSearch" component={RouteSearch} /> */}
         {/* <Stack.Screen name="PassengersList" component={PassengerList} /> */}
 
-        {/* <Stack.Screen name="ReportUser" component={ReportUser} /> */}
-
-        <Stack.Screen name="Sheet" component={BottomSheet} />
+        <Stack.Screen name="ReportUser" component={ReportUser} />
+        {/* 
+        <Stack.Screen name="Sheet" component={BottomSheet} /> */}
       </Stack.Navigator>
     </NavigationContainer>
   );
