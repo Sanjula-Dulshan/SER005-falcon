@@ -16,7 +16,7 @@ import { useForm, Controller } from "react-hook-form";
 import { FormControl, Select, CheckIcon } from "native-base";
 
 const options = [
-  { label: "Ticket expirey", value: "Ticket expirey" },
+  { label: "Yes,Ban this user", value: "Yes,Ban this user" },
   { label: "Entry without ticket", value: "Entry without ticket" },
 ];
 
