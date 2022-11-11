@@ -20,7 +20,7 @@ import ticket from "../../../assets/images/ticket.png";
 
 import DropDownPicker from "react-native-dropdown-picker";
 
-const CardDetailsScreen = () => {
+const ReportUser = () => {
   const { height } = useWindowDimensions();
   const navigation = useNavigation();
   const [loading, setLoading] = useState(false);
@@ -104,42 +104,46 @@ const CardDetailsScreen = () => {
         </View>
 
         {/* pop-up model */}
+
         <View style={styles.centeredView}>
-          <Modal
-            animationType="slide"
-            transparent={true}
-            visible={modalVisible}
-            onRequestClose={() => {
-              Alert.alert("Modal has been closed.");
-              setModalVisible(!modalVisible);
-            }}
-          >
-            <View style={styles.centeredView}>
-              <View style={styles.modalView}>
-                <View>
-                  <Image source={ticket} style={{}} />
+          <View style={styles.modalContainer}>
+            <Modal
+              style={styles.modal}
+              animationType="slide"
+              transparent={true}
+              visible={modalVisible}
+              onRequestClose={() => {
+                Alert.alert("Modal has been closed.");
+                setModalVisible(!modalVisible);
+              }}
+            >
+              <View style={styles.centeredView}>
+                <View style={styles.modalView}>
+                  <View>
+                    <Image source={ticket} style={{}} />
+                  </View>
+                  <Text style={styles.topup}>Reason for fine :</Text>
+                  <CustomInput
+                    name="username"
+                    placeholder="Username"
+                    control={control}
+                  />
+                  <Text style={styles.topup}>Price for fine :</Text>
+                  <CustomInput
+                    name="username"
+                    placeholder="Username"
+                    control={control}
+                  />
+                  <Pressable
+                    style={[styles.fineButton, styles.buttonClose]}
+                    onPress={() => setModalVisible(!modalVisible)}
+                  >
+                    <Text style={styles.textStyle}>SEND FINE</Text>
+                  </Pressable>
                 </View>
-                <Text style={styles.topup}>Reason for fine :</Text>
-                <CustomInput
-                  name="username"
-                  placeholder="Username"
-                  control={control}
-                />
-                <Text style={styles.topup}>Price for fine :</Text>
-                <CustomInput
-                  name="username"
-                  placeholder="Username"
-                  control={control}
-                />
-                <Pressable
-                  style={[styles.button, styles.buttonClose]}
-                  onPress={() => setModalVisible(!modalVisible)}
-                >
-                  <Text style={styles.textStyle}>SEND FINE</Text>
-                </Pressable>
               </View>
-            </View>
-          </Modal>
+            </Modal>
+          </View>
           <Pressable
             style={[styles.button, styles.buttonOpen]}
             onPress={() => setModalVisible(true)}
@@ -213,6 +217,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     marginTop: 22,
+    backgroundColor: "#000000aa",
   },
   modalView: {
     margin: 20,
@@ -236,6 +241,13 @@ const styles = StyleSheet.create({
     marginLeft: "-50%",
     width: "60%",
   },
+  fineButton: {
+    padding: 5,
+    borderRadius: 10,
+    width: "60%",
+    marginTop: "5%",
+  },
+
   // buttonOpen: {
   //   backgroundColor: "#F194FF",
   // },
@@ -263,6 +275,24 @@ const styles = StyleSheet.create({
     marginTop: "3%",
     marginBottom: "-1%",
   },
+  //set blur background when pop-up model is open
+  modalContainer: {
+    // backgroundColor: "rgba(0,0,0,0.5)",
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backfaceVisibility: "hidden",
+    backgroundColor: "red",
+  },
+  modal: {
+    background: "red",
+    position: "absolute",
+    top: "50px",
+    right: "calc(50% - 200px)",
+    border: "1px solid #ccc",
+    padding: "16px",
+    minHeight: "300px",
+  },
 });
 
-export default CardDetailsScreen;
+export default ReportUser;
