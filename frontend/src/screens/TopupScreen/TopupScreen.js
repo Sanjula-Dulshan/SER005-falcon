@@ -1,22 +1,35 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import {
   View,
   Text,
-  Image,
   StyleSheet,
-  useWindowDimensions,
   ScrollView,
-  TextInput,
-  Alert,
 } from "react-native";
-import Logo from "../../../assets/images/Logo_1.png";
 import CustomInput from "../../components/CustomInput/CustomInput";
 import CustomButton from "../../components/CustomButton/CustomButton";
 import { useNavigation } from "@react-navigation/native";
 import { useForm, Controller } from "react-hook-form";
+import axios from "axios";
+import Constants from "../../constants/constants";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const TopupScreen = () => {
-  const { height } = useWindowDimensions();
+  //load wallet amount
+  let user_id;
+  useEffect(() => {
+    const loadWallet = async () => {
+    user_id="u002";
+      try {
+        const res = await axios.get(`${Constants.backend_url}/wallet/details/${user_id}`);
+        setAmount(res.data[0].amount);
+        setLoanAmount(res.data[0].loan_amount);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    loadWallet();
+  }, []);
+
   const navigation = useNavigation();
   const [loading, setLoading] = useState(false);
 
@@ -26,28 +39,19 @@ const TopupScreen = () => {
     formState: { errors },
   } = useForm();
 
-  const onSignInPressed = async (data) => {
-    if (loading) {
-      return;
-    }
 
-    setLoading(true);
-    try {
-      const response = await Auth.signIn(data.username, data.password);
-      console.log(response);
-    } catch (e) {
-      Alert.alert("Oops", e.message);
-    }
-    setLoading(false);
+
+  const proceed = (data) => {
+     const data1=data.amount;
+     AsyncStorage.setItem("topup", data1);
+     AsyncStorage.setItem("amount", amount.toString());  
+     AsyncStorage.setItem("loan_amount", loan_amount.toString());
+     navigation.navigate("CardDetailsScreen");
   };
 
-  const onForgotPasswordPressed = () => {
-    navigation.navigate("ForgotPassword");
-  };
+  const[amount,setAmount]=useState(0);
+  const[loan_amount,setLoanAmount]=useState(0);
 
-  const onSignUpPress = () => {
-    navigation.navigate("SignUp");
-  };
 
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
@@ -57,11 +61,12 @@ const TopupScreen = () => {
         </View>
         <Text style={styles.subtitle1}>Wallet Balance</Text>
         <Text style={styles.subtitle2}>Loan Balance</Text>
-        <Text style={styles.amount1}>00.00 Points</Text>
-        <Text style={styles.amount2}>80.00 Points</Text>
+        <Text style={styles.amount1}>{amount} Points</Text>
+        <Text style={styles.amount2}>{loan_amount} Points</Text>
         <Text style={styles.topup}>Top up amount</Text>
         <CustomInput
           name="amount"
+          id='amount'
           placeholder="Amount"
           control={control}
           //add rules
@@ -72,10 +77,11 @@ const TopupScreen = () => {
                 message: "Amount must be a number",
                 },
             }}
+
         />
         <CustomButton
           text={loading ? "Loading..." : "Proceed"}
-          //onPress={handleSubmit(onSignInPressed)}
+          onPress={handleSubmit(proceed)}
           type="PROCEED"
         />
          <Text style={styles.savecard}>1 Saved card(s)</Text>
