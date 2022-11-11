@@ -4,11 +4,11 @@ import md5 from "md5";
 
 const cardRouter = express.Router();
 
+//Add a new card
 cardRouter.route("/add").post((req, res) => {
   const uid = req.body.user_id;
   const cardNumber = md5(`${req.body.cardNumber}`);
   const cardType = req.body.cardType;
-  const cardHolderName = req.body.cardHolderName;
   const cardSecurityCode = md5(`${req.body.cardSecurityCode}`);
   const ExDate = req.body.expirationDate;
   const bCardNumber = req.body.cardNumber;
@@ -19,7 +19,6 @@ cardRouter.route("/add").post((req, res) => {
     cardNumber,
     cardType,
     lastFourDigits,
-    cardHolderName,
     cardSecurityCode,
     ExDate,
   });
@@ -32,6 +31,7 @@ cardRouter.route("/add").post((req, res) => {
   }
 });
 
+//Get all cards
 cardRouter.route("/").get((res) => {
   Card.find()
     .then((cards) => {
@@ -42,6 +42,7 @@ cardRouter.route("/").get((res) => {
     });
 });
 
+//Get a card by id
 cardRouter.get("/getMyCard/:id", (req, res) => {
   let crdid = req.params.id;
   Card.find({ uid: crdid })
@@ -53,6 +54,7 @@ cardRouter.get("/getMyCard/:id", (req, res) => {
     });
 });
 
+//Delete a card
 cardRouter.route("/delete/:id").delete(async (req, res) => {
   let cardid = req.params.id;
 

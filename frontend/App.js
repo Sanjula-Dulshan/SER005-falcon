@@ -1,12 +1,13 @@
 import { StatusBar } from "expo-status-bar";
 import { SafeAreaView, StyleSheet, Text, View } from "react-native";
 import Navigation from "./src/navigation";
+import { NativeBaseProvider } from "native-base";
 
 export default function App() {
   return (
-    <SafeAreaView style={styles.root}>
+    <NativeBaseProvider style={styles.root}>
       <Navigation />
-    </SafeAreaView>
+    </NativeBaseProvider>
   );
 }
 
