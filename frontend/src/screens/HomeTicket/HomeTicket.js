@@ -18,6 +18,7 @@ import { useForm, Controller } from "react-hook-form";
 import DatePicker from 'react-native-date-picker';
 import RNDateTimePicker from '@react-native-community/datetimepicker';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 
 
@@ -30,9 +31,10 @@ const SignInScreen = () => {
   const { height } = useWindowDimensions();
   const navigation = useNavigation();
   const [loading, setLoading] = useState(false);
-
+  const [startPoint, setStartPoint] = useState("");
+  const [endPoint, setEndPoint] = useState("");
   const [date, setDate] = useState(new Date().toLocaleDateString())
-  const [open, setOpen] = useState(false)
+
 
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
 
@@ -46,8 +48,8 @@ const SignInScreen = () => {
 
   const handleConfirm = (date) => {
     //console.warn("A date has been picked: ", date);
-    setDate(new Date(date).toISOString())
-   // hideDatePicker();
+    setDate(new Date(date).toLocaleDateString())
+    hideDatePicker();
   };
 
   const {
@@ -57,33 +59,23 @@ const SignInScreen = () => {
   } = useForm();
 
 
-  const onStartTrip = () => {
+  const onStartTrip = (data) => {
+
+    //get start point and end point from data
+    const { startPoint, endPoint } = data;
+
+    console.log("Start : " + startPoint + " End : " + endPoint + " Date : " + date)
+
+    //set start point and end point to async storage
+    AsyncStorage.setItem("startPoint", startPoint);
+    AsyncStorage.setItem("endPoint", endPoint);
+    AsyncStorage.setItem("date", date);
+
+    
+
     navigation.navigate("SeatCount");
   };
 
-
-  const onSignInPressed = async (data) => {
-    if (loading) {
-      return;
-    }
-
-    setLoading(true);
-    try {
-      const response = await Auth.signIn(data.username, data.password);
-      console.log(response);
-    } catch (e) {
-      Alert.alert("Oops", e.message);
-    }
-    setLoading(false);
-  };
-
-  const onForgotPasswordPressed = () => {
-    navigation.navigate("ForgotPassword");
-  };
-
-  const onSignUpPress = () => {
-    navigation.navigate("SignUp");
-  };
 
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
@@ -102,12 +94,12 @@ const SignInScreen = () => {
           control={control}
           rules={{ required: "Start Point is required" }}
           style={{marginTop: "-200px"}}
+          onChangeText={(text) => setStartPoint(text)}
         />
 
         <CustomInput
           name="endPoint"
           placeholder="Trip Destination"
-          secureTextEntry
           control={control}
           rules={{
             required: "End Point is required",
@@ -116,6 +108,7 @@ const SignInScreen = () => {
               message: "Password should be minimum 3 characters long",
             },
           }}
+          onChangeText={(text) => setEndPoint(text)}
         />
 
 
@@ -147,7 +140,7 @@ const SignInScreen = () => {
 
         <CustomButton
           text={loading ? "Loading..." : "Let's Go"}
-          onPress={onStartTrip}
+          onPress={handleSubmit(onStartTrip)}
 
         />
         
