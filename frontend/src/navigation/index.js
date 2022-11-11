@@ -5,6 +5,11 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 import CardDetailsScreen from "../screens/CardDetailsScreen";
 import SignInScreen from "../screens/SignInScreen";
+import RouteSearch from "../screens/RouteSearch/RouteSearch";
+import PassengerList from "../screens/PassengerList";
+import ReportUser from "../screens/ReportUser";
+import BottomSheet from "../screens/BottomSheet/BottomSheet";
+import ReportUserList from "../screens/ReportUserList";
 
 import HomeTicket from "../screens/HomeTicket";
 import SeatCount from "../screens/SeatCount";
@@ -30,7 +35,19 @@ const Stack = createNativeStackNavigator();
 const Navigation = () => {
   return (
     <NavigationContainer>
-      <Stack.Navigator>
+
+      <Stack.Navigator >
+        {/* <Stack.Screen name="SignIn" component={SignInScreen} /> */}
+        <Stack.Screen name="RouteSearch" component={RouteSearch} />
+        {/* <Stack.Screen name="PassengersList" component={PassengerList} /> */}
+
+        {/* <Stack.Screen name="ReportUser" component={ReportUser} /> */}
+
+        {/* <Stack.Screen name="Sheet" component={BottomSheet} /> */}
+
+        {/* <Stack.Screen name="ReportUserList" component={ReportUserList} /> */}
+
+     
         <Stack.Screen
           name="SignIn"
           component={SignInScreen}
@@ -115,6 +132,7 @@ const Navigation = () => {
           options={{ headerShown: false }}
         />
         <Stack.Screen name="New Users" component={UsersDashboardScreen} />
+
       </Stack.Navigator>
     </NavigationContainer>
   );

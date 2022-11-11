@@ -100,6 +100,62 @@ const styles = StyleSheet.create({
 
   container_TERTIARY: {},
 
+  container_DATE: {
+    backgroundColor: "#3B71F3",
+    elevation: 7,
+  },
+  container_decline: {
+    elevation: 7,
+    width: 100,
+    height: 40,
+    marginHorizontal: "7%",
+    paddingTop: 8,
+    paddingBottom: 3,
+    borderColor: "#F40000",
+    borderWidth: 2,
+  },
+  container_view: {
+    elevation: 7,
+    width: 100,
+    height: 40,
+    marginHorizontal: "7%",
+    paddingTop: 8,
+    paddingBottom: 3,
+    borderColor: "#EEB815",
+    borderWidth: 2,
+  },
+  container_report: {
+    elevation: 7,
+    width: 100,
+    height: 40,
+    marginHorizontal: "7%",
+    paddingTop: 8,
+    paddingBottom: 3,
+    borderColor: "#F40000",
+    backgroundColor: "#F40000",
+    borderWidth: 2,
+    marginLeft: "100%",
+  },
+  container_viewReport: {
+    elevation: 7,
+    width: 100,
+    height: 40,
+    marginHorizontal: "7%",
+    paddingTop: 8,
+    paddingBottom: 3,
+    borderColor: "#EEB815",
+    backgroundColor: "#EEB815",
+    borderWidth: 2,
+  },
+
+  container_DownloadReport: {
+    elevation: 7,
+    width: "50%",
+    backgroundColor: "#EEB815",
+    height: 50,
+    marginLeft: "35%",
+  },
+
   text: {
     fontWeight: "bold",
     fontSize: 16,
@@ -121,6 +177,21 @@ const styles = StyleSheet.create({
     alignSelf: "flex-end",
     color: "#000000",
   },
+
+  text_FINE: {
+    alignSelf: "flex-start",
+    color: "#000000",
+    fontSize: 22,
+    fontWeight: "bold",
+    marginBottom: "-3%",
+  },
+  text_DownloadReport: {
+    alignSelf: "center",
+    color: "#000000",
+    fontSize: 20,
+    fontWeight: "bold",
+    marginBottom: "-3%",
+},
   text_PROCEED: {
     alignSelf: "flex-end",
     backgroundColor: "#FBBC05",
@@ -241,6 +312,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     marginRight: "65%",
     marginTop: "-4%",
+
 
   },
 });
