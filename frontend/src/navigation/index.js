@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { View, ActivityIndicator } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+
 import CardDetailsScreen from "../screens/CardDetailsScreen";
 import SignInScreen from "../screens/SignInScreen";
 
@@ -24,24 +25,11 @@ import UsersDashboardScreen from "../screens/UsersDashboard/UsersDashboardScreen
 
 import ViewCardSceen from "../screens/ViewCardScreen/ViewCardSceen";
 
-
-
 const Stack = createNativeStackNavigator();
 
 const Navigation = () => {
   return (
     <NavigationContainer>
-
-      <Stack.Navigator screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="SignIn" component={SignInScreen} />
-        <Stack.Screen name="HomeTicket" component={HomeTicket} />
-        <Stack.Screen name="SeatCount" component={SeatCount} />
-        <Stack.Screen name="BusList" component={BusList} />
-        <Stack.Screen name="BusDetails" component={BusDetails} />
-        <Stack.Screen name="Confirmation" component={Confirmation} />
-        
-
-
       <Stack.Navigator>
         <Stack.Screen
           name="SignIn"
@@ -74,8 +62,28 @@ const Navigation = () => {
           options={{ headerShown: false }}
         />
         <Stack.Screen
-          name="Home"
+          name="HomeAdmin"
           component={AdminHomeScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="SeatCount"
+          component={SeatCount}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="BusDetails"
+          component={BusDetails}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="Confirmation"
+          component={Confirmation}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="HomeTicket"
+          component={HomeTicket}
           options={{ headerShown: false }}
         />
         <Stack.Screen
@@ -93,13 +101,18 @@ const Navigation = () => {
           component={CardDetailsScreen}
           options={{ headerShown: false }}
         />
-         <Stack.Screen
-         name="ViewCardSceen" 
-         component={ViewCardSceen}
-          options={{ headerShown: false }}/>
+        <Stack.Screen
+          name="BusList"
+          component={BusList}
+          options={{ headerShown: false }}
+        />
+
+        <Stack.Screen
+          name="ViewCardSceen"
+          component={ViewCardSceen}
+          options={{ headerShown: false }}
+        />
         <Stack.Screen name="New Users" component={UsersDashboardScreen} />
-
-
       </Stack.Navigator>
     </NavigationContainer>
   );
