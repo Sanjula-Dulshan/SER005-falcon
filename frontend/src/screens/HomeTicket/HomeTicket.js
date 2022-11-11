@@ -8,14 +8,21 @@ import {
   ScrollView,
   TextInput,
   Alert,
+  DatePickerAndroid,
 } from "react-native";
-import Logo from "../../../assets/images/Logo_1.png";
+import Logo from "../../../assets/images/bus.png";
 import CustomInput from "../../components/CustomInput/CustomInput";
 import CustomButton from "../../components/CustomButton/CustomButton";
 import { useNavigation } from "@react-navigation/native";
 import { useForm, Controller } from "react-hook-form";
-import axios from "axios";
-import constants from "../../constants/constants";
+import DatePicker from 'react-native-date-picker';
+
+// const [date, setDate] = useState(0)
+// const [open, setOpen] = useState(false)
+
+
+
+
 
 const SignInScreen = () => {
   const { height } = useWindowDimensions();
@@ -28,28 +35,21 @@ const SignInScreen = () => {
     formState: { errors },
   } = useForm();
 
-  const onSignInPressed = (data) => {
-    axios.post(constants.backend_url + "/user/login", data).then((res) => {
-      if (res.data.msg === "Incorrect password") {
-        Alert.alert("Error", "Incorrect username or password");
-      } else if (res.data.msg === "Email not verified") {
-        Alert.alert("Activation Failed", "Please activate your email", [
-          {
-            text: "OK",
-            onPress: () => navigation.navigate("ConfirmEmail"),
-          },
-        ]);
-      } else {
-        //if a admin logs in, navigate to admin screen
-        if (res.data.user.role === "Admin") {
-          navigation.navigate("HomeAdmin");
-        }
-        //if a user logs in, navigate to user screen
-        else {
-          //navigation.navigate("User");
-        }
-      }
-    });
+
+
+  const onSignInPressed = async (data) => {
+    if (loading) {
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const response = await Auth.signIn(data.username, data.password);
+      console.log(response);
+    } catch (e) {
+      Alert.alert("Oops", e.message);
+    }
+    setLoading(false);
   };
 
   const onForgotPasswordPressed = () => {
@@ -65,49 +65,55 @@ const SignInScreen = () => {
       <View style={styles.root}>
         <Image
           source={Logo}
-          style={[styles.logo, { height: height * 0.3 }]}
+          style={[styles.homelogo, ]}
           resizeMode="contain"
         />
+        
 
+        <Text style={styles.homeText}>Where do you want to go?</Text>
         <CustomInput
-          name="username"
-          placeholder="Username"
+          name="startPoint"
+          placeholder="Trip Start"
           control={control}
-          rules={{ required: "Username is required" }}
+          rules={{ required: "Start Point is required" }}
+          style={{marginTop: "-200px"}}
         />
 
         <CustomInput
-          name="password"
-          placeholder="Password"
+          name="endPoint"
+          placeholder="Trip Destination"
           secureTextEntry
           control={control}
           rules={{
-            required: "Password is required",
+            required: "End Point is required",
             minLength: {
               value: 3,
               message: "Password should be minimum 3 characters long",
             },
           }}
         />
-        <CustomButton
-          text="Forgot password?"
-          onPress={onForgotPasswordPressed}
-          type="FORGOT"
+
+        {/* add a clickable date picker witch label*/}
+
+        
+        <CustomButton 
+          title="Select Date"
+          loading={loading}
+          text = {new Date().toLocaleDateString()}
+          bgColor={"white"}
+          fgColor={"black"}
         />
+
+
+
+
+
         <CustomButton
-          text={loading ? "Loading..." : "Sign In"}
+          text={loading ? "Loading..." : "Let's Go"}
           onPress={handleSubmit(onSignInPressed)}
+
         />
-        <View style={{ marginLeft: "10%" }}>
-          <View style={styles.section}>
-            <Text style={styles.text}>Don't have an account?</Text>
-            <CustomButton
-              text="Create one"
-              onPress={onSignUpPress}
-              type="TERTIARY"
-            />
-          </View>
-        </View>
+        
       </View>
     </ScrollView>
   );
@@ -124,6 +130,14 @@ const styles = StyleSheet.create({
     marginTop: "20%",
     maxWidth: 300,
     maxHeight: 200,
+  },
+
+  homelogo: {
+    width: "100%",
+    marginBottom: "0%",
+    marginTop: "10%",
+    maxWidth: 500,
+    maxHeight: 400,
   },
   section: {
     flexDirection: "row",
