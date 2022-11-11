@@ -14,6 +14,8 @@ import CustomInput from "../../components/CustomInput/CustomInput";
 import CustomButton from "../../components/CustomButton/CustomButton";
 import { useNavigation } from "@react-navigation/native";
 import { useForm, Controller } from "react-hook-form";
+import axios from "axios";
+import constants from "../../constants/constants";
 
 const SignInScreen = () => {
   const { height } = useWindowDimensions();
@@ -26,19 +28,28 @@ const SignInScreen = () => {
     formState: { errors },
   } = useForm();
 
-  const onSignInPressed = async (data) => {
-    if (loading) {
-      return;
-    }
-
-    setLoading(true);
-    try {
-      const response = await Auth.signIn(data.username, data.password);
-      console.log(response);
-    } catch (e) {
-      Alert.alert("Oops", e.message);
-    }
-    setLoading(false);
+  const onSignInPressed = (data) => {
+    axios.post(constants.backend_url + "/user/login", data).then((res) => {
+      if (res.data.msg === "Incorrect password") {
+        Alert.alert("Error", "Incorrect username or password");
+      } else if (res.data.msg === "Email not verified") {
+        Alert.alert("Activation Failed", "Please activate your email", [
+          {
+            text: "OK",
+            onPress: () => navigation.navigate("ConfirmEmail"),
+          },
+        ]);
+      } else {
+        //if a admin logs in, navigate to admin screen
+        if (res.data.user.role === "Admin") {
+          navigation.navigate("HomeAdmin");
+        }
+        //if a user logs in, navigate to user screen
+        else {
+          //navigation.navigate("User");
+        }
+      }
+    });
   };
 
   const onForgotPasswordPressed = () => {
