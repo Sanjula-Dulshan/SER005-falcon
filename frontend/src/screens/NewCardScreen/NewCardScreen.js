@@ -13,6 +13,7 @@ import CustomInput from "../../components/CustomInput/CustomInput";
 import CustomButton from "../../components/CustomButton/CustomButton";
 import { useNavigation } from "@react-navigation/native";
 import { useForm, Controller } from "react-hook-form";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 //import { CreditCardInput, LiteCreditCardInput } from "react-native-credit-card-input";
 
 const NewCardScreen = () => {
@@ -28,29 +29,30 @@ const NewCardScreen = () => {
     handleSubmit,
     formState: { errors },
   } = useForm();
-
+  let amount1='';
   const USE_LIGHT_CREDIT_CARD_INPUT = false;
-
-  const onSignInPressed = async (data) => {
-    if (loading) {
-      return;
-    }
-
-    setLoading(true);
+  const[amount,setAmount]=useState('');
+   async function getAmount(){
     try {
-      const response = await Auth.signIn(data.username, data.password);
-      console.log(response);
-    } catch (e) {
-      Alert.alert("Oops", e.message);
+      const value = await AsyncStorage.getItem('amount')
+      if(value !== null) {
+        // value previously stored
+                //amount1=value;
+                setAmount(value);
+                console.log(amount);
+  
+      }
+    } catch(e) {
+      // error reading value
     }
-    setLoading(false);
-  };
+  }
+  getAmount()[0];
+  
+  // _onchange = (formData) => {
+  //   console.log(JSON.stringify(formData, null, " "));
+  // };
 
-  _onchange = (formData) => {
-    console.log(JSON.stringify(formData, null, " "));
-  };
-
-  _onFocus = (field) => console.log("focusing", field);
+  // _onFocus = (field) => console.log("focusing", field);
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
       <View style={styles.root}>
@@ -75,7 +77,7 @@ const NewCardScreen = () => {
           <Text style={styles.amount}>You will be charged</Text>
           <CustomInput
             name="total"
-            placeholder="Total Amount"
+            placeholder={amount}
             control={control}
             //add rules
             rules={{

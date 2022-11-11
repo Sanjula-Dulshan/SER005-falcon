@@ -1,10 +1,8 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import {
   View,
   Text,
-  Image,
   StyleSheet,
-  useWindowDimensions,
   ScrollView,
   TextInput,
   Alert,
@@ -13,75 +11,133 @@ import CustomInput from "../../components/CustomInput/CustomInput";
 import CustomButton from "../../components/CustomButton/CustomButton";
 import { useNavigation } from "@react-navigation/native";
 import { useForm, Controller } from "react-hook-form";
+import CustomDropDown from "../../components/CustomDropDown";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from "axios";
+import Constants from "../../constants/constants";
 
-import DropDownPicker from 'react-native-dropdown-picker';
 
 const CardDetailsScreen = () => {
-  const { height } = useWindowDimensions();
   const navigation = useNavigation();
   const [loading, setLoading] = useState(false);
-  const [open, setOpen] = useState(false);
-  const [value, setValue] = useState(null);
-  const [items, setItems] = useState([
-    {label: 'New Card', value: 'new'}
-    
-  ]);
+  const options = [
+    { label: "New Card", value: "new_card" },
+    { label: "XXXX XXXX XXXX 4523", value: "saved_1" },
+  ];
   const {
     control,
     handleSubmit,
     formState: { errors },
   } = useForm();
 
-  const onSignInPressed = async (data) => {
-    if (loading) {
-      return;
+  const topupwallet = async (data) => {
+    console.log(data);
+    navigation.navigate("TopupScreen");
+    const topup1= parseFloat(topup);
+    const amount1= parseFloat(new_amount);
+    const loan1= parseFloat(new_loan_amount);
+    const loan2= topup1-loan1;
+    let amount=0.00;
+    let loan_amount=0.00;
+    let user_id='u002';
+    if(loan2<0){
+       amount=amount1;
+       loan_amount=loan2 * (-1);
+       await axios.patch(`${Constants.backend_url}/wallet/update/${user_id}`, {
+        user_id: user_id,
+        amount: amount,
+        loan_amount: loan_amount,
+        });
+       console.log('A1',amount);
+       console.log('L1',loan_amount);
+    }else{
+      amount=amount1+loan2;
+      loan_amount=0.00;
+      await axios.patch(`${Constants.backend_url}/wallet/update/${user_id}`, {
+        user_id: user_id,
+        amount: amount,
+        loan_amount: loan_amount,
+        });
+      console.log('A2',amount);
+      console.log('L2',loan_amount);
     }
-
-    setLoading(true);
-    try {
-      const response = await Auth.signIn(data.username, data.password);
-      console.log(response);
-    } catch (e) {
-      Alert.alert("Oops", e.message);
-    }
-    setLoading(false);
+    // setLoading(true);
+    // try {
+    //   const response = await fetch(
+    //     "https://api.woofics.com/api/topup_wallet",
+    //     {
+    //       method: "POST",
+    //       headers: {
+    //         Accept: "application/json",
+    //         "Content-Type": "application/json",
+    //       },
+    //       body: JSON.stringify({
+    //         amount: data.amount,
+    //         card_number: data.card_number,
+    //         card_cvv: data.card_cvv,
+    //         card_expiry: data.card_expiry
+    //       }),
+    //     }
+    //   );
+    //   const json = await response.json();
+    //   console.log(json);
+    //   if (json.success === true)
+    //     Alert.alert("Topup Successfully!", json.message, [
+    //       {
+    //         text: "OK",
+    //         onPress: () => navigation.navigate("Wallet"),
+    //       },
+    //     ]);
+    //   else Alert.alert("Error", json.message);
+    //   setLoading(false);
+    // } catch (error) {
+    //   console.error(error);
+    //   setLoading(false);
+    // }
   };
 
-  const onForgotPasswordPressed = () => {
-    navigation.navigate("ForgotPassword");
-  };
+   
 
-  const onSignUpPress = () => {
-    navigation.navigate("SignUp");
-  };
-
+  let newamount='';
+  let newloan_amount='';
+  let new_topup='';
+  const[new_amount,setAmount]=useState('');
+  const[new_loan_amount,setLoanAmount]=useState('');
+  const[topup,setTopupAmount]=useState('');
+  
+  const amount1=async()=>{
+    newamount=await AsyncStorage.getItem("amount");
+    setAmount(newamount);
+    newloan_amount=await AsyncStorage.getItem("loan_amount");
+    setLoanAmount(newloan_amount);
+    new_topup=await AsyncStorage.getItem("topup");
+    setTopupAmount(new_topup);
+  
+  }
+  amount1();
+  console.log(new_amount);
+  console.log(new_loan_amount);
+  console.log(topup);
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
       <View style={styles.root}>
       <View style={{backgroundColor:"white",width:"120%",marginTop:"-6%"}}>
         <Text style={styles.title}>Card Details</Text>
         </View>
+   
 
         <View style={styles.root}>
-        
-        <DropDownPicker
-          style={{width:"110%",marginTop:"5%",marginRight:"1%",height:"5%",backgroundColor:"white"}}
-          open={open}
-          items={items}
-          setOpen={setOpen}
-          setValue={setValue}
-          setItems={setItems} 
-          stickyHeader={true}
-          autoScroll={true}
-          Value={value}
-          placeholder="XXXX XXXX XXXX 4523"
-          onChangeItem={items => setValue(items.value)}
-          />
+        <Text style={styles.topup1}>Select Card</Text>
+        <CustomDropDown
+          aLabel="Select card"
+          placeholder="Select card"
+          options={options}
+        /> 
         </View>
         
-        <Text style={styles.topup1}>CARD NUMBER</Text>
+        <Text style={styles.topup2}>CARD NUMBER</Text>
         <CustomInput
-          name="Cnumber"
+          name="Card_number"
           placeholder="Card Number"
           control={control}
           //add rules
@@ -95,7 +151,7 @@ const CardDetailsScreen = () => {
         />
          <Text style={styles.topup}>VALID THRU</Text>
         <CustomInput
-          name="expdate"
+          name="card_expiry"
           placeholder="Valid Thru"
           control={control}
           //add rules
@@ -105,7 +161,7 @@ const CardDetailsScreen = () => {
         />
          <Text style={styles.topup}>CVC</Text>
         <CustomInput
-          name="cvc"
+          name="card_cvv"
           placeholder="CVC"
           placeholderColor={"darkgray"}
           control={control}
@@ -120,23 +176,25 @@ const CardDetailsScreen = () => {
         />
        <Text style={styles.info}> Three digits that on backside of the card</Text>
        <Text style={styles.amount}>You will be charged</Text>
-        <CustomInput
+        <TextInput
+          style={styles.amount2}
           name="total"
-          placeholder="Total Amount"
+          placeholder={topup}
+          defaultValue="Rs. "
+          value= {topup}
           control={control}
           //add rules
             rules={{
                 pattern: {
                 value: /[0-9]/,
                 message: "Should Include Only Numbers",
-                //disabled: true,
-                defaultValue: "RS. ",
+                disabled: true,              
                 },
             }}
         />
         <CustomButton
           text={loading ? "Loading..." : "Top-up Wallet Now"}
-          //onPress={handleSubmit(onSignInPressed)}
+          onPress={handleSubmit(topupwallet)}
           type="WALLET"
         />
        
@@ -178,6 +236,15 @@ const styles = StyleSheet.create({
     marginTop: "5%",
     marginBottom: "-1%",   
   },
+  topup2: {
+    fontWeight: "bold",
+    fontSize: 20,
+    marginVertical: 5,
+    marginRight: "auto",
+    marginLeft: "0%",
+    marginTop: "-5%",
+    marginBottom: "-1%",   
+  },
   info: {
     fontWeight: "regular",
     fontSize: 16,
@@ -202,6 +269,26 @@ const styles = StyleSheet.create({
     width: "100%",
     marginTop: "5%",
     marginBottom: "5%",
+    },
+    amount2: {
+      fontWeight: "bold",
+      fontSize: 20,
+      marginVertical: 5,
+      marginRight: "auto",
+      marginLeft: "0%",
+      marginTop: "0%",
+      marginBottom: "0%",
+      backgroundColor: "white",
+      width: "100%",
+      height: "8%",
+      borderRadius: 10,
+      paddingLeft: "5%",
+      paddingTop: "3%",
+      paddingBottom: "3%",
+      paddingRight: "5%",
+      color: "black",
+      borderColor: "white",
+      borderWidth: 1,
     },
 });
 
