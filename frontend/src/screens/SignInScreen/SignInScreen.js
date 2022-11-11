@@ -40,12 +40,14 @@ const SignInScreen = () => {
           },
         ]);
       } else {
-        Alert.alert("Success", "Login successful", [
-          {
-            text: "OK",
-            onPress: () => navigation.navigate("Home"),
-          },
-        ]);
+        //if a admin logs in, navigate to admin screen
+        if (res.data.user.role === "Admin") {
+          navigation.navigate("HomeAdmin");
+        }
+        //if a user logs in, navigate to user screen
+        else {
+          //navigation.navigate("User");
+        }
       }
     });
   };

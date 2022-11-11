@@ -44,6 +44,10 @@ const userSchema = new Schema(
       type: Boolean,
       default: false,
     },
+    approval: {
+      type: Boolean,
+      default: false,
+    },
   },
   {
     timestamps: true,

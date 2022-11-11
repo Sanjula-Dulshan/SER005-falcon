@@ -7,13 +7,11 @@ const nanoid = customAlphabet("1234567890", 4);
 const userCtrl = {
   //send the OTP and verify the email and register the user
   registerUser: async (req, res) => {
-    console.log(req.body);
     try {
       const { email, name, username, password, mobile, role } = req.body;
 
-      //Generate random OTP with 8 characters
+      //Generate random OTP
       const otp = nanoid();
-      console.log("OTP: ", otp);
 
       //Check if email already exists
       const user = await User.findOne({ email });
@@ -58,7 +56,6 @@ const userCtrl = {
   verifyUser: async (req, res) => {
     try {
       const { otp, username } = req.body;
-      console.log("body: ", req.body);
       const user = await User.findOne({ username });
       let isMatch;
 
@@ -68,8 +65,6 @@ const userCtrl = {
         });
       }
 
-      console.log("OTP: ", otp);
-      console.log("OTP Hash: ", user.otpHash);
       isMatch = await bcrypt.compare(otp, user.otpHash);
 
       if (!isMatch) {
@@ -96,7 +91,6 @@ const userCtrl = {
   loginUser: async (req, res) => {
     try {
       const { username, password } = req.body;
-      console.log("body: ", req.body);
       const user = await User.findOne({ username });
       let isMatch;
 
@@ -114,7 +108,6 @@ const userCtrl = {
         });
       }
 
-      console.log("User: ", user);
       if (!user.isVerify) {
         return res.json({
           msg: "Email not verified",
@@ -125,6 +118,44 @@ const userCtrl = {
         msg: "Login Success!",
         user,
       });
+    } catch (err) {
+      console.log("Error: ", err);
+    }
+  },
+
+  //get all users without admin and password with approved
+  getUsers: async (req, res) => {
+    try {
+      const users = await User.find({
+        role: { $ne: "Admin" },
+        approval: false,
+      }).select("-password");
+      res.json(users);
+    } catch (err) {
+      console.log("Error: ", err);
+    }
+  },
+  //approve or reject the user
+  approveUser: async (req, res) => {
+    try {
+      const { id, approval } = req.body;
+
+      if (approval === "Approve") {
+        await User.findOneAndUpdate(
+          { _id: id },
+          {
+            approval: true,
+          }
+        );
+        return res.json({
+          msg: "User Approved",
+        });
+      } else {
+        await User.findOneAndDelete({ _id: id });
+        return res.json({
+          msg: "User rejected",
+        });
+      }
     } catch (err) {
       console.log("Error: ", err);
     }

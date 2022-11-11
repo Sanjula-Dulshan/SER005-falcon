@@ -24,9 +24,9 @@ transporter.use("compile", hbs(handleBar));
 const sendMail = async (email, username, otp) => {
   console.log("otp: ", otp);
   var mailOptions = {
-    from: "SLIIT Research Management",
+    from: "Falcon ",
     to: email,
-    subject: "SLIIT Research Management",
+    subject: "Falcon",
     text: "hi",
     template: "email",
     context: {

@@ -16,6 +16,10 @@ export default function CustomCard() {
             <Text style={styles.text}>sdulshan10@gmail.com</Text>
           </View>
           <View style={styles.textContainer}>
+            <Text style={styles.textTitle}>Role:</Text>
+            <Text style={styles.text}>Passenger</Text>
+          </View>
+          <View style={styles.textContainer}>
             <Text style={styles.textTitle}>Contact:</Text>
             <Text style={styles.text}>0719647830</Text>
           </View>
@@ -84,14 +88,6 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
 
-  image: {
-    width: 50,
-    height: 50,
-    resizeMode: "cover",
-    zIndex: 1,
-    marginHorizontal: "75%",
-    marginVertical: -120,
-  },
   textWrap: {
     marginHorizontal: 10,
     marginVertical: 15,
@@ -110,56 +106,5 @@ const styles = StyleSheet.create({
     fontSize: 15,
     marginTop: 10,
     marginLeft: 10,
-  },
-
-  textTravel: {
-    position: "absolute",
-    fontSize: 16,
-    fontWeight: "normal",
-    color: "#4F4F4F",
-    marginTop: 10,
-  },
-
-  textStation: {
-    position: "absolute",
-    fontSize: 16,
-    fontWeight: "normal",
-    color: "#4F4F4F",
-    marginTop: 10,
-  },
-
-  textDuration: {
-    position: "absolute",
-    fontSize: 19,
-    fontWeight: "bold",
-    color: "black",
-  },
-
-  textPrice: {
-    position: "absolute",
-    fontSize: 25,
-    fontWeight: "bold",
-    backgroundColor: "black",
-    color: "white",
-    borderRadius: 10,
-    padding: 3,
-    paddingLeft: 10,
-    paddingRight: 10,
-    // borderColor: "#EEB815",
-    // borderWidth: 1,
-  },
-
-  textTime: {
-    position: "absolute",
-    fontSize: 15,
-    fontWeight: "bold",
-    color: "black",
-  },
-  header: {
-    fontSize: 35,
-    fontWeight: "bold",
-    color: "green",
-    marginLeft: 10,
-    marginBottom: 10,
   },
 });

@@ -28,7 +28,6 @@ const SignUpScreen = () => {
   const onRegisterPressed = async (data) => {
     //set role value to data
     data.role = role;
-    console.log("Data: ", data);
 
     try {
       axios

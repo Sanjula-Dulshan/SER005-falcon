@@ -55,7 +55,7 @@ const Navigation = () => {
           options={{ headerShown: false }}
         />
         <Stack.Screen
-          name="Home"
+          name="HomeAdmin"
           component={AdminHomeScreen}
           options={{ headerShown: false }}
         />

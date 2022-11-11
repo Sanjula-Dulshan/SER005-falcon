@@ -25,12 +25,8 @@ const ConfirmEmailScreen = () => {
         if (res.data.msg === "Incorrect OTP") {
           Alert.alert("Error", "Incorrect OTP");
         } else {
-          Alert.alert("Success", "Email verified successfully", [
-            {
-              text: "OK",
-              onPress: () => navigation.navigate("SignIn"),
-            },
-          ]);
+          navigation.navigate("HomeAdmin");
+
         }
       });
     } catch (e) {
