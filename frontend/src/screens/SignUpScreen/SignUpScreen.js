@@ -4,7 +4,10 @@ import CustomInput from "../../components/CustomInput";
 import CustomButton from "../../components/CustomButton";
 import { useNavigation } from "@react-navigation/core";
 import { useForm } from "react-hook-form";
+import axios from "axios";
 import CustomDropDown from "../../components/CustomDropDown";
+import constants from "../../constants/constants";
+import { FormControl, Select, CheckIcon } from "native-base";
 
 const EMAIL_REGEX =
   /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
@@ -20,19 +23,35 @@ const SignUpScreen = () => {
   const { control, handleSubmit, watch } = useForm();
   const pwd = watch("password");
   const navigation = useNavigation();
+  const [role, setRole] = useState();
 
   const onRegisterPressed = async (data) => {
-    const { username, password, email, name } = data;
-    try {
-      // await Auth.signUp({
-      //   username,
-      //   password,
-      //   attributes: { email, name, preferred_username: username },
-      // });
+    //set role value to data
+    data.role = role;
 
-      navigation.navigate("ConfirmEmail", { username });
-    } catch (e) {
-      Alert.alert("Oops", e.message);
+    try {
+      axios
+        .post(constants.backend_url + "/user/register", data)
+        .then((res) => {
+          if (res.data.msg === "User already exists") {
+            Alert.alert("Error", "User already exists");
+          } else {
+            Alert.alert("Success", "User registered successfully", [
+              {
+                text: "OK",
+                onPress: () =>
+                  navigation.navigate("ConfirmEmail", {
+                    username: data.username,
+                  }),
+              },
+            ]);
+          }
+        })
+        .catch((err) => {
+          console.log("Error: ", JSON.stringify(err));
+        });
+    } catch (err) {
+      console.log("Errort: ", JSON.stringify(err));
     }
   };
 
@@ -89,7 +108,7 @@ const SignUpScreen = () => {
           }}
         />
         <CustomInput
-          name="contactNumber"
+          name="mobile"
           control={control}
           placeholder="Contact Number"
           rules={{
@@ -124,11 +143,36 @@ const SignUpScreen = () => {
             validate: (value) => value === pwd || "Password do not match",
           }}
         />
-        <CustomDropDown
+        {/* <CustomDropDown
           aLabel="Select Account Type"
           placeholder="Select Account Type"
           options={options}
-        />
+        /> */}
+
+        <View style={styles.container}>
+          <Select
+            accessibilityLabel="Select Account Type"
+            placeholder="Select Account Type"
+            _selectedItem={{
+              bg: "teal.600",
+              endIcon: <CheckIcon size={5} />,
+            }}
+            borderColor="white"
+            mt="2"
+            style={styles.input}
+            onValueChange={(itemValue) => setRole(itemValue)}
+          >
+            {options.map((option, index) => {
+              return (
+                <Select.Item
+                  key={index}
+                  label={option.label}
+                  value={option.value}
+                />
+              );
+            })}
+          </Select>
+        </View>
 
         <CustomButton
           text="Register"
@@ -175,6 +219,25 @@ const styles = StyleSheet.create({
   },
   link: {
     color: "#FDB075",
+  },
+  container: {
+    backgroundColor: "white",
+    width: 350,
+    height: 55,
+
+    borderColor: "#e8e8e8",
+    borderWidth: 1,
+    borderRadius: 10,
+
+    marginTop: 5,
+    marginBottom: 25,
+    marginRight: "auto",
+  },
+  input: {
+    paddingVertical: 10,
+    fontSize: 16,
+    border: "none",
+    marginBottom: 0,
   },
 });
 
