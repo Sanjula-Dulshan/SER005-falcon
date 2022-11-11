@@ -102,6 +102,14 @@ const styles = StyleSheet.create({
     borderWidth: 2,
   },
 
+  container_DownloadReport: {
+    elevation: 7,
+    width: "50%",
+    backgroundColor: "#EEB815",
+    height: 50,
+    marginLeft: "35%",
+  },
+
   text: {
     fontWeight: "bold",
     fontSize: 16,
@@ -124,6 +132,13 @@ const styles = StyleSheet.create({
     alignSelf: "flex-start",
     color: "#000000",
     fontSize: 22,
+    fontWeight: "bold",
+    marginBottom: "-3%",
+  },
+  text_DownloadReport: {
+    alignSelf: "center",
+    color: "#000000",
+    fontSize: 20,
     fontWeight: "bold",
     marginBottom: "-3%",
   },
