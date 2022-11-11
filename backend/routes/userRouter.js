@@ -6,4 +6,5 @@ router.post("/register", userCtrl.registerUser);
 router.put("/verify", userCtrl.verifyUser);
 router.post("/login", userCtrl.loginUser);
 router.get("/new", userCtrl.getUsers);
+router.put("/approve", userCtrl.approveUser);
 export default router;

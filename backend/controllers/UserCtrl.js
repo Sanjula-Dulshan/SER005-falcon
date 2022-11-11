@@ -138,18 +138,24 @@ const userCtrl = {
   //approve or reject the user
   approveUser: async (req, res) => {
     try {
-      const { id, approval } = req.body;
+      const { _id, approvalStatus } = req.body;
 
-      if (approval === "Approve") {
-        await User.findOneAndUpdate(
-          { _id: id },
-          {
-            approval: true,
-          }
-        );
-        return res.json({
-          msg: "User Approved",
-        });
+      if (approvalStatus === "Approve") {
+        try {
+          await User.findOneAndUpdate(
+            { _id },
+            {
+              approval: true,
+            }
+          ).then((user) => {
+            res.json({
+              msg: "User Approved",
+              user,
+            });
+          });
+        } catch (err) {
+          res.status(400).json(err);
+        }
       } else {
         await User.findOneAndDelete({ _id: id });
         return res.json({
