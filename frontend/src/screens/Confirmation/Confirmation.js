@@ -63,6 +63,10 @@ const SignInScreen = () => {
     formState: { errors },
   } = useForm();
 
+  const onOk = () => {
+    navigation.navigate("HomeTicket");
+  };
+
 
 
   const onSignInPressed = async (data) => {
@@ -120,7 +124,7 @@ const SignInScreen = () => {
 
         <CustomButton
           text={loading ? "Loading..." : "Ok"}
-          onPress={handleSubmit(onSignInPressed)}
+          onPress={onOk}
           type = {"confirm"}
         />
         
@@ -145,7 +149,7 @@ const styles = StyleSheet.create({
   homelogo: {
     width: "100%",
 
-    marginTop: 150,
+    marginTop: 90,
     maxWidth: 300,
     maxHeight: 300,
     //scale image

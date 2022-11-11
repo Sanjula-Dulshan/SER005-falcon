@@ -36,6 +36,10 @@ const SignInScreen = () => {
   } = useForm();
 
 
+  const onStartTrip = () => {
+    navigation.navigate("SeatCount");
+  };
+
 
   const onSignInPressed = async (data) => {
     if (loading) {
@@ -110,7 +114,7 @@ const SignInScreen = () => {
 
         <CustomButton
           text={loading ? "Loading..." : "Let's Go"}
-          onPress={handleSubmit(onSignInPressed)}
+          onPress={onStartTrip}
 
         />
         
@@ -135,7 +139,7 @@ const styles = StyleSheet.create({
   homelogo: {
     width: "100%",
     marginBottom: "0%",
-    marginTop: "10%",
+    marginTop: "2%",
     maxWidth: 500,
     maxHeight: 400,
   },

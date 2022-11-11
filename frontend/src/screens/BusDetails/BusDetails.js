@@ -90,6 +90,11 @@ const SignInScreen = () => {
     formState: { errors },
   } = useForm();
 
+  const onConfirm = () => {
+    navigation.navigate("Confirmation");
+  }
+
+
 
 
   const onSignInPressed = async (data) => {
@@ -122,7 +127,7 @@ const SignInScreen = () => {
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
 
-<View style={{flex: 1, marginTop: 80}} >
+<View style={{flex: 1, marginTop: 10}} >
 
         <StepIndicator
          customStyles={customStyles}
@@ -206,8 +211,8 @@ const SignInScreen = () => {
       </View>
 
       <CustomButton
-          text={loading ? "Loading..." : "Let's Go"}
-          onPress={handleSubmit(onSignInPressed)}
+          text={loading ? "Loading..." : "Confirm"}
+          onPress={onConfirm}
         />
 
         <View style={{height:100}}></View>

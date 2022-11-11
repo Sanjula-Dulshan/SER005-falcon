@@ -2,8 +2,18 @@ import React from "react";
 import { StyleSheet, Text, View, TouchableOpacity, Image } from "react-native";
 import CustomButton from "../CustomButton/CustomButton";
 import StepIndicator from 'react-native-step-indicator';
+import { useNavigation } from "@react-navigation/native";
+
 
 export default function BusCard({ start }) {
+  const navigation = useNavigation();
+
+  const onBusSelect = () => {
+    //create a log 
+    console.log("Bus Selected");
+    navigation.navigate("BusDetails");
+  };
+
   return (
     <View style={styles.container}>
       
@@ -61,6 +71,7 @@ export default function BusCard({ start }) {
           bgColor="#EEB815"
           fgColor={"white"}
           type={"takeIt"}
+          onPress={onBusSelect}
         />
 
       <View style={{marginLeft:20,marginTop:-32, zIndex:3, paddingBottom:35}}>

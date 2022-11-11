@@ -96,6 +96,7 @@ const styles = StyleSheet.create({
     marginHorizontal: "65%",
     paddingTop: 8,
     paddingBottom: 3,
+    zIndex: 4,
   },
 
   container_TERTIARY: {},

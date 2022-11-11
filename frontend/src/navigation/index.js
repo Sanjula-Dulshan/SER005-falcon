@@ -59,27 +59,27 @@ const Navigation = () => {
         <Stack.Screen
           name="HomeTicket"
           component={HomeTicket}
-          options={{ headerShown: false }}
+          options={{ headerShown: true }}
         />
         <Stack.Screen
           name="SeatCount"
           component={SeatCount}
-          options={{ headerShown: false }}
+          options={{ headerShown: true }}
         />
         <Stack.Screen
           name="BusList"
           component={BusList}
-          options={{ headerShown: false }}
+          options={{ headerShown: true }}
         />
         <Stack.Screen
           name="BusDetails"
           component={BusDetails}
-          options={{ headerShown: false }}
+          options={{ headerShown: true }}
         />
         <Stack.Screen
           name="Confirmation"
           component={Confirmation}
-          options={{ headerShown: false }}
+          options={{ headerShown: true }}
         />
         <Stack.Screen
           name="NewPassword"
@@ -91,26 +91,8 @@ const Navigation = () => {
           component={AdminHomeScreen}
           options={{ headerShown: false }}
         />
-        <Stack.Screen
-          name="SeatCount"
-          component={SeatCount}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="BusDetails"
-          component={BusDetails}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="Confirmation"
-          component={Confirmation}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="HomeTicket"
-          component={HomeTicket}
-          options={{ headerShown: false }}
-        />
+
+ 
         <Stack.Screen
           name="Topup"
           component={TopupScreen}
@@ -126,11 +108,7 @@ const Navigation = () => {
           component={CardDetailsScreen}
           options={{ headerShown: false }}
         />
-        <Stack.Screen
-          name="BusList"
-          component={BusList}
-          options={{ headerShown: false }}
-        />
+
 
         <Stack.Screen
           name="ViewCardSceen"

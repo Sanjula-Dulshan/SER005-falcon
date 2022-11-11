@@ -63,6 +63,9 @@ const SignInScreen = () => {
     formState: { errors },
   } = useForm();
 
+  const onSeatCount = () => {
+    navigation.navigate("BusList");
+  };
 
 
   const onSignInPressed = async (data) => {
@@ -95,11 +98,11 @@ const SignInScreen = () => {
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
 
-<View style={{flex: 1, marginTop: 80}} >
+<View style={{flex: 1, marginTop: 10}} >
 
         <StepIndicator
          customStyles={customStyles}
-         currentPosition={3}
+         currentPosition={1}
          labels={labels}
     />
     </View>
@@ -168,7 +171,7 @@ const SignInScreen = () => {
 
         <CustomButton
           text={loading ? "Loading..." : "Check Buses"}
-          onPress={handleSubmit(onSignInPressed)}
+          onPress={onSeatCount}
           type = {"seat"}
         />
         
@@ -210,6 +213,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     marginVertical: 5,
     marginRight: "auto",
+    paddingLeft: 20,
   },
 
   countText: {

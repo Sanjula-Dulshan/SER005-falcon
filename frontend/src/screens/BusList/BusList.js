@@ -94,9 +94,9 @@ const SignInScreen = () => {
 };
 
   return (
-    <ScrollView showsVerticalScrollIndicator={false}>
+    <ScrollView showsVerticalScrollIndicator={true}>
 
-<View style={{flex: 1, marginTop: 80}} >
+    <View style={{flex: 1, marginTop: 10}} >
 
         <StepIndicator
          customStyles={customStyles}
@@ -109,7 +109,7 @@ const SignInScreen = () => {
 
       <View style={{marginTop:-30}}>
 
-        {/* pass start point to buscard as param */}
+        {/* pass start point to buscard as param a*/}
 
         <BusCard start="Akuressa" />
 
