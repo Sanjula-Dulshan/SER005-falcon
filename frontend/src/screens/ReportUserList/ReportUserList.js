@@ -10,9 +10,15 @@ import {
 } from "react-native";
 import { Avatar, Accessory, Button } from "react-native-elements";
 import CustomButton from "../../components/CustomButton/CustomButton";
-import ticket from "../../../assets/images/ticket.png";
+import banUser from "../../../assets/images/ban.png";
 import CustomInput from "../../components/CustomInput/CustomInput";
 import { useForm, Controller } from "react-hook-form";
+import { FormControl, Select, CheckIcon } from "native-base";
+
+const options = [
+  { label: "Ticket expirey", value: "Ticket expirey" },
+  { label: "Entry without ticket", value: "Entry without ticket" },
+];
 
 export default function ReportUserList() {
   const [modalVisible, setModalVisible] = useState(false);
@@ -122,15 +128,39 @@ export default function ReportUserList() {
               <View style={styles.centeredView}>
                 <View style={styles.modalView}>
                   <View>
-                    <Image source={ticket} style={{}} />
+                    <Image
+                      source={banUser}
+                      style={{ tintColor: "red", height: 45, width: 45 }}
+                    />
                   </View>
-                  <Text style={styles.topup}>Reason for fine :</Text>
-                  <CustomInput
-                    name="username"
-                    placeholder="Username"
-                    control={control}
-                  />
-                  <Text style={styles.topup}>Price for fine :</Text>
+                  <Text style={styles.topup}>Confirm User Ban :</Text>
+                  {/* drropdown */}
+                  <View style={styles.dropContainer}>
+                    <Select
+                      accessibilityLabel="Select Fine Type"
+                      placeholder="Select Fine Type"
+                      _selectedItem={{
+                        bg: "teal.600",
+                        endIcon: <CheckIcon size={5} />,
+                      }}
+                      borderColor="white"
+                      mt="2"
+                      style={styles.input}
+                      // onValueChange={(itemValue) => setRole(itemValue)}
+                    >
+                      {options.map((option, index) => {
+                        return (
+                          <Select.Item
+                            key={index}
+                            label={option.label}
+                            value={option.value}
+                          />
+                        );
+                      })}
+                    </Select>
+                  </View>
+
+                  <Text style={styles.topup}>Remark :</Text>
                   <CustomInput
                     name="username"
                     placeholder="Username"
@@ -140,7 +170,7 @@ export default function ReportUserList() {
                     style={[styles.fineButton, styles.buttonClose]}
                     onPress={() => setModalVisible(!modalVisible)}
                   >
-                    <Text style={styles.textStyle}>SEND FINE</Text>
+                    <Text style={styles.textStyle}>Ban User</Text>
                   </Pressable>
                 </View>
               </View>
@@ -164,6 +194,25 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     maxWidth: 100,
+  },
+
+  dropContainer: {
+    backgroundColor: "white",
+    width: 250,
+    height: 55,
+
+    borderColor: "#e8e8e8",
+    borderWidth: 1,
+    borderRadius: 10,
+
+    marginTop: 10,
+    marginBottom: -15,
+    marginRight: "auto",
+  },
+  input: {
+    paddingVertical: 10,
+    fontSize: 20,
+    border: "none",
   },
 
   card: {
@@ -315,16 +364,13 @@ const styles = StyleSheet.create({
     marginTop: "5%",
   },
 
-  // buttonOpen: {
-  //   backgroundColor: "#F194FF",
-  // },
   buttonClose: {
-    backgroundColor: "#FBBC05",
+    backgroundColor: "#F40000",
     elevation: 2,
     marginTop: "5%",
   },
   textStyle: {
-    color: "black",
+    color: "white",
     fontWeight: "bold",
     textAlign: "center",
     fontSize: 20,
@@ -339,7 +385,7 @@ const styles = StyleSheet.create({
     marginVertical: 5,
     marginRight: "auto",
     marginLeft: "0%",
-    marginTop: "3%",
+    marginTop: "10%",
     marginBottom: "-1%",
   },
   //set blur background when pop-up model is open
