@@ -82,6 +82,14 @@ const styles = StyleSheet.create({
 
   },
 
+  container_datepicker:{
+    backgroundColor: "#FBBC05",
+    elevation: 0,
+    textAlign : 'left',
+    alignItems : 'flex-start',
+
+  },
+
   container_seat: {
     backgroundColor: "#FBBC05",
     elevation: 7,

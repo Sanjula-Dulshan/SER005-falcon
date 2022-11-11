@@ -8,7 +8,7 @@ import {
   ScrollView,
   TextInput,
   Alert,
-  DatePickerAndroid,
+
 } from "react-native";
 import Logo from "../../../assets/images/bus.png";
 import CustomInput from "../../components/CustomInput/CustomInput";
@@ -16,9 +16,11 @@ import CustomButton from "../../components/CustomButton/CustomButton";
 import { useNavigation } from "@react-navigation/native";
 import { useForm, Controller } from "react-hook-form";
 import DatePicker from 'react-native-date-picker';
+import RNDateTimePicker from '@react-native-community/datetimepicker';
+import DateTimePickerModal from "react-native-modal-datetime-picker";
 
-// const [date, setDate] = useState(0)
-// const [open, setOpen] = useState(false)
+
+
 
 
 
@@ -28,6 +30,25 @@ const SignInScreen = () => {
   const { height } = useWindowDimensions();
   const navigation = useNavigation();
   const [loading, setLoading] = useState(false);
+
+  const [date, setDate] = useState(new Date().toLocaleDateString())
+  const [open, setOpen] = useState(false)
+
+  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+
+  const showDatePicker = () => {
+    setDatePickerVisibility(true);
+  };
+
+  const hideDatePicker = () => {
+    setDatePickerVisibility(false);
+  };
+
+  const handleConfirm = (date) => {
+    //console.warn("A date has been picked: ", date);
+    setDate(new Date(date).toISOString())
+   // hideDatePicker();
+  };
 
   const {
     control,
@@ -97,16 +118,28 @@ const SignInScreen = () => {
           }}
         />
 
+
+
         {/* add a clickable date picker witch label*/}
 
         
         <CustomButton 
           title="Select Date"
           loading={loading}
-          text = {new Date().toLocaleDateString()}
+          text = {date}
           bgColor={"white"}
           fgColor={"black"}
+          onPress={showDatePicker}
+          type="datepicker"
         />
+
+        
+        <DateTimePickerModal
+                isVisible={isDatePickerVisible}
+                mode="date"
+                onConfirm={handleConfirm}
+                onCancel={hideDatePicker}
+              />
 
 
 
