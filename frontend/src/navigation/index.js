@@ -56,21 +56,7 @@ const Navigation = () => {
           component={ForgotPasswordScreen}
           options={{ headerShown: false }}
         />
-        <Stack.Screen
-          name="HomeTicket"
-          component={HomeTicket}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="SeatCount"
-          component={SeatCount}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="BusList"
-          component={BusList}
-          options={{ headerShown: false }}
-        />
+
         <Stack.Screen
           name="BusDetails"
           component={BusDetails}
@@ -96,16 +82,7 @@ const Navigation = () => {
           component={SeatCount}
           options={{ headerShown: false }}
         />
-        <Stack.Screen
-          name="BusDetails"
-          component={BusDetails}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="Confirmation"
-          component={Confirmation}
-          options={{ headerShown: false }}
-        />
+
         <Stack.Screen
           name="HomeTicket"
           component={HomeTicket}
