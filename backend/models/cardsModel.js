@@ -21,12 +21,6 @@ const cardSchema = new Schema(
       type: String,
       required: true,
     },
-
-    cardHolderName: {
-      type: String,
-      required: true,
-    },
-
     cardSecurityCode: {
       type: String,
       required: true,

@@ -5,6 +5,13 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 import CardDetailsScreen from "../screens/CardDetailsScreen";
 import SignInScreen from "../screens/SignInScreen";
+
+import HomeTicket from "../screens/HomeTicket";
+import SeatCount from "../screens/SeatCount";
+import BusList from "../screens/BusList";
+import BusDetails from "../screens/BusDetails";
+import Confirmation from "../screens/Confirmation";
+
 import TopupScreen from "../screens/TopupScreen";
 import NewCardScreen from "../screens/NewCardScreen";
 import SignUpScreen from "../screens/SignUpScreen";
@@ -18,11 +25,13 @@ import UsersDashboardScreen from "../screens/UsersDashboard/UsersDashboardScreen
 
 import ViewCardSceen from "../screens/ViewCardScreen/ViewCardSceen";
 
+
 const Stack = createNativeStackNavigator();
 
 const Navigation = () => {
   return (
     <NavigationContainer>
+
       <Stack.Navigator>
         <Stack.Screen
           name="SignIn"
@@ -49,6 +58,11 @@ const Navigation = () => {
           component={ForgotPasswordScreen}
           options={{ headerShown: false }}
         />
+          <Stack.Screen name="HomeTicket" component={HomeTicket} options={{ headerShown: false }}/>
+        <Stack.Screen name="SeatCount" component={SeatCount} options={{ headerShown: false }}/>
+        <Stack.Screen name="BusList" component={BusList} options={{ headerShown: false }}/>
+        <Stack.Screen name="BusDetails" component={BusDetails} options={{ headerShown: false }} />
+        <Stack.Screen name="Confirmation" component={Confirmation} options={{ headerShown: false }}/>
         <Stack.Screen
           name="NewPassword"
           component={NewPasswordScreen}
@@ -80,6 +94,7 @@ const Navigation = () => {
           options={{ headerShown: false }}
         />
         <Stack.Screen name="New Users" component={UsersDashboardScreen} />
+
       </Stack.Navigator>
     </NavigationContainer>
   );
