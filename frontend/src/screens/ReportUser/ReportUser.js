@@ -17,8 +17,12 @@ import CustomButton from "../../components/CustomButton/CustomButton";
 import { useNavigation } from "@react-navigation/native";
 import { useForm, Controller } from "react-hook-form";
 import ticket from "../../../assets/images/ticket.png";
+import { FormControl, Select, CheckIcon } from "native-base";
 
-import DropDownPicker from "react-native-dropdown-picker";
+const options = [
+  { label: "Ticket expirey", value: "Ticket expirey" },
+  { label: "Entry without ticket", value: "Entry without ticket" },
+];
 
 const ReportUser = () => {
   const { height } = useWindowDimensions();
@@ -27,10 +31,10 @@ const ReportUser = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState(null);
-  const [items, setItems] = useState([
-    { label: "Ticket expirey", value: "ticket" },
-    { label: "Entry without ticket", value: "entry" },
-  ]);
+  // const [items, setItems] = useState([
+  //   { label: "Ticket expirey", value: "ticket" },
+  //   { label: "Entry without ticket", value: "entry" },
+  // ]);
   const {
     control,
     handleSubmit,
@@ -70,37 +74,41 @@ const ReportUser = () => {
         </View>
 
         <Text style={styles.topup}>Name :</Text>
-        <CustomInput name="name" control={control} />
+        <Text style={styles.box}>W.H.Dilsha Thathsarani</Text>
 
         <Text style={styles.topup}>Route :</Text>
-        <CustomInput name="route" control={control} />
+        <Text style={styles.box}>Colombo to Gampaha</Text>
 
         <Text style={styles.topup}>Date :</Text>
-        <CustomInput name="date" control={control} />
+        <Text style={styles.box}>02-02-2022</Text>
 
         <Text style={styles.topup}>Cost :</Text>
-        <CustomInput name="time" control={control} />
-        <Text style={styles.topup}>Cost :</Text>
-        <View style={styles.root}>
-          <DropDownPicker
-            style={{
-              width: "110%",
+        <Text style={styles.box}>LKR </Text>
 
-              marginRight: "1%",
-              height: "5%",
-              backgroundColor: "white",
+        <Text style={styles.topup}>Type of fine :</Text>
+        <View style={styles.container}>
+          <Select
+            accessibilityLabel="Select Fine Type"
+            placeholder="Select Fine Type"
+            _selectedItem={{
+              bg: "teal.600",
+              endIcon: <CheckIcon size={5} />,
             }}
-            open={open}
-            items={items}
-            setOpen={setOpen}
-            setValue={setValue}
-            setItems={setItems}
-            stickyHeader={true}
-            autoScroll={true}
-            Value={value}
-            placeholder="Select Card"
-            // onChangeItem={(items) => setValue(items.value)}
-          />
+            borderColor="white"
+            mt="2"
+            style={styles.input}
+            // onValueChange={(itemValue) => setRole(itemValue)}
+          >
+            {options.map((option, index) => {
+              return (
+                <Select.Item
+                  key={index}
+                  label={option.label}
+                  value={option.value}
+                />
+              );
+            })}
+          </Select>
         </View>
 
         {/* pop-up model */}
@@ -161,6 +169,24 @@ const styles = StyleSheet.create({
     alignItems: "center",
     padding: 20,
   },
+  container: {
+    backgroundColor: "white",
+    width: 350,
+    height: 55,
+
+    borderColor: "#e8e8e8",
+    borderWidth: 1,
+    borderRadius: 10,
+
+    marginTop: 5,
+    marginBottom: -15,
+    marginRight: "auto",
+  },
+  input: {
+    paddingVertical: 10,
+    fontSize: 20,
+    border: "none",
+  },
   title: {
     fontWeight: "bold",
     fontSize: 28,
@@ -169,24 +195,26 @@ const styles = StyleSheet.create({
     marginLeft: "8%",
     marginTop: "10%",
   },
+  box: {
+    backgroundColor: "#BDB6B6",
+    width: "100%",
+    height: "8%",
+    marginTop: "1%",
+    marginBottom: "4%",
+    borderRadius: 10,
+    padding: 10,
+    fontSize: 20,
+  },
   topup: {
     fontWeight: "bold",
-    fontSize: 22,
+    fontSize: 28,
     marginVertical: 5,
     marginRight: "auto",
     marginLeft: "0%",
     marginTop: "3%",
     marginBottom: "-1%",
   },
-  topup1: {
-    fontWeight: "bold",
-    fontSize: 20,
-    marginVertical: 5,
-    marginRight: "auto",
-    marginLeft: "0%",
-    marginTop: "5%",
-    marginBottom: "-1%",
-  },
+
   info: {
     fontWeight: "regular",
     fontSize: 16,
