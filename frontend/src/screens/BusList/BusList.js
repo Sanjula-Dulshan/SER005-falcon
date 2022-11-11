@@ -16,7 +16,7 @@ import CustomButton from "../../components/CustomButton/CustomButton";
 import { useNavigation } from "@react-navigation/native";
 import { useForm, Controller } from "react-hook-form";
 import StepIndicator from 'react-native-step-indicator';
-import BusCard from "./busCard";
+import BusCard from "../../components/BusCard/busCard";
 
 // const [date, setDate] = useState(0)
 // const [open, setOpen] = useState(false)
@@ -108,7 +108,10 @@ const SignInScreen = () => {
     <Text style={styles.text}>Select available bus </Text>
 
       <View style={{marginTop:-30}}>
-        <BusCard />
+
+        {/* pass start point to buscard as param */}
+
+        <BusCard start="Akuressa" />
 
         <BusCard />
 

@@ -1,9 +1,9 @@
 import React from "react";
 import { StyleSheet, Text, View, TouchableOpacity, Image } from "react-native";
-import CustomButton from "../../components/CustomButton/CustomButton";
+import CustomButton from "../CustomButton/CustomButton";
 import StepIndicator from 'react-native-step-indicator';
 
-export default function BusCard({ navigation }) {
+export default function BusCard({ start }) {
   return (
     <View style={styles.container}>
       
@@ -26,7 +26,7 @@ export default function BusCard({ navigation }) {
           customStyles={thirdIndicatorStyles}
           currentPosition={2}
           direction='vertical'
-          labels={['Akuressa', 'Kataragama']}
+          labels={[start, 'Kataragama']}
         />
       </View>
 

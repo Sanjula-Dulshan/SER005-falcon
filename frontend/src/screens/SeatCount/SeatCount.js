@@ -26,23 +26,23 @@ const customStyles = {
   currentStepIndicatorSize:30,
   separatorStrokeWidth: 2,
   currentStepStrokeWidth: 3,
-  stepStrokeCurrentColor: '#fe7013',
+  stepStrokeCurrentColor: '#EEB815',
   stepStrokeWidth: 3,
-  stepStrokeFinishedColor: '#fe7013',
+  stepStrokeFinishedColor: '#EEB815',
   stepStrokeUnFinishedColor: '#aaaaaa',
-  separatorFinishedColor: '#fe7013',
+  separatorFinishedColor: '#EEB815',
   separatorUnFinishedColor: '#aaaaaa',
-  stepIndicatorFinishedColor: '#fe7013',
+  stepIndicatorFinishedColor: '#EEB815',
   stepIndicatorUnFinishedColor: '#ffffff',
-  stepIndicatorCurrentColor: '#ffffff',
+  stepIndicatorCurrentColor: '#EEB815',
   stepIndicatorLabelFontSize: 13,
   currentStepIndicatorLabelFontSize: 13,
-  stepIndicatorLabelCurrentColor: '#fe7013',
-  stepIndicatorLabelFinishedColor: '#ffffff',
-  stepIndicatorLabelUnFinishedColor: '#aaaaaa',
+  stepIndicatorLabelCurrentColor: '#EEB815',
+  stepIndicatorLabelFinishedColor: '#EEB815',
+  stepIndicatorLabelUnFinishedColor: 'white',
   labelColor: '#999999',
   labelSize: 13,
-  currentStepLabelColor: '#fe7013'
+  currentStepLabelColor: '#EEB815'
 };
 
 
@@ -99,7 +99,7 @@ const SignInScreen = () => {
 
         <StepIndicator
          customStyles={customStyles}
-         currentPosition={1}
+         currentPosition={3}
          labels={labels}
     />
     </View>

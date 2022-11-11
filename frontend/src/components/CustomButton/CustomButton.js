@@ -48,6 +48,12 @@ const styles = StyleSheet.create({
     elevation: 7,
   },
 
+  container_confirm: {
+    marginTop: 20,
+    backgroundColor: "black",
+    elevation: 7,
+  },
+
   container_SECONDARY: {
     borderColor: "#3B71F3",
     borderWidth: 2,
