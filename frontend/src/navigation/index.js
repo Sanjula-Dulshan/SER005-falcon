@@ -17,8 +17,8 @@ const Navigation = () => {
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         {/* <Stack.Screen name="SignIn" component={SignInScreen} /> */}
-        {/* <Stack.Screen name="RouteSearch" component={RouteSearch} /> */}
-        <Stack.Screen name="PassengersList" component={PassengerList} />
+        <Stack.Screen name="RouteSearch" component={RouteSearch} />
+        {/* <Stack.Screen name="PassengersList" component={PassengerList} /> */}
 
         {/* <Stack.Screen name="ReportUser" component={ReportUser} /> */}
 

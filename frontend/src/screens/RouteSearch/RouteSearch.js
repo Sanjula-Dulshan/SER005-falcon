@@ -15,7 +15,6 @@ import React, { Component, useState } from "react";
 import CustomInput from "../../components/CustomInput/CustomInput";
 import CustomButton from "../../components/CustomButton/CustomButton";
 import { useForm } from "react-hook-form";
-import DateTimePickerModal from "react-native-modal-datetime-picker";
 
 const RouteSearch = () => {
   const {
@@ -24,21 +23,22 @@ const RouteSearch = () => {
     formState: { errors },
   } = useForm();
 
-  const [selectedDate, setSelectedDate] = useState(new Date());
-  const [datePickerVisible, setDatePickerVisible] = useState(false);
+  const [date, setDate] = useState("09-10-2020");
+  // const [selectedDate, setSelectedDate] = useState(new Date());
+  // const [datePickerVisible, setDatePickerVisible] = useState(false);
 
-  const showDatePicker = () => {
-    setDatePickerVisible(true);
-  };
+  // const showDatePicker = () => {
+  //   setDatePickerVisible(true);
+  // };
 
-  const hideDatePicker = () => {
-    setDatePickerVisible(false);
-  };
+  // const hideDatePicker = () => {
+  //   setDatePickerVisible(false);
+  // };
 
-  const handleConfirm = (date) => {
-    setSelectedDate(date);
-    hideDatePicker();
-  };
+  // const handleConfirm = (date) => {
+  //   setSelectedDate(date);
+  //   hideDatePicker();
+  // };
 
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
@@ -68,37 +68,6 @@ const RouteSearch = () => {
           rules={{ required: "Username is required" }}
         />
 
-        <SafeAreaView style={{ flex: 1 }}>
-          <View
-            style={{
-              padding: 20,
-              flex: 1,
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            <Text
-              style={{ fontSize: 24, fontWeight: "bold", marginBottom: 20 }}
-            >
-              {selectedDate
-                ? selectedDate.toLocaleDateString()
-                : "No date selected"}
-            </Text>
-            <CustomButton
-              title="Select a date"
-              onPress={showDatePicker}
-              type="DATE"
-            />
-            <DateTimePickerModal
-              date={selectedDate}
-              isVisible={datePickerVisible}
-              mode="date"
-              onConfirm={handleConfirm}
-              onCancel={hideDatePicker}
-            />
-          </View>
-        </SafeAreaView>
         <CustomButton
           text="SEARCH ROUTE"
           // onPress={handleSubmit(onSignInPressed)}
@@ -128,6 +97,28 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
+  },
+
+  dateContainer: {
+    flex: 1,
+    padding: 10,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#A8E9CA",
+  },
+  title: {
+    textAlign: "left",
+    fontSize: 20,
+    fontWeight: "bold",
+  },
+  datePickerStyle: {
+    width: 230,
+  },
+  text: {
+    textAlign: "left",
+    width: 230,
+    fontSize: 16,
+    color: "#000",
   },
 });
 
