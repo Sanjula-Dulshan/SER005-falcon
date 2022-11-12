@@ -73,7 +73,6 @@ const UsersDashboardScreen = () => {
   const viewPressed = (data) => {
     setViewModalVisible(true);
     setUserDetails(data);
-    console.log("data: ", data);
   };
   const requestProof = () => {
     console.log("_id: ", userDetails._id);
@@ -147,7 +146,7 @@ const UsersDashboardScreen = () => {
             <View style={styles.modalContainer}>
               <Modal
                 style={styles.modal}
-                animationType="slide"
+                animationType="fade"
                 transparent={true}
                 visible={approveModalVisible}
                 onRequestClose={() => {

@@ -3,6 +3,7 @@ import { customAlphabet } from "nanoid";
 import bcrypt from "bcrypt";
 import sendMail from "./sendMail.js";
 import proofRequestMail from "./proofRequestMail.js";
+import resetMail from "./resetMail.js";
 import Mongoose from "mongoose";
 const nanoid = customAlphabet("1234567890", 4);
 
@@ -129,23 +130,18 @@ const userCtrl = {
   sendPasswordResetOtp: async (req, res) => {
     try {
       const { username } = req.body;
-      const user = await User.findOne({ username });
 
-      if (!user) {
-        return res.json({
-          msg: "User does not exist",
-        });
-      }
+      const user = await User.findOne({ username });
 
       //Generate random OTP
       const otp = nanoid();
 
-      //Hash password
+      //Hash otp
       const otpHash = await bcrypt.hash(otp, 12);
 
       await User.findOneAndUpdate({ username }, { otpHash });
 
-      sendMail(email, user.username, otp);
+      resetMail(user.email, user.name, otp);
       res.json({
         msg: "Password reset OTP sent!",
       });
@@ -157,11 +153,12 @@ const userCtrl = {
   //verify the OTP and reset the password
   resetPassword: async (req, res) => {
     try {
-      const { otp, username, password } = req.body;
+      const { code, username, password } = req.body;
+      console.log("req.body: ", req.body);
       const user = await User.findOne({ username });
       let isMatch;
-
-      isMatch = await bcrypt.compare(otp, user.otpHash);
+      console.log("user: ", user);
+      isMatch = await bcrypt.compare(code, user.otpHash);
 
       if (!isMatch) {
         return res.json({

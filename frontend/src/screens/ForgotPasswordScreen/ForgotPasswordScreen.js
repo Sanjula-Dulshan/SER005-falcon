@@ -5,6 +5,7 @@ import CustomButton from "../../components/CustomButton";
 import { useNavigation } from "@react-navigation/core";
 import { useForm } from "react-hook-form";
 import axios from "axios";
+import constants from "../../constants/constants";
 
 const ForgotPasswordScreen = () => {
   const { control, handleSubmit } = useForm();
@@ -12,9 +13,21 @@ const ForgotPasswordScreen = () => {
 
   const onSendPressed = async (data) => {
     try {
-      navigation.navigate("NewPassword");
+      axios
+        .post(constants.backend_url + "/user/resetOtp", data)
+        .then((res) => {
+          if (res.data.msg === "Password reset OTP sent!") {
+            Alert.alert("Success", "Password reset OTP sent!");
+            navigation.navigate("NewPassword", {
+              username: data.username,
+            });
+          }
+        })
+        .catch((err) => {
+          console.log("Error: ", err);
+        });
     } catch (e) {
-      Alert.alert("Oops", e.message);
+      console.log("Error: ", e);
     }
   };
 

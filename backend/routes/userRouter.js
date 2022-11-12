@@ -9,4 +9,5 @@ router.get("/new", userCtrl.getUsers);
 router.put("/approve", userCtrl.approveUser);
 router.post("/proof", userCtrl.requestProof);
 router.post("/resetOtp", userCtrl.sendPasswordResetOtp);
+router.put("/resetPassword", userCtrl.resetPassword);
 export default router;
