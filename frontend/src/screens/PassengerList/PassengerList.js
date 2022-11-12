@@ -14,7 +14,9 @@ import banUser from "../../../assets/images/ban.png";
 import { FormControl, Select, CheckIcon } from "native-base";
 import CustomInput from "../../components/CustomInput/CustomInput";
 import { useForm, Controller } from "react-hook-form";
-import { Axios } from "axios";
+import axios from "axios";
+import constants from "../../constants/constants";
+import { useNavigation } from "@react-navigation/native";
 
 const options = [
   { label: "Yes,Ban this user", value: "Yes,Ban this user" },
@@ -23,13 +25,28 @@ const options = [
 
 export default function CustomCard() {
   const [passengerList, setPassengerList] = useState([]);
+  const [passengerDetails, setPassengerDetails] = useState([]);
+  const navigation = useNavigation();
 
   const [modalVisible, setModalVisible] = useState(false);
 
-  useEffect(() => {
-    axios.get(constants.backend_url + "/user/new").then((res) => {
-      setPassengerList(res.data);
+  const onReportPress = (data) => {
+    navigation.navigate("ReportUser", {
+      name: data.user,
+      startRoute: data.startPoint,
+      endRoute: data.endPoint,
+      cost: data.fee,
     });
+  };
+
+  useEffect(() => {
+    try {
+      axios.get(constants.backend_url + "/ticket/").then((res) => {
+        setPassengerList(res.data);
+      });
+    } catch (err) {
+      console.log(err);
+    }
   }, [passengerList]);
 
   const {
@@ -38,46 +55,59 @@ export default function CustomCard() {
     formState: { errors },
   } = useForm();
 
+  const onViewPress = (data) => {
+    setPassengerDetails(data);
+    setModalVisible(true);
+  };
+
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
       <View style={styles.container}>
         <View style={{ width: "120%", marginTop: "-6%" }}>
           <Text style={styles.title}>Passenger List</Text>
         </View>
+        <View>
+          {passengerList.map((item, index) => {
+            return (
+              <View style={styles.card} key={index}>
+                <View style={styles.textWrap}>
+                  <View style={styles.textContainer}>
+                    <View style={{ marginStart: "-12%", marginTop: "3%" }}>
+                      <Avatar
+                        rounded
+                        source={{
+                          uri: "https://randomuser.me/api/portraits/men/36.jpg",
+                        }}
+                      />
+                    </View>
+                    <Text style={styles.text}>{item.user}</Text>
+                  </View>
+                  <View style={styles.textContainer}>
+                    <Text style={styles.text}>
+                      {item.startPoint} to {item.endPoint}
+                    </Text>
+                  </View>
+                </View>
+                <View style={styles.buttonContainer}>
+                  <CustomButton
+                    title="Report"
+                    text="Report"
+                    fgColor="black"
+                    type={"report"}
+                    onPress={handleSubmit(() => onReportPress(item))}
+                  />
 
-        <View style={styles.card}>
-          <View style={styles.textWrap}>
-            <View style={styles.textContainer}>
-              <View style={{ marginStart: "-12%", marginTop: "3%" }}>
-                <Avatar
-                  rounded
-                  source={{
-                    uri: "https://randomuser.me/api/portraits/men/36.jpg",
-                  }}
-                />
+                  <CustomButton
+                    title="View"
+                    text="View"
+                    fgColor="black"
+                    type={"viewReport"}
+                    onPress={handleSubmit(() => onViewPress(item))}
+                  />
+                </View>
               </View>
-              <Text style={styles.text}>Sanjula Dulshan</Text>
-            </View>
-            <View style={styles.textContainer}>
-              <Text style={styles.text}>sdulshan10@gmail.com</Text>
-            </View>
-          </View>
-          <View style={styles.buttonContainer}>
-            <CustomButton
-              title="Report"
-              text="Report"
-              fgColor="black"
-              type={"report"}
-            />
-
-            <CustomButton
-              title="View"
-              text="View"
-              fgColor="black"
-              type={"viewReport"}
-              onPress={() => setModalVisible(true)}
-            />
-          </View>
+            );
+          })}
         </View>
 
         {/* pop up modal */}
@@ -105,11 +135,18 @@ export default function CustomCard() {
                     />
                   </View>
 
-                  <Text style={styles.topup}>Name : </Text>
-                  <Text style={styles.topup}>Route : </Text>
-                  <Text style={styles.topup}>Distance : </Text>
-                  <Text style={styles.topup}>Cost : </Text>
-                  <Text style={styles.topup}>Date : </Text>
+                  <Text style={styles.topup}>
+                    Name : {passengerDetails.user}{" "}
+                  </Text>
+
+                  <Text style={styles.topup}>
+                    Route : {passengerDetails.startPoint} to{" "}
+                    {passengerDetails.endPoint}
+                  </Text>
+
+                  <Text style={styles.topup}>
+                    Cost : {passengerDetails.fee}
+                  </Text>
 
                   <Pressable
                     style={[styles.fineButton, styles.buttonClose]}

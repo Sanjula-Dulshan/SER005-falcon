@@ -18,6 +18,9 @@ import { useNavigation } from "@react-navigation/native";
 import { useForm, Controller } from "react-hook-form";
 import ticket from "../../../assets/images/ticket.png";
 import { FormControl, Select, CheckIcon } from "native-base";
+import { useRoute } from "@react-navigation/native";
+import axios from "axios";
+import constants from "../../constants/constants";
 
 const options = [
   { label: "Ticket expirey", value: "Ticket expirey" },
@@ -25,16 +28,29 @@ const options = [
 ];
 
 const ReportUser = () => {
+  const route = useRoute();
+
   const { height } = useWindowDimensions();
   const navigation = useNavigation();
   const [loading, setLoading] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState(null);
+  const [fineType, setFineType] = useState();
+  const [fineDetails, setFineDetails] = useState();
   // const [items, setItems] = useState([
   //   { label: "Ticket expirey", value: "ticket" },
   //   { label: "Entry without ticket", value: "entry" },
   // ]);
+
+  const onPressFine = (data) => {
+    data.typeOfFine = fineType;
+    console.log("data: ", data);
+    setFineDetails(data);
+
+    setModalVisible(true);
+  };
+
   const {
     control,
     handleSubmit,
@@ -64,6 +80,17 @@ const ReportUser = () => {
   //     navigation.navigate("SignUp");
   //   };
 
+  const onSendFine = (data) => {
+    const fine = { ...fineDetails, ...data };
+    console.log("fine: ", fine);
+    axios.post(constants.backend_url + "/fine/addFine", fine).then((res) => {
+      if (res.data.msg === "Fine added successfully") {
+        Alert.alert("Success", "Fine added successfully");
+        setModalVisible(false);
+      }
+    });
+  };
+
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
       <View style={styles.root}>
@@ -74,16 +101,15 @@ const ReportUser = () => {
         </View>
 
         <Text style={styles.topup}>Name :</Text>
-        <Text style={styles.box}>W.H.Dilsha Thathsarani</Text>
+        <Text style={styles.box}>{route?.params?.name}</Text>
 
         <Text style={styles.topup}>Route :</Text>
-        <Text style={styles.box}>Colombo to Gampaha</Text>
-
-        <Text style={styles.topup}>Date :</Text>
-        <Text style={styles.box}>02-02-2022</Text>
+        <Text style={styles.box}>
+          {route?.params?.startRoute} to {route?.params?.endRoute}
+        </Text>
 
         <Text style={styles.topup}>Cost :</Text>
-        <Text style={styles.box}>LKR </Text>
+        <Text style={styles.box}>LKR {route?.params?.cost}</Text>
 
         <Text style={styles.topup}>Type of fine :</Text>
         <View style={styles.container}>
@@ -97,7 +123,7 @@ const ReportUser = () => {
             borderColor="white"
             mt="2"
             style={styles.input}
-            // onValueChange={(itemValue) => setRole(itemValue)}
+            onValueChange={(itemValue) => setFineType(itemValue)}
           >
             {options.map((option, index) => {
               return (
@@ -121,7 +147,6 @@ const ReportUser = () => {
               transparent={true}
               visible={modalVisible}
               onRequestClose={() => {
-                Alert.alert("Modal has been closed.");
                 setModalVisible(!modalVisible);
               }}
             >
@@ -131,20 +156,12 @@ const ReportUser = () => {
                     <Image source={ticket} style={{}} />
                   </View>
                   <Text style={styles.topup}>Reason for fine :</Text>
-                  <CustomInput
-                    name="username"
-                    placeholder="Username"
-                    control={control}
-                  />
+                  <CustomInput name="reason" control={control} />
                   <Text style={styles.topup}>Price for fine :</Text>
-                  <CustomInput
-                    name="username"
-                    placeholder="Username"
-                    control={control}
-                  />
+                  <CustomInput name="price" control={control} />
                   <Pressable
                     style={[styles.fineButton, styles.buttonClose]}
-                    onPress={() => setModalVisible(!modalVisible)}
+                    onPress={handleSubmit(onSendFine)}
                   >
                     <Text style={styles.textStyle}>SEND FINE</Text>
                   </Pressable>
@@ -154,7 +171,7 @@ const ReportUser = () => {
           </View>
           <Pressable
             style={[styles.button, styles.buttonOpen]}
-            onPress={() => setModalVisible(true)}
+            onPress={handleSubmit(() => onPressFine(route?.params))}
           >
             <Text style={styles.textStyle}>Reason for fine {"->"} </Text>
           </Pressable>
