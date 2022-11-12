@@ -125,18 +125,6 @@ const Navigation = () => {
           options={{ headerShown: false }}
         />
 
- 
-        <Stack.Screen
-          name="Topup"
-          component={TopupScreen}
-          options={{ headerShown: false }}
-        />
-
-        <Stack.Screen
-          name="TopupScreen"
-          component={TopupScreen}
-          options={{ headerShown: false }}
-        />
 
         <Stack.Screen
           name="TopupScreen"
