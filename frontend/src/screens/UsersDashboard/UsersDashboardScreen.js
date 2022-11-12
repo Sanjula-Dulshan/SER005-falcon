@@ -190,7 +190,7 @@ const UsersDashboardScreen = () => {
             <View style={styles.modalContainer}>
               <Modal
                 style={styles.modal}
-                animationType="slide"
+                animationType="fade"
                 transparent={true}
                 visible={declineModalVisible}
                 onRequestClose={() => {
@@ -234,7 +234,7 @@ const UsersDashboardScreen = () => {
             <View style={styles.modalContainer}>
               <Modal
                 style={styles.modal}
-                animationType="slide"
+                animationType="fade"
                 transparent={true}
                 visible={viewModalVisible}
                 onRequestClose={() => {
