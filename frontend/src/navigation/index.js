@@ -27,16 +27,16 @@ import ReportDownloadScreen from "../screens/ReportDownloadScreen";
 import AdminHomeScreen from "../screens/AdminHomeScreen";
 import UsersDashboardScreen from "../screens/UsersDashboard/UsersDashboardScreen";
 import ViewCardSceen from "../screens/ViewCardScreen/ViewCardSceen";
+import InspectorHomeScreen from "../screens/InspectorHomeScreen/InspectorHomeScreen";
 
 const Stack = createNativeStackNavigator();
 
 const Navigation = () => {
   return (
     <NavigationContainer>
-
-      <Stack.Navigator >
+      <Stack.Navigator>
         {/* <Stack.Screen name="SignIn" component={SignInScreen} /> */}
-        <Stack.Screen name="RouteSearch" component={RouteSearch} />
+        {/* <Stack.Screen name="RouteSearch" component={RouteSearch} /> */}
         {/* <Stack.Screen name="PassengersList" component={PassengerList} /> */}
 
         {/* <Stack.Screen name="ReportUser" component={ReportUser} /> */}
@@ -45,6 +45,11 @@ const Navigation = () => {
 
         {/* <Stack.Screen name="ReportUserList" component={ReportUserList} /> */}
 
+        <Stack.Screen
+          name="InspectorHome"
+          component={InspectorHomeScreen}
+          options={{ headerShown: false }}
+        />
         <Stack.Screen
           name="SignIn"
           component={SignInScreen}
@@ -108,7 +113,7 @@ const Navigation = () => {
           component={NewCardScreen}
           options={{ headerShown: false }}
         />
-            
+
         <Stack.Screen
           name="TopupScreen"
           component={TopupScreen}
@@ -131,7 +136,6 @@ const Navigation = () => {
           options={{ headerShown: false }}
         />
         <Stack.Screen name="New Users" component={UsersDashboardScreen} />
-
       </Stack.Navigator>
     </NavigationContainer>
   );

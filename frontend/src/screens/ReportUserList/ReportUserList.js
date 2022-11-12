@@ -8,7 +8,7 @@ import {
   Image,
   Pressable,
 } from "react-native";
-import { Avatar, Accessory, Button } from "react-native-elements";
+import { Avatar } from "react-native-elements";
 import CustomButton from "../../components/CustomButton/CustomButton";
 import banUser from "../../../assets/images/ban.png";
 import CustomInput from "../../components/CustomInput/CustomInput";
