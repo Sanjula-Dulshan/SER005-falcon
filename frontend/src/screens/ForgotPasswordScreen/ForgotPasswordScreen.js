@@ -4,6 +4,7 @@ import CustomInput from "../../components/CustomInput";
 import CustomButton from "../../components/CustomButton";
 import { useNavigation } from "@react-navigation/core";
 import { useForm } from "react-hook-form";
+import axios from "axios";
 
 const ForgotPasswordScreen = () => {
   const { control, handleSubmit } = useForm();
@@ -11,7 +12,6 @@ const ForgotPasswordScreen = () => {
 
   const onSendPressed = async (data) => {
     try {
-      //await Auth.forgotPassword(data.username);
       navigation.navigate("NewPassword");
     } catch (e) {
       Alert.alert("Oops", e.message);
