@@ -30,7 +30,7 @@ createWallet :async (req, res) => {
 updateWallet: async (req, res) => {
     try {
         const {user_id, amount, loan_amount} = req.body;
-       const wallet= await Wallet.findOneAndUpdate({user_id : req.body.user_id}, {
+       const wallet= await Wallet.findOneAndUpdate({user_id : req.params.user_id}, {
             user_id,
             amount,
             loan_amount    
@@ -44,10 +44,10 @@ updateWallet: async (req, res) => {
 //view wallet function
 viewWallet: async (req, res) => {
     try {
-        const wallet = await Wallet.findOne({user_id: req.body.user_id});
+        const wallet = await Wallet.find({user_id: req.params.user_id});
         res.status(200).json(wallet);
     } catch (error) {
-        return res.status(500).json({ msg: err.message });
+        return res.status(500).json({ msg: error.message });
     }}
    
 }
