@@ -78,6 +78,8 @@ const BusList = ({startP,endP}) => {
 
     //get start and end location from async storage
 
+    console.log("\n\nseat count", route.params.seat,"\n\n");
+
 
       AsyncStorage.getItem("startPoint").then((value) =>  {
         console.log("start", value);
@@ -109,24 +111,11 @@ const BusList = ({startP,endP}) => {
 
       //wait for start and end to be set
       
-  }, []);
+  },[]);
 
 
 
-  const onSignInPressed = async (data) => {
-    if (loading) {
-      return;
-    }
-
-    setLoading(true);
-    try {
-      const response = await Auth.signIn(data.username, data.password);
-      console.log(response);
-    } catch (e) {
-      Alert.alert("Oops", e.message);
-    }
-    setLoading(false);
-  };
+  
 
 
   const buttonTextStyle = {
@@ -151,8 +140,8 @@ const BusList = ({startP,endP}) => {
 
         {/* pass start point to buscard as param a*/}
 
-        {buses.map((bus) => (
-          <BusCard bus={bus} start={route.params.startP} end={route.params.endP} />
+        {buses?.map((bus) => (
+          <BusCard bus={bus} start={route?.params.startP} end={route?.params.endP} seat={route?.params.seat} />
         ))}
 
 

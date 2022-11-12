@@ -19,6 +19,13 @@ router.route("/").get((req,res)=>{
     .catch(err => res.status(400).json('Error: ' + err));
 });
 
+//get routes by routeID
+router.route("/getRoutesByRouteID/:routeId").get((req,res)=>{
+    Route.find({routeID: req.params.routeId})
+    .then(routes => res.json(routes))
+    .catch(err => res.status(400).json('Error: ' + err));
+});
+
 router.post("/",(req,res)=>{
     
     const routeID = req.body.routeID;

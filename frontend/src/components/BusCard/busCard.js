@@ -9,17 +9,20 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useRoute } from "@react-navigation/native";
 
 
-export default function BusCard({ bus,startP,endP }) {
+export default function BusCard({ bus,startP,endP, seat }) {
   const navigation = useNavigation();
   const [businfo, setBusinfo] = useState({});
-  const [fee, setFee] = useState(0);
+  const [fee, setFee] = useState(20);
   const [start, setStart] = useState("");
   const[end,setEnd]=useState("");
   const startAt = "";
   const endAt = "";
   const route = useRoute();
+  let price = 23;
 
   console.log("start from param ; ",route.params.startP);
+  console.log("seat from param ; ",seat);
+
 
   startP = route.params.startP;
   endP = route.params.endP;
@@ -28,12 +31,7 @@ export default function BusCard({ bus,startP,endP }) {
   const calculateFee =  async (businfo) => {
     //get start and end point
     let length = 0;
-    //get length of the busStops array
-    // businfo?.busStops?.map((stop, index) => {
-    //   console.log("stop", stop);
-    //   length++;
-    // });
-    
+
 
     console.log("\n\nlenghth\n\n",businfo?.busStops.length);
   
@@ -61,10 +59,10 @@ export default function BusCard({ bus,startP,endP }) {
     console.log("Bus",bus.routeID);
     try {
       const response = await axios.get(
-        constants.backend_url + "/route/getFirstAndLastBusStop/" + bus.routeID).then((res) => {
+        constants.backend_url + "/route/getFirstAndLastBusStop/" + bus.routeID).then(async (res) => {
           console.log("in async 2",res.data);
           setBusinfo(res.data);
-          calculateFee(businfo);
+          await calculateFee(businfo);
         })
         .catch((err) => {
           console.log("Error: ", JSON.stringify(err));
@@ -84,7 +82,7 @@ export default function BusCard({ bus,startP,endP }) {
   const onBusSelect = () => {
     //create a log 
     console.log("Bus Selected");
-    navigation.navigate("BusDetails");
+    navigation.navigate("BusDetails", { bus: bus._id, fee: fee, start: startP, end: endP, routeID: bus.routeID, seat:seat });
   };
 
   return (
@@ -113,11 +111,11 @@ export default function BusCard({ bus,startP,endP }) {
         />
       </View>
 
-      <View style={{marginLeft:120,marginTop:20, zIndex:4, paddingBottom:35}}>
+      <View style={{marginLeft:120,marginTop:20, zIndex:2, paddingBottom:35}}>
        <Text style={styles.textStation}>Bus Station</Text>
       </View> 
 
-      <View style={{marginLeft:120,marginTop:40, zIndex:4, paddingBottom:35}}>
+      <View style={{marginLeft:120,marginTop:40, zIndex:2, paddingBottom:35}}>
        <Text style={styles.textStation}>Bus Station</Text>
       </View> 
       
@@ -132,12 +130,12 @@ export default function BusCard({ bus,startP,endP }) {
         />
 
 
-      <View style={{marginLeft:270,marginTop:140, zIndex:3, paddingBottom:35}}>
+      <View style={{marginLeft:270,marginTop:140, zIndex:2, paddingBottom:35}}>
        <Text style={styles.textDuration}>{businfo.duration}.00</Text>
       </View> 
 
       
-
+      <View style={{zIndex:4}}>
         <CustomButton 
           title="plusCount"
           text = "Take it"
@@ -146,7 +144,7 @@ export default function BusCard({ bus,startP,endP }) {
           type={"takeIt"}
           onPress={() => onBusSelect()}
         />
-
+      </View>
       <View style={{marginLeft:20,marginTop:-32, zIndex:3, paddingBottom:35}}>
        <Text style={styles.textPrice}>{fee}💰</Text>
       </View> 
@@ -269,6 +267,7 @@ const styles = StyleSheet.create({
     padding: 3,
     paddingLeft: 10,
     paddingRight: 10,
+    overflow: 'hidden'
     // borderColor: "#EEB815",
     // borderWidth: 1,
   },

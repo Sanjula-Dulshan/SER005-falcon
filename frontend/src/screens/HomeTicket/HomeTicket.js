@@ -79,7 +79,7 @@ const SignInScreen = () => {
 
 
   return (
-    <ScrollView showsVerticalScrollIndicator={false}>
+
       <View style={styles.root}>
         <Image
           source={Logo}
@@ -127,15 +127,16 @@ const SignInScreen = () => {
           type="datepicker"
         />
 
-        
+        <View z>
         <DateTimePickerModal
                 isVisible={isDatePickerVisible}
                 mode="date"
                 onConfirm={handleConfirm}
                 onCancel={hideDatePicker}
+                isDarkModeEnabled={true}
               />
 
-
+        </View>
 
 
 
@@ -146,7 +147,7 @@ const SignInScreen = () => {
         />
         
       </View>
-    </ScrollView>
+
   );
 };
 

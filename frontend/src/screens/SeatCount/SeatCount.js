@@ -78,7 +78,7 @@ const SeatCount = ({startP,endP}) => {
 
   const onSeatCount = () => {
     AsyncStorage.setItem("seatCount", count.toString());
-    navigation.navigate("BusList", {startP: route.params.startP,endP:route.params.endP, seats: count});
+    navigation.navigate("BusList", {startP: route.params.startP,endP:route.params.endP, seat: count});
   };
 
   const IncreamentSeat = () => {
@@ -189,6 +189,7 @@ const styles = StyleSheet.create({
   root: {
     alignItems: "center",
     padding: 20,
+    zIndex: -1,
   },
   logo: {
     width: "70%",
