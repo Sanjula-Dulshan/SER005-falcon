@@ -2,6 +2,8 @@ import User from "../models/userModel.js";
 import { customAlphabet } from "nanoid";
 import bcrypt from "bcrypt";
 import sendMail from "./sendMail.js";
+import proofRequestMail from "./proofRequestMail.js";
+import Mongoose from "mongoose";
 const nanoid = customAlphabet("1234567890", 4);
 
 const userCtrl = {
@@ -14,7 +16,7 @@ const userCtrl = {
       const otp = nanoid();
 
       //Check if email already exists
-      const user = await User.findOne({ email });
+      const user = await User.findOne({ username });
       if (user) {
         return res.json({
           msg: "User already exists",
@@ -123,6 +125,68 @@ const userCtrl = {
     }
   },
 
+  //send user to password reset otp
+  sendPasswordResetOtp: async (req, res) => {
+    try {
+      const { username } = req.body;
+      const user = await User.findOne({ username });
+
+      if (!user) {
+        return res.json({
+          msg: "User does not exist",
+        });
+      }
+
+      //Generate random OTP
+      const otp = nanoid();
+
+      //Hash password
+      const otpHash = await bcrypt.hash(otp, 12);
+
+      await User.findOneAndUpdate({ username }, { otpHash });
+
+      sendMail(email, user.username, otp);
+      res.json({
+        msg: "Password reset OTP sent!",
+      });
+    } catch (err) {
+      console.log("Error: ", err);
+    }
+  },
+
+  //verify the OTP and reset the password
+  resetPassword: async (req, res) => {
+    try {
+      const { otp, username, password } = req.body;
+      const user = await User.findOne({ username });
+      let isMatch;
+
+      isMatch = await bcrypt.compare(otp, user.otpHash);
+
+      if (!isMatch) {
+        return res.json({
+          msg: "Incorrect OTP",
+        });
+      }
+
+      //Hash password
+      const passwordHash = await bcrypt.hash(password, 12);
+
+      await User.findOneAndUpdate(
+        { username },
+        {
+          password: passwordHash,
+        }
+      ).then(() => {
+        res.json({
+          msg: "Password reset success!",
+        });
+      });
+    } catch (err) {
+      console.log("Error: ", err);
+    }
+  },
+
   //get all users without admin and password with approved
   getUsers: async (req, res) => {
     try {
@@ -157,11 +221,48 @@ const userCtrl = {
           res.status(400).json(err);
         }
       } else {
-        await User.findOneAndDelete({ _id: id });
-        return res.json({
-          msg: "User rejected",
-        });
+        try {
+          await User.findOneAndDelete({ _id });
+          return res.json({
+            msg: "User rejected",
+          });
+        } catch (err) {
+          res.status(400).json(err);
+        }
       }
+    } catch (err) {
+      console.log("Error: ", err);
+    }
+  },
+
+  //send mail to the user requesting proof documents
+  requestProof: async (req, res) => {
+    try {
+      const { _id } = req.body;
+
+      //convert id to object id
+      const id = Mongoose.Types.ObjectId(_id);
+
+      //pipe line to get the user email and name using _id
+      const user = await User.aggregate([
+        {
+          $match: {
+            _id: id,
+          },
+        },
+        {
+          $project: {
+            email: 1,
+            name: 1,
+          },
+        },
+      ]).then((user) => {
+        res.json(user);
+        //send mail to the user
+        console.log("User: ", user);
+        console.log(user[0].email, user[0].name);
+        proofRequestMail(user[0].email, user[0].name);
+      });
     } catch (err) {
       console.log("Error: ", err);
     }

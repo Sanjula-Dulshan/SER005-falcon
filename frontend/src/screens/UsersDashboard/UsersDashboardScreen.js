@@ -6,6 +6,7 @@ import {
   Pressable,
   Modal,
   Alert,
+  Image,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
@@ -13,10 +14,14 @@ import CustomCard from "../../components/CustomCard";
 import CustomButton from "../../components/CustomButton/CustomButton";
 import axios from "axios";
 import constants from "../../constants/constants";
+import warning from "../../../assets/images/warning.png";
 
 const UsersDashboardScreen = () => {
   const [newUsers, setNewUsers] = useState([]);
+  const [userDetails, setUserDetails] = useState([]);
   const [approveModalVisible, setApproveModalVisible] = useState(false);
+  const [declineModalVisible, setDeclineModalVisible] = useState(false);
+  const [viewModalVisible, setViewModalVisible] = useState(false);
 
   useEffect(() => {
     axios.get(constants.backend_url + "/user/new").then((res) => {
@@ -24,18 +29,56 @@ const UsersDashboardScreen = () => {
     });
   }, [newUsers]);
 
-  const onApprovePressed = (data) => {
-    data.approvalStatus = "Approve";
+  const onApproveYesPressed = () => {
+    userDetails.approvalStatus = "Approve";
 
     try {
-      axios.put(constants.backend_url + "/user/approve", data).then((res) => {
-        console.log(res.data.msg);
-        console.log("res.data.user", res.data.user);
-      });
+      axios
+        .put(constants.backend_url + "/user/approve", userDetails)
+        .then((res) => {
+          console.log(res.data.msg);
+          console.log("res.data.user", res.data.user);
+          setApproveModalVisible(false);
+        });
     } catch (err) {
       console.log(err);
     }
   };
+
+  const onDeclineYesPressed = () => {
+    userDetails.approvalStatus = "Decline";
+    console.log("userDetails", userDetails);
+    try {
+      axios
+        .put(constants.backend_url + "/user/approve", userDetails)
+        .then((res) => {
+          console.log(res.data.msg);
+          console.log("res.data.user", res.data.user);
+          setDeclineModalVisible(false);
+        });
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  const approvePressed = (data) => {
+    setApproveModalVisible(true);
+    setUserDetails(data);
+  };
+
+  const declinePressed = (data) => {
+    setDeclineModalVisible(true);
+    setUserDetails(data);
+  };
+
+  const viewPressed = (data) => {
+    setViewModalVisible(true);
+    setUserDetails(data);
+    console.log("data: ", data);
+  };
+  const requestProof = () => {
+    console.log("_id: ", userDetails._id);
+  };
+
   const {
     control,
     handleSubmit,
@@ -75,7 +118,7 @@ const UsersDashboardScreen = () => {
                       bgColor="#EEB815"
                       fgColor={"white"}
                       type={"approve"}
-                      onPress={() => setApproveModalVisible(true)}
+                      onPress={handleSubmit(() => approvePressed(user))}
                     />
                     <CustomButton
                       title="Decline"
@@ -83,6 +126,7 @@ const UsersDashboardScreen = () => {
                       bgColor="#ffffff"
                       fgColor="#F40000"
                       type={"decline"}
+                      onPress={handleSubmit(() => declinePressed(user))}
                     />
                     <CustomButton
                       title="View"
@@ -90,6 +134,7 @@ const UsersDashboardScreen = () => {
                       bgColor="#ffffff"
                       fgColor="#EEB815"
                       type={"view"}
+                      onPress={handleSubmit(() => viewPressed(user))}
                     />
                   </View>
                 </View>
@@ -97,7 +142,7 @@ const UsersDashboardScreen = () => {
             );
           })}
 
-          {/* pop up modal */}
+          {/* pop up modal for approve */}
           <View style={styles.centeredView}>
             <View style={styles.modalContainer}>
               <Modal
@@ -111,9 +156,144 @@ const UsersDashboardScreen = () => {
               >
                 <View style={styles.centeredView}>
                   <View style={styles.modalView}>
-                    <Pressable style={[styles.fineButton, styles.buttonClose]}>
-                      <Text style={styles.textStyle}>SEND FINE</Text>
-                    </Pressable>
+                    <Image source={warning} />
+                    <Text style={[styles.modalText, { marginBottom: 25 }]}>
+                      Are you want to approve ?
+                    </Text>
+                    <View style={styles.alertButtonContainer}>
+                      <Pressable
+                        style={styles.warningBtnYes}
+                        onPress={onApproveYesPressed}
+                      >
+                        <Text style={[styles.modalText, { color: "#ffffff" }]}>
+                          Yes
+                        </Text>
+                      </Pressable>
+                      <Pressable
+                        style={styles.warningBtnNo}
+                        onPress={() =>
+                          setApproveModalVisible(!approveModalVisible)
+                        }
+                      >
+                        <Text style={[styles.modalText, { color: "#FBBC05" }]}>
+                          No
+                        </Text>
+                      </Pressable>
+                    </View>
+                  </View>
+                </View>
+              </Modal>
+            </View>
+          </View>
+
+          {/* pop up modal for View */}
+          <View style={styles.centeredView}>
+            <View style={styles.modalContainer}>
+              <Modal
+                style={styles.modal}
+                animationType="slide"
+                transparent={true}
+                visible={declineModalVisible}
+                onRequestClose={() => {
+                  setDeclineModalVisible(!declineModalVisible);
+                }}
+              >
+                <View style={styles.centeredView}>
+                  <View style={styles.modalView}>
+                    <Image source={warning} />
+                    <Text style={[styles.modalText, { marginBottom: 25 }]}>
+                      Are you want to reject ?
+                    </Text>
+                    <View style={styles.alertButtonContainer}>
+                      <Pressable
+                        style={styles.declineBtnYes}
+                        onPress={onDeclineYesPressed}
+                      >
+                        <Text style={[styles.modalText, { color: "#ffffff" }]}>
+                          Yes
+                        </Text>
+                      </Pressable>
+                      <Pressable
+                        style={styles.declineBtnNo}
+                        onPress={() =>
+                          setDeclineModalVisible(!declineModalVisible)
+                        }
+                      >
+                        <Text style={[styles.modalText, { color: "#FBBC05" }]}>
+                          No
+                        </Text>
+                      </Pressable>
+                    </View>
+                  </View>
+                </View>
+              </Modal>
+            </View>
+          </View>
+
+          {/* pop up modal for decline */}
+          <View style={styles.centeredView}>
+            <View style={styles.modalContainer}>
+              <Modal
+                style={styles.modal}
+                animationType="slide"
+                transparent={true}
+                visible={viewModalVisible}
+                onRequestClose={() => {
+                  setViewModalVisible(!viewModalVisible);
+                }}
+              >
+                <View style={styles.centeredView}>
+                  <View style={styles.modalView}>
+                    <Text
+                      style={[
+                        styles.modalText,
+                        { marginBottom: 25, textDecorationLine: "underline" },
+                      ]}
+                    >
+                      Registration Details
+                    </Text>
+                    <View style={{ marginBottom: 30 }}>
+                      <View style={styles.textContainer}>
+                        <Text style={styles.textTitle}>Name:</Text>
+                        <Text style={styles.text}>{userDetails.name}</Text>
+                      </View>
+                      <View style={styles.textContainer}>
+                        <Text style={styles.textTitle}>Username:</Text>
+                        <Text style={styles.text}>{userDetails.username}</Text>
+                      </View>
+                      <View style={styles.textContainer}>
+                        <Text style={styles.textTitle}>Email:</Text>
+                        <Text style={styles.text}>{userDetails.email}</Text>
+                      </View>
+                      <View style={styles.textContainer}>
+                        <Text style={styles.textTitle}>Contact no:</Text>
+                        <Text style={styles.text}>{userDetails.mobile}</Text>
+                      </View>
+                      <View style={styles.textContainer}>
+                        <Text style={styles.textTitle}>Account type:</Text>
+                        <Text style={styles.text}>{userDetails.role}</Text>
+                      </View>
+                    </View>
+                    <View style={styles.alertButtonContainer}>
+                      <Pressable
+                        style={styles.viewBtnYes}
+                        onPress={requestProof}
+                      >
+                        <Text
+                          style={[styles.viewModalText, { color: "#ffffff" }]}
+                        >
+                          Request proof
+                        </Text>
+                      </Pressable>
+                      <Pressable
+                        style={styles.viewBtnNo}
+                        onPress={() => setViewModalVisible(!viewModalVisible)}
+                      >
+                        <Text style={[styles.modalText, { color: "#FBBC05" }]}>
+                          Cancel
+                        </Text>
+                      </Pressable>
+                    </View>
                   </View>
                 </View>
               </Modal>
@@ -197,8 +377,8 @@ const styles = StyleSheet.create({
   modalView: {
     margin: 20,
     backgroundColor: "#D9D9D9",
-    borderRadius: 20,
-    padding: 35,
+    borderRadius: 15,
+    paddingVertical: 20,
     alignItems: "center",
     shadowColor: "#000",
     shadowOffset: {
@@ -225,8 +405,93 @@ const styles = StyleSheet.create({
     top: "50px",
     right: "calc(50% - 200px)",
     border: "1px solid #ccc",
-    padding: "16px",
+    padding: "1px",
     minHeight: "300px",
+  },
+  warningBtnYes: {
+    backgroundColor: "#FBBC05",
+    elevation: 7,
+    width: "100%",
+    height: 60,
+    maxWidth: 100,
+    padding: 15,
+    paddingStart: 20,
+    borderRadius: 25,
+  },
+  warningBtnNo: {
+    backgroundColor: "#FEFFDC",
+    borderColor: "#FBBC05",
+    borderWidth: 2,
+    elevation: 7,
+    width: "100%",
+    height: 60,
+    marginLeft: 75,
+    maxWidth: 100,
+    padding: 15,
+    paddingStart: 25,
+    borderRadius: 25,
+  },
+  modalText: {
+    fontWeight: "bold",
+    fontSize: 22,
+    height: 30,
+  },
+  alertButtonContainer: {
+    flexDirection: "row",
+  },
+
+  declineBtnYes: {
+    backgroundColor: "#EC5959",
+    elevation: 7,
+    width: "100%",
+    height: 60,
+    maxWidth: 100,
+    padding: 15,
+    paddingStart: 20,
+    borderRadius: 25,
+  },
+  declineBtnNo: {
+    backgroundColor: "#FEFFDC",
+    borderColor: "#FBBC05",
+    borderWidth: 2,
+    elevation: 7,
+    width: "100%",
+    height: 60,
+    marginLeft: 75,
+    maxWidth: 100,
+    padding: 15,
+    paddingStart: 25,
+    borderRadius: 25,
+  },
+
+  viewBtnYes: {
+    backgroundColor: "#FBBC05",
+    elevation: 7,
+    width: 300,
+    height: 60,
+    maxWidth: 100,
+    paddingTop: 8,
+    paddingStart: 20,
+    borderRadius: 25,
+  },
+  viewBtnNo: {
+    backgroundColor: "#FEFFDC",
+    borderColor: "#FBBC05",
+    borderWidth: 2,
+    elevation: 7,
+    width: "100%",
+    height: 60,
+    marginLeft: 75,
+    maxWidth: 100,
+    padding: 15,
+
+    paddingStart: 10,
+    borderRadius: 25,
+  },
+  viewModalText: {
+    fontWeight: "bold",
+    fontSize: 20,
+    height: 50,
   },
 });
 export default UsersDashboardScreen;
