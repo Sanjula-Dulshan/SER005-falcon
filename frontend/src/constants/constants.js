@@ -1,5 +1,5 @@
 const constants = {
-  backend_url: "http://192.168.1.217:8070",
+  backend_url: "http://192.168.1.103:8070",
 
 };
 
