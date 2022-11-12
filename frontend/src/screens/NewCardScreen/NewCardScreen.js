@@ -2,22 +2,21 @@ import React, { useState } from "react";
 import {
   View,
   Text,
-  Image,
   StyleSheet,
   useWindowDimensions,
   ScrollView,
   TextInput,
   Alert,
 } from "react-native";
-import CustomInput from "../../components/CustomInput/CustomInput";
 import CustomButton from "../../components/CustomButton/CustomButton";
 import { useNavigation } from "@react-navigation/native";
 import { useForm, Controller } from "react-hook-form";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-//import { CreditCardInput, LiteCreditCardInput } from "react-native-credit-card-input";
+import { CreditCardInput, LiteCreditCardInput } from "react-native-credit-card-input";
+import axios from "axios";
+import Constants from "../../constants/constants";
 
 const NewCardScreen = () => {
-  const { height } = useWindowDimensions();
   const navigation = useNavigation();
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
@@ -29,71 +28,106 @@ const NewCardScreen = () => {
     handleSubmit,
     formState: { errors },
   } = useForm();
-  let amount1='';
-  const USE_LIGHT_CREDIT_CARD_INPUT = false;
-  const[amount,setAmount]=useState('');
-   async function getAmount(){
-    try {
-      const value = await AsyncStorage.getItem('amount')
-      if(value !== null) {
-        // value previously stored
-                //amount1=value;
-                setAmount(value);
-                console.log(amount);
-  
-      }
-    } catch(e) {
-      // error reading value
+
+  const topupwallet = async (data) => {
+    console.log(data);
+
+    const topup1= parseFloat(topup);
+    const amount1= parseFloat(new_amount);
+    const loan1= parseFloat(new_loan_amount);
+    const loan2= topup1-loan1;
+    let amount=0.00;
+    let loan_amount=0.00;
+    let user_id='u002';
+    if(loan2<0){
+       amount=amount1;
+       loan_amount=loan2 * (-1);
+       await axios.patch(`${Constants.backend_url}/wallet/update/${user_id}`, {
+        user_id: user_id,
+        amount: amount,
+        loan_amount: loan_amount,
+        });
+       console.log('A1',amount);
+       console.log('L1',loan_amount);
+    }else{
+      amount=amount1+loan2;
+      loan_amount=0.00;
+      await axios.patch(`${Constants.backend_url}/wallet/update/${user_id}`, {
+        user_id: user_id,
+        amount: amount,
+        loan_amount: loan_amount,
+        });
+      console.log('A2',amount);
+      console.log('L2',loan_amount);
     }
-  }
-  getAmount()[0];
+    navigation.navigate("TopupScreen");
+  };
+
+  let newamount='';
+  let newloan_amount='';
+  let new_topup='';
+  const[new_amount,setAmount]=useState('');
+  const[new_loan_amount,setLoanAmount]=useState('');
+  const[topup,setTopupAmount]=useState('');
+  const USE_LIGHT_CREDIT_CARD_INPUT = false;
+
   
-  // _onchange = (formData) => {
-  //   console.log(JSON.stringify(formData, null, " "));
+  const amount1=async()=>{
+    newamount=await AsyncStorage.getItem("amount");
+    setAmount(newamount);
+    newloan_amount=await AsyncStorage.getItem("loan_amount");
+    setLoanAmount(newloan_amount);
+    new_topup=await AsyncStorage.getItem("topup");
+    setTopupAmount(new_topup);
+  
+  }
+  amount1();
+  console.log(new_amount);
+  console.log(new_loan_amount);
+  console.log(topup);
+
+  //   _onchange => form => {
+  //   console.log(JSON.stringify(form, null, " "));
   // };
 
-  // _onFocus = (field) => console.log("focusing", field);
+  // _onFocus => field => console.log("focusing", field);
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
       <View style={styles.root}>
         <View
           style={{ backgroundColor: "white", width: "120%", marginTop: "-6%" }}
         >
-          <Text style={styles.title}>Card Details</Text>
+       <Text style={styles.title}>Card Details</Text>
         </View>
-        {/* <View style={styles.card}>
+        <View style={styles.card}>
         {USE_LIGHT_CREDIT_CARD_INPUT ? 
         (<LiteCreditCardInput
-          _onchange={_onchange}
-          _onFocus={_onFocus}
+           _onchange={console.log("change")}
+          // _onFocus={_onFocus}
+          autoFocus={console.log("focus")}
         />):(<CreditCardInput
-          _onchange={_onchange}
-          _onFocus={_onFocus}
+          // _onchange={_onchange}
+          // _onFocus={_onFocus}
         />)
         }
         <Text style={styles.info}> Three digits that on backside of the card</Text>
-        </View> */}
-        <View style={styles.value}>
+        </View>
+      <View style={styles.value}>
           <Text style={styles.amount}>You will be charged</Text>
-          <CustomInput
-            name="total"
-            placeholder={amount}
-            control={control}
-            //add rules
-            rules={{
-              pattern: {
-                value: /[0-9]/,
-                message: "Should Include Only Numbers",
-                //disabled: true,
-                defaultValue: "RS. ",
-              },
-            }}
-          />
+        <TextInput
+          style={styles.amount3}
+          name="total"
+          placeholder={topup}
+          value={`Rs.${topup}`}
+          control={control}
+           
+        />
+       
         </View>
 
         <CustomButton
           text={loading ? "Loading..." : "Top-up Wallet Now"}
-          //onPress={handleSubmit(onSignInPressed)}
+          onPress={handleSubmit(topupwallet)}
           type="WALLET"
         />
       </View>
@@ -149,13 +183,33 @@ const styles = StyleSheet.create({
     marginLeft: "0%",
     marginTop: "-4%",
   },
+  amount3: {
+    fontWeight: "bold",
+    fontSize: 20,
+    marginVertical: 5,
+    marginRight: "auto",
+    marginLeft: "0%",
+    marginTop: "0%",
+    marginBottom: "0%",
+    backgroundColor: "white",
+    width: "100%",
+    height: "60%",
+    borderRadius: 10,
+    paddingLeft: "5%",
+    paddingTop: "3%",
+    paddingBottom: "3%",
+    paddingRight: "5%",
+    color: "black",
+    borderColor: "white",
+    borderWidth: 1,
+  },
   card: {
     padding: 20,
     height: 495,
   },
   value: {
     width: "90%",
-    height: 60,
+    height: 70,
     marginBottom: "1%",
   },
 });

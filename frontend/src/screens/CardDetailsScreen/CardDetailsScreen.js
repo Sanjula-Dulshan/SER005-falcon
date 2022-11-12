@@ -15,20 +15,56 @@ import CustomDropDown from "../../components/CustomDropDown";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from "axios";
 import Constants from "../../constants/constants";
+import { Button } from "native-base";
 
 
 const CardDetailsScreen = () => {
   const navigation = useNavigation();
   const [loading, setLoading] = useState(false);
   const options = [
+    { label: "4XXX XXXX XXXX 5666", value: "saved_1" },
     { label: "New Card", value: "new_card" },
-    { label: "XXXX XXXX XXXX 4523", value: "saved_1" },
   ];
   const {
     control,
     handleSubmit,
     formState: { errors },
   } = useForm();
+
+  const [cardNumber1, setCardNumber] = useState("");
+  const[cvc1,setCvc]=useState("");
+  const[expiry1,setExpiry]=useState("");
+   let cardNumber;
+   let cvc;
+   let expiry;
+  let user_id;
+  const [card, setCard] = useState([]);
+  useEffect(() => {
+    const getcard = async () => {
+      user_id="u002";
+      try{
+      const res= await axios.get(`${Constants.backend_url}/card/getMycard/${user_id}` );
+      cardNumber=res.data[0].lastFourDigits;
+      setCardNumber(cardNumber);
+      console.log(cardNumber1);
+      cvc=res.data[0].cardSecurityCode;
+      setCvc(cvc);
+      console.log(cvc1);
+      expiry=res.data[0].ExDate;
+      setExpiry(expiry);
+      console.log(expiry1);
+
+    } catch (error) {
+      console.log(error);
+    }
+
+      };
+    getcard();
+  }, );
+
+  // console.log(cardNumber);
+  // console.log(cvc);
+  // console.log(expiry);
 
   const topupwallet = async (data) => {
     console.log(data);
@@ -61,39 +97,6 @@ const CardDetailsScreen = () => {
       console.log('A2',amount);
       console.log('L2',loan_amount);
     }
-    // setLoading(true);
-    // try {
-    //   const response = await fetch(
-    //     "https://api.woofics.com/api/topup_wallet",
-    //     {
-    //       method: "POST",
-    //       headers: {
-    //         Accept: "application/json",
-    //         "Content-Type": "application/json",
-    //       },
-    //       body: JSON.stringify({
-    //         amount: data.amount,
-    //         card_number: data.card_number,
-    //         card_cvv: data.card_cvv,
-    //         card_expiry: data.card_expiry
-    //       }),
-    //     }
-    //   );
-    //   const json = await response.json();
-    //   console.log(json);
-    //   if (json.success === true)
-    //     Alert.alert("Topup Successfully!", json.message, [
-    //       {
-    //         text: "OK",
-    //         onPress: () => navigation.navigate("Wallet"),
-    //       },
-    //     ]);
-    //   else Alert.alert("Error", json.message);
-    //   setLoading(false);
-    // } catch (error) {
-    //   console.error(error);
-    //   setLoading(false);
-    // }
   };
 
    
@@ -115,73 +118,78 @@ const CardDetailsScreen = () => {
   
   }
   amount1();
-  console.log(new_amount);
-  console.log(new_loan_amount);
-  console.log(topup);
+
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
       <View style={styles.root}>
       <View style={{backgroundColor:"white",width:"120%",marginTop:"-6%"}}>
-        <Text style={styles.title}>Card Details</Text>
+        <Text style={styles.title}>Card Details</Text> 
         </View>
-   
 
         <View style={styles.root}>
         <Text style={styles.topup1}>Select Card</Text>
         <CustomDropDown
           aLabel="Select card"
-          placeholder="Select card"
+          placeholder="4XXX XXXX XXXX 5666"
           options={options}
         /> 
         </View>
         
         <Text style={styles.topup2}>CARD NUMBER</Text>
-        <CustomInput
+        <TextInput
+         style={styles.amount4}
           name="Card_number"
           placeholder="Card Number"
           control={control}
+          value={cardNumber1}
           //add rules
             rules={{
                 required: "Card Number is required",
                 pattern: {
                 value: /[0-9]/,
                 message: "Should Include Only Numbers",
+                disabled: true,
                 },
             }}
         />
          <Text style={styles.topup}>VALID THRU</Text>
-        <CustomInput
+        <TextInput
+         style={styles.amount4}
           name="card_expiry"
           placeholder="Valid Thru"
           control={control}
+          value={expiry1}
           //add rules
             rules={{
                 required: "Expire date is required",
+                disabled: true,
             }}
         />
          <Text style={styles.topup}>CVC</Text>
-        <CustomInput
+        <TextInput
+          style={styles.amount4}
           name="card_cvv"
-          placeholder="CVC"
+          placeholder={cvc1}
           placeholderColor={"darkgray"}
           control={control}
+          value={cvc1}
           //add rules
             rules={{
                 required: "CVC is required",
                 pattern: {
                 value: [0-9],
                 message: "Should Include Only Numbers",
+                disabled: true,
                 },
             }}
         />
-       <Text style={styles.info}> Three digits that on backside of the card</Text>
+       {/* <Text style={styles.info}> Three digits that on backside of the card</Text> */}
        <Text style={styles.amount}>You will be charged</Text>
         <TextInput
           style={styles.amount2}
           name="total"
           placeholder={topup}
-          defaultValue="Rs. "
-          value= {topup}
+          value={`Rs.${topup}`}
           control={control}
           //add rules
             rules={{
@@ -277,6 +285,26 @@ const styles = StyleSheet.create({
       marginRight: "auto",
       marginLeft: "0%",
       marginTop: "0%",
+      marginBottom: "0%",
+      backgroundColor: "white",
+      width: "100%",
+      height: "8%",
+      borderRadius: 10,
+      paddingLeft: "5%",
+      paddingTop: "3%",
+      paddingBottom: "3%",
+      paddingRight: "5%",
+      color: "black",
+      borderColor: "white",
+      borderWidth: 1,
+    },
+    amount4: {
+      fontWeight: "bold",
+      fontSize: 20,
+      marginVertical: 5,
+      marginRight: "auto",
+      marginLeft: "0%",
+      marginTop: "3%",
       marginBottom: "0%",
       backgroundColor: "white",
       width: "100%",

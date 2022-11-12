@@ -23,6 +23,9 @@ const TopupScreen = () => {
         const res = await axios.get(`${Constants.backend_url}/wallet/details/${user_id}`);
         setAmount(res.data[0].amount);
         setLoanAmount(res.data[0].loan_amount);
+        const res2 = await axios.get(`${Constants.backend_url}/card/getMycard/${user_id}`);
+        setcard_count(res2.data.length);
+        console.log(card_count);
       } catch (error) {
         console.log(error);
       }
@@ -39,7 +42,9 @@ const TopupScreen = () => {
     formState: { errors },
   } = useForm();
 
-
+  const details= async () => {
+    navigation.navigate("ViewCardScreen");
+  }
 
   const proceed = (data) => {
      const data1=data.amount;
@@ -51,6 +56,7 @@ const TopupScreen = () => {
 
   const[amount,setAmount]=useState(0);
   const[loan_amount,setLoanAmount]=useState(0);
+  const[card_count,setcard_count]=useState(0);
 
 
   return (
@@ -84,16 +90,16 @@ const TopupScreen = () => {
           onPress={handleSubmit(proceed)}
           type="PROCEED"
         />
-         <Text style={styles.savecard}>1 Saved card(s)</Text>
+         <Text style={styles.savecard}>{card_count} Saved card(s)</Text>
         <CustomButton
               text="View Details"
-             // onPress={viewCard}
+              onPress={details}
               type="VIEWCARD"
             />
         <View style = {styles.lineStyle} />
         <CustomButton
           text={loading ? "Loading..." : "Transaction History"}
-          //onPress={handleSubmit(onSignInPressed)}
+          onPress={() => navigation.navigate("ReportDownloadScreen")}
           type="HISTORY"
         />
 

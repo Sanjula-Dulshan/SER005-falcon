@@ -35,6 +35,17 @@ const Navigation = () => {
     <NavigationContainer>
 
       <Stack.Navigator >
+
+      <Stack.Screen
+          name="TopupScreen"
+          component={TopupScreen}
+          options={{ headerShown: false }}
+        />
+              <Stack.Screen
+          name="NewCardScreen"
+          component={NewCardScreen}
+          options={{ headerShown: false }}
+        />
         {/* <Stack.Screen name="SignIn" component={SignInScreen} /> */}
         <Stack.Screen name="RouteSearch" component={RouteSearch} />
         {/* <Stack.Screen name="PassengersList" component={PassengerList} /> */}
@@ -103,17 +114,9 @@ const Navigation = () => {
           component={HomeTicket}
           options={{ headerShown: false }}
         />
-        <Stack.Screen
-          name="NewCardScreen"
-          component={NewCardScreen}
-          options={{ headerShown: false }}
-        />
+
             
-        <Stack.Screen
-          name="TopupScreen"
-          component={TopupScreen}
-          options={{ headerShown: false }}
-        />
+
         <Stack.Screen
           name="CardDetailsScreen"
           component={CardDetailsScreen}
@@ -126,7 +129,7 @@ const Navigation = () => {
         />
 
         <Stack.Screen
-          name="ViewCardSceen"
+          name="ViewCardScreen"
           component={ViewCardSceen}
           options={{ headerShown: false }}
         />
