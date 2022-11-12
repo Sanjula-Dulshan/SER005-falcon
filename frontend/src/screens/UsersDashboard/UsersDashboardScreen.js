@@ -76,6 +76,14 @@ const UsersDashboardScreen = () => {
   };
   const requestProof = () => {
     console.log("_id: ", userDetails._id);
+
+    //send mail
+    axios.post(constants.backend_url + "/user/proof", userDetails)
+      .then((res) => {
+        Alert.alert("Proof Requested", res.data.msg);
+        console.log(res.data.msg);
+      }
+      );
   };
 
   const {
