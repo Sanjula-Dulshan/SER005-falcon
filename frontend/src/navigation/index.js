@@ -33,23 +33,42 @@ const Stack = createNativeStackNavigator();
 const Navigation = () => {
   return (
     <NavigationContainer>
-
-      <Stack.Navigator >
-        {/* <Stack.Screen name="SignIn" component={SignInScreen} /> */}
-        <Stack.Screen name="RouteSearch" component={RouteSearch} />
-        {/* <Stack.Screen name="PassengersList" component={PassengerList} /> */}
-
-        {/* <Stack.Screen name="ReportUser" component={ReportUser} /> */}
-
-        {/* <Stack.Screen name="Sheet" component={BottomSheet} /> */}
-
-        {/* <Stack.Screen name="ReportUserList" component={ReportUserList} /> */}
-
+      <Stack.Navigator>
         <Stack.Screen
           name="SignIn"
           component={SignInScreen}
           options={{ headerShown: false }}
         />
+
+        <Stack.Screen
+          name="RouteSearch"
+          component={RouteSearch}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="PassengersList"
+          component={PassengerList}
+          options={{ headerShown: false }}
+        />
+
+        <Stack.Screen
+          name="ReportUser"
+          component={ReportUser}
+          options={{ headerShown: false }}
+        />
+
+        <Stack.Screen
+          name="Sheet"
+          component={BottomSheet}
+          options={{ headerShown: false }}
+        />
+
+        <Stack.Screen
+          name="ReportUserList"
+          component={ReportUserList}
+          options={{ headerShown: false }}
+        />
+
         <Stack.Screen
           name="ReportDownloadScreen"
           component={ReportDownloadScreen}
@@ -108,7 +127,7 @@ const Navigation = () => {
           component={NewCardScreen}
           options={{ headerShown: false }}
         />
-            
+
         <Stack.Screen
           name="TopupScreen"
           component={TopupScreen}
@@ -131,7 +150,6 @@ const Navigation = () => {
           options={{ headerShown: false }}
         />
         <Stack.Screen name="New Users" component={UsersDashboardScreen} />
-
       </Stack.Navigator>
     </NavigationContainer>
   );
