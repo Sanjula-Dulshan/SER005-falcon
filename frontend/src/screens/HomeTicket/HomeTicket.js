@@ -42,6 +42,7 @@ const SignInScreen = () => {
     setDatePickerVisibility(true);
   };
 
+  
   const hideDatePicker = () => {
     setDatePickerVisibility(false);
   };
