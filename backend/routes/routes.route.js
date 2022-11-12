@@ -19,6 +19,13 @@ router.route("/").get((req,res)=>{
     .catch(err => res.status(400).json('Error: ' + err));
 });
 
+//get routes by routeID
+router.route("/getRoutesByRouteID/:routeId").get((req,res)=>{
+    Route.find({routeID: req.params.routeId})
+    .then(routes => res.json(routes))
+    .catch(err => res.status(400).json('Error: ' + err));
+});
+
 router.post("/",(req,res)=>{
     
     const routeID = req.body.routeID;
@@ -55,6 +62,8 @@ router.get("/",(req,res)=>{
     .catch(err => res.status(400).json('Error: ' + err));
 });
 
+
+
 router.delete("/:id",(req,res)=>{
     Route.findByIdAndDelete(req.params.id)
     .then(routes => res.json(routes))
@@ -82,9 +91,12 @@ router.put("/:id",(req,res)=>{
 
 //function to get all routes contains busStops given in order
 async function getRoutesByBusStops(busStopsArray,res){
-
+    console.log("Bus stops ",busStopsArray);
       await Route.find({"busStops.stop": {$all: busStopsArray}})
-        .then(routes => setRoutes(routes))
+        .then(routes => {
+            setRoutes(routes);
+            console.log("Routes ",routes);
+        })
         .catch(err => console.log(err)); 
     return Routes;    
     
@@ -102,10 +114,22 @@ function getBussesByRouteID(routeIDArray){
     })
 }
 
+//get first and last bus stop using routeID
+router.get("/getFirstAndLastBusStop/:routeID",(req,res)=>{
+    Route.findOne({routeID:req.params.routeID})
+    .then(routes => {
+        const firstStop = routes.busStops[0];
+        const lastStop = routes.busStops[routes.busStops.length-1];
+        res.json(routes);
+    })
+    .catch(err => res.status(400).json('Error: ' + err));
+});
+
 
 //function to get all routes contains busStops in order and get busses matches any routeID in array
 router.post("/getBussesByBusStops",async (req,res)=>{
-    let busStopsArray = req.body.busStops;
+    console.log("Bus stops 1",req.body);
+    let busStopsArray = req.body;
     let routesArray = await getRoutesByBusStops(busStopsArray,res);
 
 
@@ -121,8 +145,9 @@ router.post("/getBussesByBusStops",async (req,res)=>{
         i++;
     }
 
+    console.log("Route ID Array ",routeIDArray);
     getBussesByRouteID(routeIDArray).then((busses)=>{
-        console.log(busses);
+        console.log("Get Bus",busses);
         res.json(busses);
     }).catch((err)=>{
         res.status(400).json('Error: ' + err);

@@ -1,20 +1,101 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { StyleSheet, Text, View, TouchableOpacity, Image } from "react-native";
 import CustomButton from "../CustomButton/CustomButton";
 import StepIndicator from 'react-native-step-indicator';
+import { useNavigation } from "@react-navigation/native";
+import axios from "axios";
+import constants from "../../constants/constants";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useRoute } from "@react-navigation/native";
 
-export default function BusCard({ start }) {
+
+export default function BusCard({ bus,startP,endP, seat }) {
+  const navigation = useNavigation();
+  const [businfo, setBusinfo] = useState({});
+  const [fee, setFee] = useState(20);
+  const [start, setStart] = useState("");
+  const[end,setEnd]=useState("");
+  const startAt = "";
+  const endAt = "";
+  const route = useRoute();
+  let price = 23;
+
+  console.log("start from param ; ",route.params.startP);
+  console.log("seat from param ; ",seat);
+
+
+  startP = route.params.startP;
+  endP = route.params.endP;
+
+  
+  const calculateFee =  async (businfo) => {
+    //get start and end point
+    let length = 0;
+
+
+    console.log("\n\nlenghth\n\n",businfo?.busStops.length);
+  
+      //get index of start and end point
+      for (let i = 0; i < businfo?.busStops.length; i++) {
+        console.log("start",businfo?.busStops[i].stop," :> " ,startP);
+        console.log("end",businfo?.busStops[i].stop," :> " ,endP);
+        if (businfo?.busStops[i].stop == startP) {
+          var startIndex = i;
+        }
+        if (businfo?.busStops[i].stop  == endP) {
+          console.log("end",businfo?.busStops[i].stop," :> " ,end);
+          var endIndex = i;
+        }
+      }
+      //calculate fee
+      const fee = (endIndex - startIndex) * 10;
+      setFee(fee);
+    
+  }
+
+
+  //get route details using bus id
+  const getRouteDetails = async (bus) => {
+    console.log("Bus",bus.routeID);
+    try {
+      const response = await axios.get(
+        constants.backend_url + "/route/getFirstAndLastBusStop/" + bus.routeID).then(async (res) => {
+          console.log("in async 2",res.data);
+          setBusinfo(res.data);
+          await calculateFee(businfo);
+        })
+        .catch((err) => {
+          console.log("Error: ", JSON.stringify(err));
+        });
+    } catch (err) {
+      console.log("Errort: ", JSON.stringify(err));
+    }
+  };
+
+  useEffect(() => {
+    getRouteDetails(bus);
+    
+  }, []);
+
+  
+
+  const onBusSelect = () => {
+    //create a log 
+    console.log("Bus Selected");
+    navigation.navigate("BusDetails", { bus: bus._id, fee: fee, start: startP, end: endP, routeID: bus.routeID, seat:seat });
+  };
+
   return (
     <View style={styles.container}>
       
       <View style={styles.card}>
 
-      <View style={{marginLeft:20,marginTop:50, zIndex:4, paddingBottom:35}}>
-       <Text style={styles.textTime}>6.30</Text>
+      <View style={{marginLeft:20,marginTop:50, zIndex:2, paddingBottom:35}}>
+       <Text style={styles.textTime}>{businfo?.startTime}</Text>
       </View> 
 
-      <View style={{marginLeft:20,marginTop:40, zIndex:4, paddingBottom:35}}>
-       <Text style={styles.textTime}>6.30</Text>
+      <View style={{marginLeft:20,marginTop:40, zIndex:0, paddingBottom:35}}>
+       <Text style={styles.textTime}>{businfo.endTime}</Text>
       </View> 
 
       
@@ -26,15 +107,15 @@ export default function BusCard({ start }) {
           customStyles={thirdIndicatorStyles}
           currentPosition={2}
           direction='vertical'
-          labels={[start, 'Kataragama']}
+          labels={[businfo.startPoint, businfo.endPoint]}
         />
       </View>
 
-      <View style={{marginLeft:120,marginTop:20, zIndex:4, paddingBottom:35}}>
+      <View style={{marginLeft:120,marginTop:20, zIndex:2, paddingBottom:35}}>
        <Text style={styles.textStation}>Bus Station</Text>
       </View> 
 
-      <View style={{marginLeft:120,marginTop:40, zIndex:4, paddingBottom:35}}>
+      <View style={{marginLeft:120,marginTop:40, zIndex:2, paddingBottom:35}}>
        <Text style={styles.textStation}>Bus Station</Text>
       </View> 
       
@@ -49,22 +130,23 @@ export default function BusCard({ start }) {
         />
 
 
-      <View style={{marginLeft:270,marginTop:140, zIndex:3, paddingBottom:35}}>
-       <Text style={styles.textDuration}>6.30</Text>
+      <View style={{marginLeft:270,marginTop:140, zIndex:2, paddingBottom:35}}>
+       <Text style={styles.textDuration}>{businfo.duration}.00</Text>
       </View> 
 
       
-
+      <View style={{zIndex:4}}>
         <CustomButton 
           title="plusCount"
           text = "Take it"
           bgColor="#EEB815"
           fgColor={"white"}
           type={"takeIt"}
+          onPress={() => onBusSelect()}
         />
-
+      </View>
       <View style={{marginLeft:20,marginTop:-32, zIndex:3, paddingBottom:35}}>
-       <Text style={styles.textPrice}>45💰</Text>
+       <Text style={styles.textPrice}>{fee}💰</Text>
       </View> 
 
       </View>
@@ -185,6 +267,7 @@ const styles = StyleSheet.create({
     padding: 3,
     paddingLeft: 10,
     paddingRight: 10,
+    overflow: 'hidden'
     // borderColor: "#EEB815",
     // borderWidth: 1,
   },

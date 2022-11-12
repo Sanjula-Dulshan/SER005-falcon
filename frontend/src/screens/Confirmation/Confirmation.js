@@ -118,7 +118,7 @@ const styles = StyleSheet.create({
   homelogo: {
     width: "100%",
 
-    marginTop: 150,
+    marginTop: 90,
     maxWidth: 300,
     maxHeight: 300,
     //scale image

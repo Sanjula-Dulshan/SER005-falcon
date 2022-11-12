@@ -47,6 +47,7 @@ const SignInScreen = () => {
         //if a user logs in, navigate to user screen
         else {
           //navigation.navigate("User");
+          navigation.navigate("HomeTicket");
         }
       }
     });

@@ -16,6 +16,8 @@ import CustomButton from "../../components/CustomButton/CustomButton";
 import { useNavigation } from "@react-navigation/native";
 import { useForm, Controller } from "react-hook-form";
 import StepIndicator from 'react-native-step-indicator';
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useRoute } from "@react-navigation/native";
 
 // const [date, setDate] = useState(0)
 // const [open, setOpen] = useState(false)
@@ -46,16 +48,27 @@ const customStyles = {
 };
 
 
- 
+
+
+ //get start point and end point from params
+// const {startP,endP} = route.params;
 
 
 
 
+const SeatCount = ({startP,endP}) => {
+  
+  const route = useRoute();
 
-const SignInScreen = () => {
   const { height } = useWindowDimensions();
   const navigation = useNavigation();
   const [loading, setLoading] = useState(false);
+  const [count, setCount] = useState(1);
+
+
+  console.log("Seat", route.params);
+
+  const AVAILABLE_SEATS = 52;
 
   const {
     control,
@@ -63,43 +76,34 @@ const SignInScreen = () => {
     formState: { errors },
   } = useForm();
 
+  const onSeatCount = () => {
+    AsyncStorage.setItem("seatCount", count.toString());
+    navigation.navigate("BusList", {startP: route.params.startP,endP:route.params.endP, seat: count});
+  };
 
+  const IncreamentSeat = () => {
+    if(count < AVAILABLE_SEATS ){
+      setCount(count + 1)
+    }
+  }
 
-  const onSignInPressed = async (data) => {
-    if (loading) {
-      return;
+  const DecreamentSeat = () => {
+    if(count >= 2){
+      setCount(count - 1)
     }
 
-    setLoading(true);
-    try {
-      const response = await Auth.signIn(data.username, data.password);
-      console.log(response);
-    } catch (e) {
-      Alert.alert("Oops", e.message);
-    }
-    setLoading(false);
-  };
+  }
 
-  const onForgotPasswordPressed = () => {
-    navigation.navigate("ForgotPassword");
-  };
 
-  const onSignUpPress = () => {
-    navigation.navigate("SignUp");
-  };
-
-  const buttonTextStyle = {
-    color: "#EEB815"
-};
-
+  
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
 
-<View style={{flex: 1, marginTop: 80}} >
+<View style={{flex: 1, marginTop: 10}} >
 
         <StepIndicator
          customStyles={customStyles}
-         currentPosition={3}
+         currentPosition={1}
          labels={labels}
     />
     </View>
@@ -107,12 +111,12 @@ const SignInScreen = () => {
       <View>
           {/* add a text in middle of the screen  */}
         <Text style={styles.text}>Pick your seat count</Text>
-        <Text style={styles.AvailableText}>Available Seat : 52</Text>
+        <Text style={styles.AvailableText}>Available Seat : {AVAILABLE_SEATS - count}</Text>
         
 
       </View> 
       <View>
-      <Text style={styles.SeatCountText}>00</Text>
+      <Text style={styles.SeatCountText}>{count<10?"0":""}{count}</Text>
       </View>
 
       <View>
@@ -132,11 +136,13 @@ const SignInScreen = () => {
         
         <CustomInput
           name="startPoint"
-          placeholder="01"
+          placeholder={count.toString()}
           control={control}
+          value="dsf"
           rules={{ required: "Start Point is required" }}
           style={styles.countText}
           type={"count"}
+          onTextChange={(text) => setCount(text)}
         />
 
 
@@ -151,6 +157,7 @@ const SignInScreen = () => {
           bgColor={"black"}
           fgColor={"white"}
           type={"minus"}
+          onPress={DecreamentSeat}
         />
 
         <CustomButton 
@@ -160,6 +167,7 @@ const SignInScreen = () => {
           bgColor={"black"}
           fgColor={"white"}
           type={"plus"}
+          onPress={IncreamentSeat}
         />
 
 
@@ -168,7 +176,7 @@ const SignInScreen = () => {
 
         <CustomButton
           text={loading ? "Loading..." : "Check Buses"}
-          onPress={handleSubmit(onSignInPressed)}
+          onPress={onSeatCount}
           type = {"seat"}
         />
         
@@ -181,6 +189,7 @@ const styles = StyleSheet.create({
   root: {
     alignItems: "center",
     padding: 20,
+    zIndex: -1,
   },
   logo: {
     width: "70%",
@@ -210,6 +219,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     marginVertical: 5,
     marginRight: "auto",
+    paddingLeft: 20,
   },
 
   countText: {
@@ -249,4 +259,4 @@ const styles = StyleSheet.create({
 
 });
 
-export default SignInScreen;
+export default SeatCount;
