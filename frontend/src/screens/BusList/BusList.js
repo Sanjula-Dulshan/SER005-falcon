@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -8,7 +8,6 @@ import {
   ScrollView,
   TextInput,
   Alert,
-  DatePickerAndroid,
 } from "react-native";
 import Logo from "../../../assets/images/count_circle.png";
 import CustomInput from "../../components/CustomInput/CustomInput";
@@ -17,9 +16,11 @@ import { useNavigation } from "@react-navigation/native";
 import { useForm, Controller } from "react-hook-form";
 import StepIndicator from 'react-native-step-indicator';
 import BusCard from "../../components/BusCard/busCard";
+import axios from "axios";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import constants from "../../constants/constants";
+import { useRoute } from "@react-navigation/native";
 
-// const [date, setDate] = useState(0)
-// const [open, setOpen] = useState(false)
 
 const labels = ["Trip Details","Seat","Bus List","Bus Details","Booked"];
 const customStyles = {
@@ -53,10 +54,19 @@ const customStyles = {
 
 
 
-const SignInScreen = () => {
+const BusList = ({startP,endP}) => {
   const { height } = useWindowDimensions();
   const navigation = useNavigation();
   const [loading, setLoading] = useState(false);
+  const [start, setStart] = useState("");
+  const [end, setEnd] = useState("");
+  const [buses, setBuses] = useState([]);
+
+  const route = useRoute();
+  
+  //create an string array of size 2 
+  let newData = new Array(2);
+
 
   const {
     control,
@@ -64,39 +74,58 @@ const SignInScreen = () => {
     formState: { errors },
   } = useForm();
 
+  useEffect(() => {
+
+    //get start and end location from async storage
+
+    console.log("\n\nseat count", route.params.seat,"\n\n");
 
 
-  const onSignInPressed = async (data) => {
-    if (loading) {
-      return;
-    }
+      AsyncStorage.getItem("startPoint").then((value) =>  {
+        console.log("start", value);
+        newData[0] = value;
+        setStart(value);
+      });
 
-    setLoading(true);
-    try {
-      const response = await Auth.signIn(data.username, data.password);
-      console.log(response);
-    } catch (e) {
-      Alert.alert("Oops", e.message);
-    }
-    setLoading(false);
-  };
+      AsyncStorage.getItem("endPoint").then((value) => {
+        console.log("end", value);
+        newData[1] = value;
+        setEnd(value);
 
-  const onForgotPasswordPressed = () => {
-    navigation.navigate("ForgotPassword");
-  };
+        const data = [start, end];
 
-  const onSignUpPress = () => {
-    navigation.navigate("SignUp");
-  };
+        try {
+          axios
+            .post(constants.backend_url + "/route/getBussesByBusStops", newData)
+            .then((res) => {
+              console.log("in async",res.data);
+              setBuses(res.data);
+            })
+            .catch((err) => {
+              console.log("Error: ", JSON.stringify(err));
+            });
+        } catch (err) {
+          console.log("Errort: ", JSON.stringify(err));
+        }
+      });
+
+      //wait for start and end to be set
+      
+  },[]);
+
+
+
+  
+
 
   const buttonTextStyle = {
     color: "#EEB815"
 };
 
   return (
-    <ScrollView showsVerticalScrollIndicator={false}>
+    <ScrollView showsVerticalScrollIndicator={true}>
 
-<View style={{flex: 1, marginTop: 80}} >
+    <View style={{flex: 1, marginTop: 10}} >
 
         <StepIndicator
          customStyles={customStyles}
@@ -109,13 +138,12 @@ const SignInScreen = () => {
 
       <View style={{marginTop:-30}}>
 
-        {/* pass start point to buscard as param */}
+        {/* pass start point to buscard as param a*/}
 
-        <BusCard start="Akuressa" />
+        {buses?.map((bus) => (
+          <BusCard bus={bus} start={route?.params.startP} end={route?.params.endP} seat={route?.params.seat} />
+        ))}
 
-        <BusCard />
-
-        <BusCard />
 
       </View>
 
@@ -198,4 +226,4 @@ const styles = StyleSheet.create({
 
 });
 
-export default SignInScreen;
+export default BusList;

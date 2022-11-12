@@ -1,0 +1,15 @@
+{
+  "__v": 0,
+  "_id": "636d3cb351461a5b4803d728",
+  "approval": false,
+  "createdAt": "2022-11-10T18:02:27.225Z",
+  "email": "sd@getnada.com",
+  "isVerify": true,
+  "mobile": "0719647830",
+  "name": "Sanjula Dulshan",
+  "otpHash": "$2b$12$3CLNKAw68xGxW/yweVG17Oz5QhQv4LeoheW3B7of32VZ0vL.nYqc6",
+  "role": "Passenger",
+  "status": "active",
+  "updatedAt": "2022-11-11T17:58:32.927Z",
+  "username": "sd"
+}

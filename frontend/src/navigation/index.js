@@ -35,25 +35,51 @@ const Navigation = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator>
+
         {/* <Stack.Screen name="SignIn" component={SignInScreen} /> */}
         {/* <Stack.Screen
           name="RouteSearch"
           component={RouteSearch}
           options={{ headerShown: false }}
         /> */}
+
+        <Stack.Screen
+          name="SignIn"
+          component={SignInScreen}
+          options={{ headerShown: false }}
+        />
+
+        <Stack.Screen
+          name="RouteSearch"
+          component={RouteSearch}
+          options={{ headerShown: false }}
+        />
+
         <Stack.Screen
           name="PassengersList"
           component={PassengerList}
           options={{ headerShown: false }}
         />
 
+
         {/* <Stack.Screen name="ReportUser" component={ReportUser} /> */}
 
-        {/* <Stack.Screen name="Sheet" component={BottomSheet} /> */}
 
-        {/* <Stack.Screen name="ReportUserList" component={ReportUserList} /> */}
 
         <Stack.Screen
+          name="ReportUser"
+          component={ReportUser}
+          options={{ headerShown: false }}
+        />
+
+        <Stack.Screen
+          name="Sheet"
+          component={BottomSheet}
+          options={{ headerShown: false }}
+        />
+
+        <Stack.Screen
+
           name="InspectorHome"
           component={InspectorHomeScreen}
           options={{ headerShown: false }}
@@ -61,8 +87,13 @@ const Navigation = () => {
         <Stack.Screen
           name="SignIn"
           component={SignInScreen}
+
+          name="ReportUserList"
+          component={ReportUserList}
+
           options={{ headerShown: false }}
         />
+
         <Stack.Screen
           name="ReportDownloadScreen"
           component={ReportDownloadScreen}
@@ -83,16 +114,30 @@ const Navigation = () => {
           component={ForgotPasswordScreen}
           options={{ headerShown: false }}
         />
-
+        <Stack.Screen
+          name="HomeTicket"
+          component={HomeTicket}
+          options={{ headerShown: true }}
+        />
+        <Stack.Screen
+          name="SeatCount"
+          component={SeatCount}
+          options={{ headerShown: true }}
+        />
+        <Stack.Screen
+          name="BusList"
+          component={BusList}
+          options={{ headerShown: true }}
+        />
         <Stack.Screen
           name="BusDetails"
           component={BusDetails}
-          options={{ headerShown: false }}
+          options={{ headerShown: true }}
         />
         <Stack.Screen
           name="Confirmation"
           component={Confirmation}
-          options={{ headerShown: false }}
+          options={{ headerShown: true }}
         />
         <Stack.Screen
           name="NewPassword"
@@ -105,13 +150,9 @@ const Navigation = () => {
           options={{ headerShown: false }}
         />
 
-        <Stack.Screen
-          name="SeatCount"
-          component={SeatCount}
-          options={{ headerShown: false }}
-        />
 
         <Stack.Screen
+
           name="HomeTicket"
           component={HomeTicket}
           options={{ headerShown: false }}
@@ -123,6 +164,8 @@ const Navigation = () => {
         />
 
         <Stack.Screen
+
+
           name="TopupScreen"
           component={TopupScreen}
           options={{ headerShown: false }}
@@ -132,11 +175,7 @@ const Navigation = () => {
           component={CardDetailsScreen}
           options={{ headerShown: false }}
         />
-        <Stack.Screen
-          name="BusList"
-          component={BusList}
-          options={{ headerShown: false }}
-        />
+
 
         <Stack.Screen
           name="ViewCardSceen"

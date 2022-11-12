@@ -15,42 +15,35 @@ import CustomInput from "../../components/CustomInput/CustomInput";
 import CustomButton from "../../components/CustomButton/CustomButton";
 import { useNavigation } from "@react-navigation/native";
 import { useForm, Controller } from "react-hook-form";
-import StepIndicator from 'react-native-step-indicator';
+import StepIndicator from "react-native-step-indicator";
 
 // const [date, setDate] = useState(0)
 // const [open, setOpen] = useState(false)
 
-const labels = ["Trip Details","Seat","Bus List","Bus Details","Booked"];
+const labels = ["Trip Details", "Seat", "Bus List", "Bus Details", "Booked"];
 const customStyles = {
   stepIndicatorSize: 25,
-  currentStepIndicatorSize:30,
+  currentStepIndicatorSize: 30,
   separatorStrokeWidth: 2,
   currentStepStrokeWidth: 3,
-  stepStrokeCurrentColor: '#EEB815',
+  stepStrokeCurrentColor: "#EEB815",
   stepStrokeWidth: 3,
-  stepStrokeFinishedColor: '#EEB815',
-  stepStrokeUnFinishedColor: '#aaaaaa',
-  separatorFinishedColor: '#EEB815',
-  separatorUnFinishedColor: '#aaaaaa',
-  stepIndicatorFinishedColor: '#EEB815',
-  stepIndicatorUnFinishedColor: '#ffffff',
-  stepIndicatorCurrentColor: '#EEB815',
+  stepStrokeFinishedColor: "#EEB815",
+  stepStrokeUnFinishedColor: "#aaaaaa",
+  separatorFinishedColor: "#EEB815",
+  separatorUnFinishedColor: "#aaaaaa",
+  stepIndicatorFinishedColor: "#EEB815",
+  stepIndicatorUnFinishedColor: "#ffffff",
+  stepIndicatorCurrentColor: "#EEB815",
   stepIndicatorLabelFontSize: 13,
   currentStepIndicatorLabelFontSize: 13,
-  stepIndicatorLabelCurrentColor: '#EEB815',
-  stepIndicatorLabelFinishedColor: '#EEB815',
-  stepIndicatorLabelUnFinishedColor: 'white',
-  labelColor: '#999999',
+  stepIndicatorLabelCurrentColor: "#EEB815",
+  stepIndicatorLabelFinishedColor: "#EEB815",
+  stepIndicatorLabelUnFinishedColor: "white",
+  labelColor: "#999999",
   labelSize: 13,
-  currentStepLabelColor: '#EEB815'
+  currentStepLabelColor: "#EEB815",
 };
-
-
- 
-
-
-
-
 
 const SignInScreen = () => {
   const { height } = useWindowDimensions();
@@ -62,8 +55,6 @@ const SignInScreen = () => {
     handleSubmit,
     formState: { errors },
   } = useForm();
-
-
 
   const onSignInPressed = async (data) => {
     if (loading) {
@@ -89,41 +80,23 @@ const SignInScreen = () => {
   };
 
   const buttonTextStyle = {
-    color: "#EEB815"
-};
+    color: "#EEB815",
+  };
 
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
-
-
-
-      
-             
-
-
-
       <View style={styles.root}>
-        <Image
-          source={Logo}
-          style={[styles.homelogo, ]}
-          resizeMode="contain"
-        />
+        <Image source={Logo} style={[styles.homelogo]} resizeMode="contain" />
         <View>
-        <Text style={styles.AvailableText}>Booking Confirmed</Text>
-        <Text style={styles.midText}>ID: 23423423423</Text>  
-      </View> 
-
-        
-
-
-
+          <Text style={styles.AvailableText}>Booking Confirmed</Text>
+          <Text style={styles.midText}>ID: 23423423423</Text>
+        </View>
 
         <CustomButton
           text={loading ? "Loading..." : "Ok"}
           onPress={handleSubmit(onSignInPressed)}
-          type = {"confirm"}
+          type={"confirm"}
         />
-        
       </View>
     </ScrollView>
   );
@@ -145,12 +118,12 @@ const styles = StyleSheet.create({
   homelogo: {
     width: "100%",
 
-    marginTop: 150,
+    marginTop: 90,
     maxWidth: 300,
     maxHeight: 300,
     //scale image
     transform: [{ scale: 1.0 }],
-    zIndex:-1,
+    zIndex: -1,
   },
   section: {
     flexDirection: "row",
@@ -168,13 +141,13 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     fontSize: 16,
     maxWidth: 300,
-    marginVertical: 200
+    marginVertical: 200,
   },
 
   midText: {
     fontWeight: "normal",
     fontSize: 16,
-    marginTop : 10,
+    marginTop: 10,
     alignSelf: "center",
   },
 
@@ -182,7 +155,7 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     fontWeight: "bold",
     fontSize: 18,
-    alignSelf: "center",   
+    alignSelf: "center",
   },
 
   SeatCountText: {
@@ -194,7 +167,6 @@ const styles = StyleSheet.create({
     marginHorizontal: "35%",
     color: "green",
   },
-
 });
 
 export default SignInScreen;

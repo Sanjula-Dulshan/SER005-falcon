@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -19,6 +19,10 @@ import { useNavigation } from "@react-navigation/native";
 import { useForm, Controller } from "react-hook-form";
 import StepIndicator from 'react-native-step-indicator';
 import BusCard from "../../components/BusCard/busCard";
+import { useRoute } from "@react-navigation/native";
+import axios from "axios";
+import constants from "../../constants/constants";
+
 
 // const [date, setDate] = useState(0)
 // const [open, setOpen] = useState(false)
@@ -79,16 +83,116 @@ const thirdIndicatorStyles = {
 
 
 
-const SignInScreen = () => {
+const BusDetails = () => {
   const { height } = useWindowDimensions();
   const navigation = useNavigation();
   const [loading, setLoading] = useState(false);
+  const route = useRoute();
+  const [bus, setBus] = useState();
+  const [routeData, setRouteData] = useState();
+
+  const bus_id = route.params.bus;
+  const start = route.params.start;
+  const end = route.params.end;
+  const fee = route.params.fee;
+  const routeID = route.params.routeID;
+  const seat = route.params.seat;
+
+  const [startTime, setStartTime] = useState();
+  const [endTime, setEndTime] = useState();
+
+
+  console.log(bus_id," : ",start," : ",end," : ",fee," : ",routeID," : ",seat);
+
+  const handleSave = async () => {
+    setLoading(true);
+    const data = {
+      bus_id: bus_id,
+      startPoint: start,
+      endPoint: end,
+      fee: fee,
+      routeID: routeID,
+      user:"Yasantha",
+      date: new Date(),
+      ticket_count: seat,
+
+    };
+
+    console.log(data);
+
+    try {
+      const response = await axios.post(
+        `${constants.backend_url}/ticket/`,
+        data
+      );
+      console.log(response.data);
+      setLoading(false);
+    } catch (error) {
+      console.log(error);
+      setLoading(false);
+    }
+  };
+
+
+  useEffect(() => {
+    
+    //get bus details
+    axios.get(constants.backend_url + "/bus/" + bus_id).then((res) => {
+      console.log("bus details fetched :",res.data);
+      setBus(res.data);
+    }
+    ).catch((err) => {
+      console.log(err);
+    }
+    );
+
+    //get route details
+    axios.get(constants.backend_url + "/route/getRoutesByRouteID/" + routeID).then((res) => {
+      console.log("route details fetched :",res.data);
+
+      
+
+      let length = res.data[0].busStops.length;
+        console.log("\n\nLength\n\n",length);
+
+        //get bus stop details matching start
+        for (let i = 0; i < res.data[0]?.busStops?.length; i++) {
+          if(res.data[0].busStops[i].stop == start){
+            console.log("start stop details fetched :",res.data[0].busStops[i]);
+            setStartTime(res.data[0].busStops[i].time);
+          }
+          else if(res.data[0].busStops[i].stop == end){
+            console.log("end stop details fetched :",res.data[0].busStops[i]);
+            setEndTime(res.data[0].busStops[i].time);
+          }
+        }
+      setRouteData(res.data);
+    }
+    ).catch((err) => {
+      console.log(constants.backend_url + "/route/getRoutesByRouteID/" + routeID);
+      console.log(err);
+    }
+    );
+
+
+    
+
+  }, []);
+
+
+
 
   const {
     control,
     handleSubmit,
     formState: { errors },
   } = useForm();
+
+  const onConfirm = () => {
+    handleSave();
+    navigation.navigate("Confirmation");
+  }
+
 
 
 
@@ -107,13 +211,7 @@ const SignInScreen = () => {
     setLoading(false);
   };
 
-  const onForgotPasswordPressed = () => {
-    navigation.navigate("ForgotPassword");
-  };
 
-  const onSignUpPress = () => {
-    navigation.navigate("SignUp");
-  };
 
   const buttonTextStyle = {
     color: "#EEB815"
@@ -122,18 +220,18 @@ const SignInScreen = () => {
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
 
-<View style={{flex: 1, marginTop: 80}} >
+<View style={{flex: 1, marginTop: 10}} >
 
         <StepIndicator
          customStyles={customStyles}
-         currentPosition={2}
+         currentPosition={3}
          labels={labels}
     />
     </View>
 
     <Text style={styles.text}>Main Informaion </Text>
 
-      <View style={{marginTop:-20, marginLeft:10, display:"flex"}}>
+      <View style={{marginTop:0, marginLeft:10, display:"flex"}}>
 
       <View style={{flexDirection:'row'}}>
         <Image
@@ -149,7 +247,7 @@ const SignInScreen = () => {
             style={[styles.png1, ]}
             resizeMode="contain"
           />
-        <Text style={styles.subText}> SLTB Bus </Text>
+        <Text style={styles.subText}> {bus?.busName} </Text>
       </View>
       <View style={{flexDirection:'row'}}>
         <Image
@@ -157,7 +255,7 @@ const SignInScreen = () => {
             style={[styles.png1, ]}
             resizeMode="contain"
           />
-        <Text style={styles.subText}>+9411 245 2344 </Text>
+        <Text style={styles.subText}>{bus?.mobile}  </Text>
       </View>
 
 
@@ -168,11 +266,11 @@ const SignInScreen = () => {
     
 
       <View style={{marginLeft:20,marginTop:10, zIndex:4, paddingBottom:30}}>
-       <Text style={styles.textTime}>6.30</Text>
+       <Text style={styles.textTime}>{startTime}</Text>
       </View> 
 
       <View style={{marginLeft:20,marginTop:30, zIndex:4, paddingBottom:35}}>
-       <Text style={styles.textTime}>7.30</Text>
+       <Text style={styles.textTime}>{endTime}</Text>
       </View> 
 
       <View style={{marginLeft:60,marginTop:-160, height:150}}>
@@ -181,12 +279,12 @@ const SignInScreen = () => {
           customStyles={thirdIndicatorStyles}
           currentPosition={2}
           direction='vertical'
-          labels={["Akuressa", 'Kataragama']}
+          labels={[start, end]}
           
         />
       </View>
 
-      <Text style={{marginLeft:20, fontSize:16}}>Travel Time : 1 Hour</Text>
+      <Text style={{marginLeft:20, fontSize:16}}>Travel Time : 30 min</Text>
 
       <View style={{height:280}}>
         <Text style={styles.text}>Services </Text>
@@ -196,8 +294,8 @@ const SignInScreen = () => {
       <View style={{height:100}}>
         <Text style={styles.textPrice}>Total :  </Text>
         <Text style={styles.textPriceSub}>(in points) </Text>
-        <Text style={styles.textPriceLabel}>125 </Text>
-        <Text style={styles.textTc}>for 2  </Text>
+        <Text style={styles.textPriceLabel}> {fee*seat} </Text>
+        <Text style={styles.textTc}>for {seat}  </Text>
         <Image
             source={man}
             style={[styles.png2, ]}
@@ -206,8 +304,8 @@ const SignInScreen = () => {
       </View>
 
       <CustomButton
-          text={loading ? "Loading..." : "Let's Go"}
-          onPress={handleSubmit(onSignInPressed)}
+          text={loading ? "Loading..." : "Confirm"}
+          onPress={onConfirm}
         />
 
         <View style={{height:100}}></View>
@@ -311,6 +409,7 @@ const styles = StyleSheet.create({
     paddingTop:5,
     paddingBottom:5,
     width: 100,
+    overflow: 'hidden'
   },
 
 
@@ -371,4 +470,4 @@ const styles = StyleSheet.create({
 
 });
 
-export default SignInScreen;
+export default BusDetails;
