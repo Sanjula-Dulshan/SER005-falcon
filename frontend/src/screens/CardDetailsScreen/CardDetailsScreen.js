@@ -15,7 +15,6 @@ import CustomDropDown from "../../components/CustomDropDown";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from "axios";
 import Constants from "../../constants/constants";
-import { Button } from "native-base";
 
 
 const CardDetailsScreen = () => {
@@ -37,8 +36,8 @@ const CardDetailsScreen = () => {
    let cardNumber;
    let cvc;
    let expiry;
-  let user_id;
-  const [card, setCard] = useState([]);
+   let user_id;
+
   useEffect(() => {
     const getcard = async () => {
       user_id="u002";
@@ -84,8 +83,6 @@ const CardDetailsScreen = () => {
         amount: amount,
         loan_amount: loan_amount,
         });
-       console.log('A1',amount);
-       console.log('L1',loan_amount);
     }else{
       amount=amount1+loan2;
       loan_amount=0.00;
@@ -93,10 +90,9 @@ const CardDetailsScreen = () => {
         user_id: user_id,
         amount: amount,
         loan_amount: loan_amount,
-        });
-      console.log('A2',amount);
-      console.log('L2',loan_amount);
+        }); 
     }
+    navigation.navigate("Topupsuccess");
   };
 
    

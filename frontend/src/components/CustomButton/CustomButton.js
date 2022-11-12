@@ -204,6 +204,19 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     marginRight: "52%",
   },
+  text_gogo: {
+    alignSelf: "flex-end",
+    backgroundColor: "#FBBC05",
+    color: "white",
+    fontFamily: "Roboto",
+    fontSize: 26,
+    textAlign: "center",
+    width: "60%",
+    height: 45,
+    borderRadius: 8,
+    marginRight: "20%",
+  },
+
   text_VIEWCARD: {
     color: "#2DAB22",
     marginRight: "60%",

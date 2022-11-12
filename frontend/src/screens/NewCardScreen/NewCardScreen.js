@@ -47,8 +47,6 @@ const NewCardScreen = () => {
         amount: amount,
         loan_amount: loan_amount,
         });
-       console.log('A1',amount);
-       console.log('L1',loan_amount);
     }else{
       amount=amount1+loan2;
       loan_amount=0.00;
@@ -57,10 +55,8 @@ const NewCardScreen = () => {
         amount: amount,
         loan_amount: loan_amount,
         });
-      console.log('A2',amount);
-      console.log('L2',loan_amount);
     }
-    navigation.navigate("TopupScreen");
+    navigation.navigate("Topupsuccess");
   };
 
   let newamount='';

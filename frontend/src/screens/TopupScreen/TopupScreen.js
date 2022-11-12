@@ -3,7 +3,9 @@ import {
   View,
   Text,
   StyleSheet,
+  Modal,
   ScrollView,
+  Pressable,
 } from "react-native";
 import CustomInput from "../../components/CustomInput/CustomInput";
 import CustomButton from "../../components/CustomButton/CustomButton";
@@ -35,6 +37,7 @@ const TopupScreen = () => {
 
   const navigation = useNavigation();
   const [loading, setLoading] = useState(false);
+  const [approveModalVisible, setApproveModalVisible] = useState(false);
 
   const {
     control,
@@ -105,9 +108,31 @@ const TopupScreen = () => {
 
         <CustomButton
           text={loading ? "Loading..." : "Request a loan ?"}
-          //onPress={handleSubmit(onSignInPressed)}
+          onPress={() => setApproveModalVisible(true)}
           type="LOAN"
         />
+        {/* pop up modal */}
+          <View style={styles.centeredView}>
+            <View style={styles.modalContainer}>
+              <Modal
+                style={styles.modal}
+                animationType="slide"
+                transparent={true}
+                visible={approveModalVisible}
+                onRequestClose={() => {
+                  setApproveModalVisible(!approveModalVisible);
+                }}
+              >
+                            <View style={styles.centeredView}>
+                  <View style={styles.modalView}>
+                    <Pressable style={[styles.fineButton, styles.buttonClose]}>
+                      <Text style={styles.textStyle}>SEND FINE</Text>
+                    </Pressable>
+                  </View>
+                </View>
+              </Modal>
+            </View>
+          </View>
         <Text>{'\n'}</Text>
       </View>
     </ScrollView>
@@ -202,7 +227,70 @@ const styles = StyleSheet.create({
     borderColor:'black',
     margin:10,
     width: "112%",
-}
+},
+card: {
+  width: 350,
+  marginVertical: 20,
+  marginBottom: 1,
+  marginLeft: "4%",
+  marginRight: "4%",
+  height: "auto",
+  paddingBottom: 15,
+
+  backgroundColor: "#fff",
+  borderRadius: 30,
+  shadowColor: "#000",
+
+  shadowOffset: {
+    width: 3,
+    height: 2,
+  },
+  shadowOpacity: 0.25,
+  shadowRadius: 3.84,
+  elevation: 5,
+},
+
+centeredView: {
+  flex: 1,
+  justifyContent: "center",
+  alignItems: "center",
+
+  backgroundColor: "#000000aa",
+},
+modalView: {
+  margin: 20,
+  backgroundColor: "#D9D9D9",
+  borderRadius: 20,
+  padding: 35,
+  alignItems: "center",
+  shadowColor: "#000",
+  shadowOffset: {
+    width: 0,
+    height: 2,
+  },
+  shadowOpacity: 0.25,
+  shadowRadius: 4,
+  elevation: 5,
+  height: "auto",
+  width: "80%",
+},
+modalContainer: {
+  // backgroundColor: "rgba(0,0,0,0.5)",
+  flex: 1,
+  justifyContent: "center",
+  alignItems: "center",
+  backfaceVisibility: "hidden",
+  backgroundColor: "red",
+},
+modal: {
+  background: "red",
+  position: "absolute",
+  top: "50px",
+  right: "calc(50% - 200px)",
+  border: "1px solid #ccc",
+  padding: "16px",
+  minHeight: "300px",
+},
 });
 
 export default TopupScreen;

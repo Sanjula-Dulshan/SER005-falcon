@@ -27,6 +27,7 @@ import ReportDownloadScreen from "../screens/ReportDownloadScreen";
 import AdminHomeScreen from "../screens/AdminHomeScreen";
 import UsersDashboardScreen from "../screens/UsersDashboard/UsersDashboardScreen";
 import ViewCardSceen from "../screens/ViewCardScreen/ViewCardSceen";
+import TopupSuccess from "../screens/TopupSuccess";
 
 const Stack = createNativeStackNavigator();
 
@@ -35,7 +36,11 @@ const Navigation = () => {
     <NavigationContainer>
 
       <Stack.Navigator >
-
+      <Stack.Screen
+          name="Topupsuccess"
+          component={TopupSuccess}
+          options={{ headerShown: false }}
+        />
       <Stack.Screen
           name="TopupScreen"
           component={TopupScreen}

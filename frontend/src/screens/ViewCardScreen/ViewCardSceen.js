@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import {
   View,
   Text,
@@ -10,9 +10,10 @@ import {
 import CustomButton from "../../components/CustomButton/CustomButton";
 import { useNavigation } from "@react-navigation/native";
 import { useForm, Controller } from "react-hook-form";
+import axios from "axios";
+import Constants from "../../constants/constants";
 
 const ViewCardScreen = () => {
-  const { height } = useWindowDimensions();
   const navigation = useNavigation();
   const [loading, setLoading] = useState(false);
 
@@ -21,6 +22,38 @@ const ViewCardScreen = () => {
     handleSubmit,
     formState: { errors },
   } = useForm();
+
+  const [cardNumber1, setCardNumber] = useState("");
+  const[cvc1,setCvc]=useState("");
+  const[expiry1,setExpiry]=useState("");
+   let cardNumber;
+   let cvc;
+   let expiry;
+   let user_id;
+
+
+  useEffect(() => {
+    const getcard = async () => {
+      user_id="u002";
+      try{
+      const res= await axios.get(`${Constants.backend_url}/card/getMycard/${user_id}` );
+      cardNumber=res.data[0].lastFourDigits;
+      setCardNumber(cardNumber);
+      console.log(cardNumber1);
+      cvc=res.data[0].cardSecurityCode;
+      setCvc(cvc);
+      console.log(cvc1);
+      expiry=res.data[0].ExDate;
+      setExpiry(expiry);
+      console.log(expiry1);
+
+    } catch (error) {
+      console.log(error);
+    }
+
+      };
+    getcard();
+  }, );
 
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
@@ -32,8 +65,8 @@ const ViewCardScreen = () => {
         <Image source = {require('../../../assets/images/card.jpg')} 
         style={{width: 220, height: 120,marginTop:"4%",marginLeft:"3%"}}/>
         <Text style={styles.subtitle1}>Dulanjana-Card 1</Text>
-        <Text style={styles.amount1}>XXXXXXXXXXXX4523</Text>
-        <Text style={styles.amount1}>10/23</Text>
+        <Text style={styles.amount1}>{cardNumber1}</Text>
+        <Text style={styles.amount1}>{expiry1}</Text>
    
         <CustomButton
           text={loading ? "Loading..." : "Remove Card"}
