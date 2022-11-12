@@ -27,6 +27,7 @@ import ReportDownloadScreen from "../screens/ReportDownloadScreen";
 import AdminHomeScreen from "../screens/AdminHomeScreen";
 import UsersDashboardScreen from "../screens/UsersDashboard/UsersDashboardScreen";
 import ViewCardSceen from "../screens/ViewCardScreen/ViewCardSceen";
+import InspectorHomeScreen from "../screens/InspectorHomeScreen/InspectorHomeScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -34,6 +35,14 @@ const Navigation = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator>
+
+        {/* <Stack.Screen name="SignIn" component={SignInScreen} /> */}
+        {/* <Stack.Screen
+          name="RouteSearch"
+          component={RouteSearch}
+          options={{ headerShown: false }}
+        /> */}
+
         <Stack.Screen
           name="SignIn"
           component={SignInScreen}
@@ -45,11 +54,17 @@ const Navigation = () => {
           component={RouteSearch}
           options={{ headerShown: false }}
         />
+
         <Stack.Screen
           name="PassengersList"
           component={PassengerList}
           options={{ headerShown: false }}
         />
+
+
+        {/* <Stack.Screen name="ReportUser" component={ReportUser} /> */}
+
+
 
         <Stack.Screen
           name="ReportUser"
@@ -64,8 +79,18 @@ const Navigation = () => {
         />
 
         <Stack.Screen
+
+          name="InspectorHome"
+          component={InspectorHomeScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="SignIn"
+          component={SignInScreen}
+
           name="ReportUserList"
           component={ReportUserList}
+
           options={{ headerShown: false }}
         />
 
@@ -127,6 +152,20 @@ const Navigation = () => {
 
 
         <Stack.Screen
+
+          name="HomeTicket"
+          component={HomeTicket}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="NewCardScreen"
+          component={NewCardScreen}
+          options={{ headerShown: false }}
+        />
+
+        <Stack.Screen
+
+
           name="TopupScreen"
           component={TopupScreen}
           options={{ headerShown: false }}

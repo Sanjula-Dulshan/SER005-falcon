@@ -16,6 +16,8 @@ import CustomInput from "../../components/CustomInput/CustomInput";
 import CustomButton from "../../components/CustomButton/CustomButton";
 import { useForm } from "react-hook-form";
 
+import DateTimePickerModal from "react-native-modal-datetime-picker";
+
 const RouteSearch = () => {
   const {
     control,
@@ -23,7 +25,24 @@ const RouteSearch = () => {
     formState: { errors },
   } = useForm();
 
-  const [date, setDate] = useState("09-10-2020");
+  const [date, setDate] = useState(new Date().toLocaleDateString());
+
+  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  const showDatePicker = () => {
+    setDatePickerVisibility(true);
+  };
+
+  const hideDatePicker = () => {
+    setDatePickerVisibility(false);
+  };
+
+  const handleConfirm = (date) => {
+    //console.warn("A date has been picked: ", date);
+    setDate(new Date(date).toLocaleDateString());
+    hideDatePicker();
+  };
   // const [selectedDate, setSelectedDate] = useState(new Date());
   // const [datePickerVisible, setDatePickerVisible] = useState(false);
 
@@ -66,6 +85,21 @@ const RouteSearch = () => {
           placeholder="End Location"
           control={control}
           rules={{ required: "Username is required" }}
+        />
+        <CustomButton
+          title="Select Date"
+          loading={loading}
+          text={date}
+          bgColor={"white"}
+          fgColor={"black"}
+          onPress={showDatePicker}
+          type="datepicker"
+        />
+        <DateTimePickerModal
+          isVisible={isDatePickerVisible}
+          mode="date"
+          onConfirm={handleConfirm}
+          onCancel={hideDatePicker}
         />
 
         <CustomButton

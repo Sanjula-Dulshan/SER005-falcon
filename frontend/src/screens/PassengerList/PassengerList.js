@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   StyleSheet,
   Text,
@@ -14,6 +14,7 @@ import banUser from "../../../assets/images/ban.png";
 import { FormControl, Select, CheckIcon } from "native-base";
 import CustomInput from "../../components/CustomInput/CustomInput";
 import { useForm, Controller } from "react-hook-form";
+import { Axios } from "axios";
 
 const options = [
   { label: "Yes,Ban this user", value: "Yes,Ban this user" },
@@ -21,7 +22,15 @@ const options = [
 ];
 
 export default function CustomCard() {
+  const [passengerList, setPassengerList] = useState([]);
+
   const [modalVisible, setModalVisible] = useState(false);
+
+  useEffect(() => {
+    axios.get(constants.backend_url + "/user/new").then((res) => {
+      setPassengerList(res.data);
+    });
+  }, [passengerList]);
 
   const {
     control,
@@ -35,39 +44,7 @@ export default function CustomCard() {
         <View style={{ width: "120%", marginTop: "-6%" }}>
           <Text style={styles.title}>Passenger List</Text>
         </View>
-        <View style={styles.card}>
-          <View style={styles.textWrap}>
-            <View style={styles.textContainer}>
-              <View style={{ marginStart: "-12%", marginTop: "3%" }}>
-                <Avatar
-                  rounded
-                  source={{
-                    uri: "https://randomuser.me/api/portraits/men/36.jpg",
-                  }}
-                />
-              </View>
-              <Text style={styles.text}>Sanjula Dulshan</Text>
-            </View>
-            <View style={styles.textContainer}>
-              <Text style={styles.text}>sdulshan10@gmail.com</Text>
-            </View>
-          </View>
-          <View style={styles.buttonContainer}>
-            <CustomButton
-              title="Report"
-              text="Report"
-              fgColor="black"
-              type={"report"}
-            />
 
-            <CustomButton
-              title="View"
-              text="View"
-              fgColor="black"
-              type={"viewReport"}
-            />
-          </View>
-        </View>
         <View style={styles.card}>
           <View style={styles.textWrap}>
             <View style={styles.textContainer}>
@@ -102,39 +79,7 @@ export default function CustomCard() {
             />
           </View>
         </View>
-        <View style={styles.card}>
-          <View style={styles.textWrap}>
-            <View style={styles.textContainer}>
-              <View style={{ marginStart: "-12%", marginTop: "3%" }}>
-                <Avatar
-                  rounded
-                  source={{
-                    uri: "https://randomuser.me/api/portraits/men/36.jpg",
-                  }}
-                />
-              </View>
-              <Text style={styles.text}>Sanjula Dulshan</Text>
-            </View>
-            <View style={styles.textContainer}>
-              <Text style={styles.text}>sdulshan10@gmail.com</Text>
-            </View>
-          </View>
-          <View style={styles.buttonContainer}>
-            <CustomButton
-              title="Report"
-              text="Report"
-              fgColor="black"
-              type={"report"}
-            />
 
-            <CustomButton
-              title="View"
-              text="View"
-              fgColor="black"
-              type={"viewReport"}
-            />
-          </View>
-        </View>
         {/* pop up modal */}
         <View style={styles.centeredView}>
           <View style={styles.modalContainer}>
