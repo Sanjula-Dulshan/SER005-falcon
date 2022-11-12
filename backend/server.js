@@ -9,6 +9,7 @@ import userRouter from "./routes/userRouter.js";
 import busRouter from "./routes/bus.router.js";
 import routeRouter from "./routes/routes.route.js";
 import WalletRouter from "./routes/walletRouter.js";
+import ticketRouter from "./routes/ticket.route.js";
 
 dotenv.config();
 const PORT = process.env.PORT;
@@ -26,6 +27,7 @@ app.use("/user", userRouter);
 app.use("/bus", busRouter);
 app.use("/route", routeRouter);
 app.use("/wallet", WalletRouter);
+app.use("/ticket", ticketRouter);
 
 // Connect to MongoDB
 mongoose

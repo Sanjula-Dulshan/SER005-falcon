@@ -71,9 +71,10 @@ const SignInScreen = () => {
     AsyncStorage.setItem("endPoint", endPoint);
     AsyncStorage.setItem("date", date);
 
-    
+    //send start point and end point to next screen
+    navigation.navigate("SeatCount", { startP:startPoint, endP:endPoint, date });
 
-    navigation.navigate("SeatCount");
+    //navigation.navigate("SeatCount");
   };
 
 

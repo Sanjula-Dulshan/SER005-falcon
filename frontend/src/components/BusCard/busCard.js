@@ -1,12 +1,85 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { StyleSheet, Text, View, TouchableOpacity, Image } from "react-native";
 import CustomButton from "../CustomButton/CustomButton";
 import StepIndicator from 'react-native-step-indicator';
 import { useNavigation } from "@react-navigation/native";
+import axios from "axios";
+import constants from "../../constants/constants";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useRoute } from "@react-navigation/native";
 
 
-export default function BusCard({ start }) {
+export default function BusCard({ bus,startP,endP }) {
   const navigation = useNavigation();
+  const [businfo, setBusinfo] = useState({});
+  const [fee, setFee] = useState(0);
+  const [start, setStart] = useState("");
+  const[end,setEnd]=useState("");
+  const startAt = "";
+  const endAt = "";
+  const route = useRoute();
+
+  console.log("start from param ; ",route.params.startP);
+
+  startP = route.params.startP;
+  endP = route.params.endP;
+
+  
+  const calculateFee =  async (businfo) => {
+    //get start and end point
+    let length = 0;
+    //get length of the busStops array
+    // businfo?.busStops?.map((stop, index) => {
+    //   console.log("stop", stop);
+    //   length++;
+    // });
+    
+
+    console.log("\n\nlenghth\n\n",businfo?.busStops.length);
+  
+      //get index of start and end point
+      for (let i = 0; i < businfo?.busStops.length; i++) {
+        console.log("start",businfo?.busStops[i].stop," :> " ,startP);
+        console.log("end",businfo?.busStops[i].stop," :> " ,endP);
+        if (businfo?.busStops[i].stop == startP) {
+          var startIndex = i;
+        }
+        if (businfo?.busStops[i].stop  == endP) {
+          console.log("end",businfo?.busStops[i].stop," :> " ,end);
+          var endIndex = i;
+        }
+      }
+      //calculate fee
+      const fee = (endIndex - startIndex) * 10;
+      setFee(fee);
+    
+  }
+
+
+  //get route details using bus id
+  const getRouteDetails = async (bus) => {
+    console.log("Bus",bus.routeID);
+    try {
+      const response = await axios.get(
+        constants.backend_url + "/route/getFirstAndLastBusStop/" + bus.routeID).then((res) => {
+          console.log("in async 2",res.data);
+          setBusinfo(res.data);
+          calculateFee(businfo);
+        })
+        .catch((err) => {
+          console.log("Error: ", JSON.stringify(err));
+        });
+    } catch (err) {
+      console.log("Errort: ", JSON.stringify(err));
+    }
+  };
+
+  useEffect(() => {
+    getRouteDetails(bus);
+    
+  }, []);
+
+  
 
   const onBusSelect = () => {
     //create a log 
@@ -19,12 +92,12 @@ export default function BusCard({ start }) {
       
       <View style={styles.card}>
 
-      <View style={{marginLeft:20,marginTop:50, zIndex:4, paddingBottom:35}}>
-       <Text style={styles.textTime}>6.30</Text>
+      <View style={{marginLeft:20,marginTop:50, zIndex:2, paddingBottom:35}}>
+       <Text style={styles.textTime}>{businfo?.startTime}</Text>
       </View> 
 
-      <View style={{marginLeft:20,marginTop:40, zIndex:4, paddingBottom:35}}>
-       <Text style={styles.textTime}>6.30</Text>
+      <View style={{marginLeft:20,marginTop:40, zIndex:0, paddingBottom:35}}>
+       <Text style={styles.textTime}>{businfo.endTime}</Text>
       </View> 
 
       
@@ -36,7 +109,7 @@ export default function BusCard({ start }) {
           customStyles={thirdIndicatorStyles}
           currentPosition={2}
           direction='vertical'
-          labels={[start, 'Kataragama']}
+          labels={[businfo.startPoint, businfo.endPoint]}
         />
       </View>
 
@@ -60,7 +133,7 @@ export default function BusCard({ start }) {
 
 
       <View style={{marginLeft:270,marginTop:140, zIndex:3, paddingBottom:35}}>
-       <Text style={styles.textDuration}>6.30</Text>
+       <Text style={styles.textDuration}>{businfo.duration}.00</Text>
       </View> 
 
       
@@ -71,11 +144,11 @@ export default function BusCard({ start }) {
           bgColor="#EEB815"
           fgColor={"white"}
           type={"takeIt"}
-          onPress={onBusSelect}
+          onPress={() => onBusSelect()}
         />
 
       <View style={{marginLeft:20,marginTop:-32, zIndex:3, paddingBottom:35}}>
-       <Text style={styles.textPrice}>45💰</Text>
+       <Text style={styles.textPrice}>{fee}💰</Text>
       </View> 
 
       </View>
